@@ -5,7 +5,7 @@ This is a ReactJS project bootstrapped with [Vite](https://vitejs.dev/). Below a
 
 ## Live Demo
 
-Check out the live demo of the project here: [Live Demo](https://voluble-meringue-c0378d.netlify.app)
+Check out the live demo of the project here: [Live Demo](https://magenta-kitten-44e0b7.netlify.app/)
 
 ## Getting Started
 
