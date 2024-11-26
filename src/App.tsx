@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import Home from './pages';
 import Dashboard from './pages/Dashboard';
 
 interface RouteType {
@@ -8,7 +9,8 @@ interface RouteType {
 }
 
 const routes: RouteType[] = [
-  { path: '/', component: Dashboard },
+  { path: '/', component: Home },
+  { path: '/dashboard', component: Dashboard },
 ];
 
 function App() {
