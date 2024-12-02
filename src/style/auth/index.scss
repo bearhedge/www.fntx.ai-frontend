@@ -1,0 +1,71 @@
+.auth {
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 20px;
+    h3{
+        font-size: 32px;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+    &-logo{
+        min-width: 269px;
+        max-width: 100%;
+        @media only screen and (max-width: 968px) {
+            min-width: 180px;
+        }
+    }
+    &-banner {
+        min-height: calc(100vh - 40px);
+        object-fit: cover;
+        width: 100%;
+        border-radius: 16px;
+    }
+    &-form{
+        max-width: 453px;
+        margin: 12px auto 0;
+        &-inputs{
+            padding: 132px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            flex-direction: column;
+        @media only screen and (max-width: 1550px) {
+            padding: 70px 0;
+        }
+        }
+    }
+    .btn{
+        height: 50px;
+    }
+    hr{
+        background-color: var(--border-color);
+        margin: 24px 0;
+    }
+    &-google{
+        border-radius: 8px;
+        height: 50px;
+        border:1px solid var(--border-color);
+    }
+    .have-account{
+        font-size: 14px;
+        line-height: 20px;
+        a{
+            color: var(--text-color);
+            text-decoration: none;
+        }
+    }
+    &-link{
+        a{
+            font-size: 14px;
+            line-height: 20px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+    }
+}
+.signup__confirm{
+    .confirmation-container{
+        min-height: auto;
+        margin-bottom: 1rem;
+    }
+}

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import Header from "../component/Header";
 import Sidebar from "../component/Sidebar";
-const sidbarWidth = 260
+const sidbarWidth = 290
 interface Iprops {
     children: ReactNode
 }

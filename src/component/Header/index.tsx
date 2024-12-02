@@ -1,21 +1,17 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { toggleTheme } from "../../services/slices/themeSlice";
-import { AppDispatch, RootState } from "../../services/store";
-
-export default function Header(){
-    const dispatch: AppDispatch = useDispatch();
-    const theme = useSelector((state: RootState) => state.theme.theme);
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-      }, [theme]);
-    return <div className='header'>
-        <h4>Welcome back, Alex</h4>
-        <div className="header__mode">
-            Mode: <div className="switch">
-            <input type="checkbox" onChange={() => dispatch(toggleTheme())}/>
+import Card from "../Card";
+import TickIcon from "@assets/svg/tick.svg"
+import AttachIcon from "@assets/svg/attach.svg"
+export default function Header() {
+    return <div className='header-app'>
+        <Card className="d-flex align-items-center justify-content-between w-100 flex-row">
+            <div className="d-flex align-items-center">
+                <label className="d-flex align-items-center"><img src={AttachIcon} className='me-1' /> API Connection:</label>
+                <span className="d-flex align-items-center"><img src={TickIcon} className='me-1' /> Connected</span>
             </div>
-        </div>
+            <div className="d-flex align-items-center">
+                <label>Wallet:</label>
+                <span className="d-flex align-items-center"><img src={TickIcon} className='me-1' /> Connected</span>
+            </div>
+        </Card>
     </div>
 }

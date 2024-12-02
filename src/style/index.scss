@@ -1,6 +1,10 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
 @import './font.scss';
 @import './base/base.scss';
-
+@import './header/index.scss';
+@import './auth/index.scss';
+@import './onboarding/index.scss';
+@import './sidebar/index.scss';
 body {
   background-color: var(--bgColor);
 }
@@ -8,7 +12,7 @@ body {
 .main {
   display: flex;
   min-height: 100vh;
-
+  padding: 10px;
   &__wrapper {
     &__content {
       padding: 20px;
@@ -16,123 +20,6 @@ body {
     }
   }
 }
-
-.sidebar {
-  min-height: 100vh;
-  background-color: var(--bgColor-secondary);
-  position: fixed;
-  padding: 20px;
-  border-right: 2px solid var(--bgColor);
-
-  h5 {
-    font-size: 22px;
-    color: var(--text-color);
-  }
-
-  &__content {
-    &__label {
-      text-transform: uppercase;
-      color: #6f6f6f;
-      font-size: 13px;
-      padding: 13px 0;
-    }
-
-    &__item {
-
-      a {
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        color: var(--text-color);
-        padding: 10px;
-        border-radius: 5px;
-
-        &.active {
-          color: var(--white);
-          background-color: var(--primary);
-
-          span {
-            svg {
-              path {
-                stroke: var(--white);
-              }
-            }
-          }
-        }
-      }
-
-      label {
-        margin-left: 5px;
-      }
-
-      span {
-        width: 25px;
-        height: 25px;
-
-        svg {
-          width: 25px;
-          height: 25px;
-
-          path {
-            stroke: #a3a3a3;
-          }
-        }
-      }
-    }
-  }
-}
-
-.header {
-  background-color: var(--bgColor-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-
-  &__mode {
-    display: flex;
-    align-items: center;
-    color: var(--text-color);
-
-    .switch {
-      margin-left: 5px;
-    }
-  }
-
-  h4 {
-    font-size: 26px;
-    color: var(--text-color);
-  }
-}
-
-.card {
-  background-color: var(--bgColor-secondary);
-  border-radius: 20px;
-  box-shadow: unset;
-  padding: 10px;
-  &__count{
-    label{
-      font-size: 16px;
-      color: var(--text-color);
-    }
-    h5{
-      font-size: 20px;
-      padding: 10px 0px;
-      color: var(--text-color);
-    }
-  }
-  &__head {
-    h4 {
-      font-size: 20px;
-      font-weight: 500;
-      padding-top: 10px;
-      margin-bottom: 20px;
-      color: var(--text-color);
-    }
-  }
-}
-
 .table {
   table {
     width: 100%;

@@ -1,13 +1,28 @@
-import { DashboardIco } from './icons'
+import { AiLabIco, DashboardIco, HomeIco, OptionStremIco, SystemIco } from './icons'
 export const menu = [
     {
-        label: 'Menu',
-        item: [
-            {
-                label: 'Dashboard',
-                route: '/',
-                ico: <DashboardIco />
-            }
-        ]
+        label: 'Home',
+        route: '/home',
+        ico: <HomeIco />
+    },
+    {
+        label: 'Dashboard',
+        route: '/dashboard',
+        ico: <DashboardIco />
+    },
+    {
+        label: 'System',
+        ico: <SystemIco />,
+        chiildren:[]
+    },
+    {
+        label: 'AI Lab',
+        route: '/ai-lap',
+        ico: <AiLabIco />
+    },
+    {
+        label: 'OptionStream',
+        route: '/optionstream',
+        ico: <OptionStremIco />
     }
 ]

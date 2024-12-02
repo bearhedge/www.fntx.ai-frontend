@@ -1,0 +1,31 @@
+.onboarding {
+    // margin-top: 20px;
+    h3{
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 30px;
+    }
+    h5{
+        font-size: 32px;
+        line-height: 40;
+    }
+    .btn{
+        min-height: 54px;
+    }
+    .card {
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    h6 {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 22px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 22px;
+    }
+}

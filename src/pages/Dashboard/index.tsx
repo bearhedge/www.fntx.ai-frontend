@@ -1,9 +1,9 @@
 import { Column } from "../../common/type";
 import Badge from "../../component/badge";
 import Card from "../../component/Card";
-import DynamicTable from "../../component/Table";
+// import DynamicTable from "../../component/Table";
 import AppLayout from "../../layout/appLayout";
-import { notify, orders } from "../../lib/dummyArray";
+// import { notify, orders } from "../../lib/dummyArray";
 
 export default function Dashboard() {
     const columns: Column[] = [
@@ -69,16 +69,16 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            <div className="col-6">
+            {/* <div className="col-6">
                 <Card className='card__head mb-3'>
                     <h4>Notifications</h4>
                     <DynamicTable columns={columnsNotify} rows={notify} rowsPerPage={2} />
                 </Card>
-            </div>
+            </div> */}
         </div>
-        <Card className='card__head'>
+        {/* <Card className='card__head'>
             <h4>Order History</h4>
             <DynamicTable columns={columns} rows={orders} rowsPerPage={5} />
-        </Card>
+        </Card> */}
     </AppLayout>
 }

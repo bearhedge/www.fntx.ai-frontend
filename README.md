@@ -3,10 +3,6 @@
 
 This is a ReactJS project bootstrapped with [Vite](https://vitejs.dev/). Below are the instructions to set up and run the project locally.
 
-## Live Demo
-
-Check out the live demo of the project here: [Live Demo](https://magenta-kitten-44e0b7.netlify.app/)
-
 ## Getting Started
 
 Follow these steps to get the project up and running on your local machine.
