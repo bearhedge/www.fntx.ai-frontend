@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 
 export const validation = (data: any) => {
   let errors: any = {};
@@ -155,7 +155,6 @@ export const FormC = ({
     }
   };
   const handleArrayChange = (e: any, type: any) => {
-    let err = [];
     const { name, value } = e?.target || {};
     let state = {
       [name]: value,

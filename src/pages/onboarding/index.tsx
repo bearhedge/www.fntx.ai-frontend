@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Fetch from "../../common/api/fetch";
 import Card from "../../component/Card";
 import Button from "../../component/form/button";
@@ -7,11 +6,9 @@ import BaseLayout from "../../layout/baseLayout";
 import { IBKRMarginIco, NFTMarketplaceIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco,ArrowIco } from "../../lib/icons";
 import { arrayString } from "../../lib/utilits";
 import TickDarkIco from "@assets/svg/tick-dark.svg"
-import ArrowRightIco from "@assets/svg/arrow-right.svg"
 import Alert from "../../component/Alert";
 
 export default function OnBoarding() {
-    const navigate = useNavigate()
     const [platform, setPlatform] = useState({
         ibkr: false,
         active_subscription: false,

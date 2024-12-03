@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AuthLayout from "../../../layout/authLayout";
 import Input from "../../../component/form/input";
 import Alert from "../../../component/Alert";
 import Button from "../../../component/form/button";
 import Fetch from "../../../common/api/fetch";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FormC } from "../../../common/api/validation";
 import { arrayString } from "../../../lib/utilits";
 

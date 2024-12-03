@@ -42,7 +42,7 @@ const routes: RouteType[] = [
 
 // Wrapper for route guards
 const ProtectedRoute: FC<{ route: RouteType }> = ({ route }) => {
-  const { type, component: Component, path } = route;
+  const { type, component: Component } = route;
 
   if (type === 'public') {
     // Public routes are accessible to everyone

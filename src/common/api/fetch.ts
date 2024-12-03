@@ -12,7 +12,6 @@ export default function Fetch(
   const method: HttpMethod = option?.method ?? "get";
   const inFormData = option?.inFormData ?? false; // formType === true
   const isToken = option?.isToken ?? true;
-  const cachedData = option?.cacheData;
   const url = option?.url;
   let parameters = {
     ...commonParams,

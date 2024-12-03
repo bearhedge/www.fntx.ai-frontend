@@ -1,5 +1,5 @@
 
-export function arrayString(valu: any, showAll = false) {
+export function arrayString(valu: any) {
     let a = typeof valu;
     if (a == "object") {
         let error: any = {};

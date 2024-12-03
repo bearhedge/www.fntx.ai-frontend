@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Required from "./required";
 
 export default function Input(props: any): JSX.Element {
