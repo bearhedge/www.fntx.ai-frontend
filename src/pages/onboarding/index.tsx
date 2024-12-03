@@ -3,12 +3,14 @@ import Fetch from "../../common/api/fetch";
 import Card from "../../component/Card";
 import Button from "../../component/form/button";
 import BaseLayout from "../../layout/baseLayout";
-import { IBKRMarginIco, NFTMarketplaceIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco,ArrowIco } from "../../lib/icons";
+import { IBKRMarginIco, NFTMarketplaceIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco, ArrowIco } from "../../lib/icons";
 import { arrayString } from "../../lib/utilits";
 import TickDarkIco from "@assets/svg/tick-dark.svg"
+import RefreshIco from "@assets/svg/refresh-icon.svg"
 import Alert from "../../component/Alert";
 
 export default function OnBoarding() {
+    const [isRefreshIbkr, setIsRefreshIbkr] = useState(false)
     const [platform, setPlatform] = useState({
         ibkr: false,
         active_subscription: false,
@@ -27,7 +29,7 @@ export default function OnBoarding() {
             metamask_address: params.metamask_address,
         })
     }, [])
-    const linkIBKRAcc = () => {
+    const getIbkrConnected = () => {
         Fetch('ibkr/auth-status/').then((res: any) => {
             if (res.status) {
                 if (res?.data?.authenticated) {
@@ -55,6 +57,10 @@ export default function OnBoarding() {
             `width=${fullWidth},height=${fullHeight},top=0,left=0,scrollbars=yes`
         );
     };
+    const linkIbkrAccount = () => {
+        setIsRefreshIbkr(true)
+        openFullWidthWindow('https://client.fntx.ai/sso/Login?forwardTo=22&RL=1&ip2loc=US')
+    }
     return <BaseLayout>
         <section className="container onboarding">
             <h3 className="mb-0">Platform Requirements</h3>
@@ -63,12 +69,17 @@ export default function OnBoarding() {
                     <Card>
                         <div>
                             <Alert type='danger' label={platformError?.ibkr} />
-                            <IBKRMarginIco />
+                            <div className="d-flex align-items-center justify-content-between">
+                                <IBKRMarginIco />
+                                {isRefreshIbkr && !platform.ibkr && <Button type="button" onClick={getIbkrConnected} className="btn" title="Refresh IBKR Account">
+                                    <img src={RefreshIco} alt='refresh' />
+                                </Button>}
+                            </div>
                             <h6>IBKR Margin Account</h6>
                             <p className="mt-2">An IBKR margin account is required before accessing the platform.</p>
                         </div>
                         {platform.ibkr ? <CardLinkConfirm message='IBKR Account Connected' /> : <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-2" onClick={linkIBKRAcc}>Link Account</Button>
+                            <Button className="btn btn-primary w-100 me-2" onClick={linkIbkrAccount}>Link Account</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1" onClick={() => openFullWidthWindow('https://www.interactivebrokers.co.in/Universal/Application')}>Create Account</Button>
                         </div>}
                     </Card>
@@ -82,7 +93,7 @@ export default function OnBoarding() {
                         </div>
                         <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2">Check Level</Button>
-                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco/> </Button>
+                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
                         </div>
                     </Card>
                 </div>
@@ -95,7 +106,7 @@ export default function OnBoarding() {
                         </div>
                         <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2">Contact IBKR</Button>
-                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco/> </Button>
+                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
                         </div>
                     </Card>
                 </div>
@@ -108,7 +119,7 @@ export default function OnBoarding() {
                         </div>
                         <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2">Connect Now</Button>
-                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco/> </Button>
+                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
                         </div>
                     </Card>
                 </div>
@@ -121,7 +132,7 @@ export default function OnBoarding() {
                         </div>
                         <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2">Token Marketplace</Button>
-                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco/> </Button>
+                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
                         </div>
                     </Card>
                 </div>
