@@ -32,9 +32,11 @@
     }
 }
 .home {
+    min-height: calc(100vh - 190px);
+    display: flex;
+    align-items: center;
     .row {
         padding: 20px 0px;
-    min-height: calc(100vh - 190px);
     }
 
     .btn-baselay {
@@ -46,6 +48,7 @@
         font-size: 80px;
         font-weight: 600;
         line-height: 88px;
+        text-transform: uppercase;
 
         @media only screen and (max-width: 998px) {
             font-size: 60px;

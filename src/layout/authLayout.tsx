@@ -45,7 +45,7 @@ export default function AuthLayout({ children }: Iprops) {
             </div>
             {children}
         </div>
-        <div className="col-md-7 d-none d-md-block">
+        <div className="col-md-7 d-none d-md-block p-0" >
             <Slider {...settings}>
                 <div>
                 <img src={AuthImgOne} alt='logo' className="auth-banner img-fluid" style={{height:colHeight+'px'}} />

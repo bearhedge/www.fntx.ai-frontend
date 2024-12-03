@@ -7,26 +7,31 @@ import AuthLayout from "../../../layout/authLayout";
 import SocialGoogle from '@assets/svg/social_google.svg'
 import Fetch from "../../../common/api/fetch";
 import { arrayString } from "../../../lib/utilits";
+import { useDispatch } from "react-redux";
+import { setLoginUser } from "../../../services/slices/authSlice";
 export default function Login() {
-    const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const [state, setState] = useState({
         email: '',
         password: ''
     })
     const onSubmit = () => {
         setIsLoading(true)
-        Fetch('login/',state,{method:'post'}).then((res:any)=>{
-            console.log(res);
-            if(res.status){
-                localStorage.token = res.data.token
-                localStorage.onboarding = true
+        Fetch('login/', state, { method: 'post' }).then((res: any) => {
+            if (res.status) {
+                const { access, user } = res.data
+                localStorage.token = access
+                localStorage.user = JSON.stringify(user)
+                localStorage.onboarding = !(user.active_subscription && user.metamask_address && user.ibkr_authentication)
+                dispatch(setLoginUser(true))
                 navigate('/onboarding')
-            }else{
+            } else {
                 let resErr = arrayString(res);
                 handleNewError(resErr);
             }
-        setIsLoading(false)
+            setIsLoading(false)
         })
     }
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,8 +40,12 @@ export default function Login() {
             [e.target.name]: e.target.value
         })
     }
-    const { errors, handleSubmit, removeAllError, handleNewError } = FormC({
-        values: state,
+    const param:any = {...state}
+    if(param.password?.length){
+        delete param.password
+    }
+    const { errors, handleSubmit, handleNewError } = FormC({
+        values: param,
         onSubmit,
     });
     return <AuthLayout>
@@ -47,12 +56,14 @@ export default function Login() {
                     errorText={errors.email}
                     onChange={onChange}
                     label='Email'
+                    placeholder='email@company.com'
                     name='email'
                     type='text'
                 />
                 <Input
                     onChange={onChange}
                     errorText={errors.password || errors.message}
+                    placeholder='******'
                     name='password'
                     label='Password'
                     type='password'
@@ -62,8 +73,8 @@ export default function Login() {
                 </div>
                 <Button isLoading={isLoading} disabled={isLoading} type="submit" className="btn btn-primary w-100 mt-4">Sign-in</Button>
             </form>
-            <hr/>
-            <Button type="button" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24}/>Sign-in with Google</Button>
+            <hr />
+            <Button type="button" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24} />Sign-in with Google</Button>
             <p className="have-account text-center mt-4 mb-0">Don't have an account? <Link to='/register'>Sign-up</Link></p>
         </div>
     </AuthLayout>

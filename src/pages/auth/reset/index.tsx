@@ -56,10 +56,10 @@ export default function ResetPassword() {
             {
                 isSubmit ?
                     <Confirmation
-                        title="Password Change Successful"
-                        para1="Your password has been successful updated!"
+                        title="Password Changed Successfully"
+                        para1="Your password has been successfully updated!"
                         btnText='Continue to Login'
-                        onHandleConfirm={() => navigate('/login')}
+                        onHandleConfirm={() => navigate('/signin')}
                     />
                     :
                     <>
@@ -83,7 +83,7 @@ export default function ResetPassword() {
                                 type='password'
                             />
                             <Input
-                                errorText={errors.email || errors.message}
+                                errorText={errors.confirm_password || errors.message}
                                 onChange={onChange}
                                 placeholder='******'
                                 label='Verify Password'

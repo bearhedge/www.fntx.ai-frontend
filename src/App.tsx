@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages';
 import ForgotPassword from './pages/auth/forgot';
@@ -8,6 +9,7 @@ import ResetPassword from './pages/auth/reset';
 import Dashboard from './pages/Dashboard';
 import OnBoarding from './pages/onboarding';
 import System from './pages/system';
+import { setLoginUser } from './services/slices/authSlice';
 
 // Simulated functions to check user state
 const isAuthenticated = (): boolean => {
@@ -23,7 +25,7 @@ const hasCompletedOnboarding = (): boolean => {
 interface RouteType {
   path: string;
   component: FC;
-  type: 'public' | 'private' | 'onboarding';
+  type: 'public' | 'private' | 'onboarding' | 'auth';
 }
 
 // Define routes
@@ -31,11 +33,11 @@ const routes: RouteType[] = [
   { path: '/', component: Home, type: 'public' },
   { path: '/dashboard', component: Dashboard, type: 'public' },
   { path: '/system', component: System, type: 'public' },
-  { path: '/login', component: Login, type: 'public' },
-  { path: '/register', component: Register, type: 'public' },
-  { path: '/forgot', component: ForgotPassword, type: 'public' },
-  { path: '/reset-password', component: ResetPassword, type: 'public' },
-  { path: '/onboarding', component: OnBoarding, type: 'public' },
+  { path: '/signin', component: Login, type: 'auth' },
+  { path: '/register', component: Register, type: 'auth' },
+  { path: '/forgot', component: ForgotPassword, type: 'auth' },
+  { path: '/reset-password', component: ResetPassword, type: 'auth' },
+  { path: '/onboarding', component: OnBoarding, type: 'onboarding' },
 ];
 
 // Wrapper for route guards
@@ -46,16 +48,19 @@ const ProtectedRoute: FC<{ route: RouteType }> = ({ route }) => {
     // Public routes are accessible to everyone
     return <Component />;
   }
-
+  if (type === 'auth') {
+    // Public routes are accessible to everyone
+    return !isAuthenticated() ?<Component />:<Navigate to="/" replace />;
+  }
   if (type === 'private') {
     // Private routes require authentication
-    return isAuthenticated() ? <Component /> : <Navigate to="/login" replace />;
+    return isAuthenticated() ? <Component /> : <Navigate to="/signin" replace />;
   }
 
   if (type === 'onboarding') {
     // Onboarding routes require authentication and onboarding completion
     if (!isAuthenticated()) {
-      return <Navigate to="/login" replace />;
+      return <Navigate to="/signin" replace />;
     }
     if (!hasCompletedOnboarding()) {
       return <Navigate to="/onboarding" replace />;
@@ -67,6 +72,14 @@ const ProtectedRoute: FC<{ route: RouteType }> = ({ route }) => {
 };
 
 function App() {
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    let isLogin = false
+    if(localStorage.token){
+      isLogin = true
+    }
+    dispatch(setLoginUser(isLogin))
+  },[])
   return (
     <Routes>
       {routes.map((route) => (

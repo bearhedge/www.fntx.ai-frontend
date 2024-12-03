@@ -1,9 +1,17 @@
 .onboarding {
     // margin-top: 20px;
+    padding-top: 60px;
     h3{
         font-size: 40px;
         font-weight: 600;
         line-height: 30px;
+        @media only screen and (max-width: 500px) {
+            line-height: 50px;
+        }
+    }
+    &__confirm{
+        font-size: 16px;
+        line-height: 22px;
     }
     h5{
         font-size: 32px;
@@ -11,10 +19,21 @@
     }
     .btn{
         min-height: 54px;
+        &:hover{
+            svg{
+                path{
+                fill: var(--white);
+            }
+            }
+        }
+        svg{
+            margin-left: 0.5rem;
+        }
     }
     .card {
         height: 100%;
         display: flex;
+        padding: 24px;
         justify-content: space-between;
     }
 

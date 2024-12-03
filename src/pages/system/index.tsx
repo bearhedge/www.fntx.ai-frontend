@@ -11,6 +11,6 @@ export default function System() {
         <Card>
             <Tabs tab={tab} handleTab={setTab} />
         </Card>
-        <Ticker/>
+        <Ticker />
     </AppLayout>
 }

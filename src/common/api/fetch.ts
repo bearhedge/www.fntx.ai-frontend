@@ -23,7 +23,6 @@ export default function Fetch(
       "Content-Type": inFormData ? "multipart/form-data" : "application/json",
       Authorization: `Bearer ${token || ""}`,
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
     };
     if (!isToken) {
       delete headers["Authorization"];
@@ -74,10 +73,8 @@ export default function Fetch(
     return formData;
   };
   const fetch = (token: any) => {
-    if (token && Notification.permission !== "granted") {
-      return Promise.resolve({ data: [], status: true });
-    }
-
+    console.log(token,'token==');
+    
     return axios[method](
       url ? url : baseURL + endPoint,
       inFormData

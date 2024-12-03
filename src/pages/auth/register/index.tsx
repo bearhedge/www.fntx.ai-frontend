@@ -7,7 +7,7 @@ import AuthLayout from "../../../layout/authLayout";
 import SocialGoogle from '@assets/svg/social_google.svg'
 import Confirmation from "../../../component/confirmationMessage";
 import Fetch from "../../../common/api/fetch";
-import { arrayString } from "../../../lib/utilits";
+import { arrayString, onKeyPress } from "../../../lib/utilits";
 
 export default function Register() {
     const [isLoading, setIsLoading] = useState(false)
@@ -53,7 +53,7 @@ export default function Register() {
                     className='signup__confirm'
                         onHandleConfirm={() => navigate('/onboarding')}
                         btnText='Continue'
-                        title='Registration complete!'
+                        title='Registration completed!'
                         para1='Your account has been successfully created.'
                         para2='Welcome to FNTX.ai, a platform focused on developing effective and modular options trading systems. You may now explore our platform'
                     />
@@ -64,6 +64,19 @@ export default function Register() {
                             <Input
                                 errorText={errors.username}
                                 onChange={onChange}
+                                onKeyPress={(evt:React.KeyboardEvent<HTMLInputElement>)=>onKeyPress(evt,  /^[^\s]+$/)}
+                                onPaste={(event: React.ClipboardEvent<HTMLInputElement>) => {
+                                    event.preventDefault();
+                                    const text = event.clipboardData.getData('text');
+                                    const noSpaceText = text.replace(/\s+/g, '');
+                                    console.log(noSpaceText,text);
+                                    
+                                    setState({
+                                        ...state,
+                                        username: noSpaceText,
+                                    });
+                                }}
+                                value={state.username}
                                 label='Username'
                                 placeholder='Username'
                                 name='username'
@@ -98,7 +111,7 @@ export default function Register() {
                         <p className="have-account text-left mt-4 mb-0">By signing up, you agree to our <Link to='/register'>Terms & Conditions.</Link></p>
                         <hr />
                         <Button isLoading={isLoading} disabled={isLoading} type="submit" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24} />Sign-in with Google</Button>
-                        <p className="have-account text-center mt-4 mb-0">Already have an account? <Link to='/login'>Sign-in</Link></p>
+                        <p className="have-account text-center mt-4 mb-0">Already have an account? <Link to='/signin'>Sign-in</Link></p>
                     </>
             }
         </div>

@@ -19,16 +19,6 @@ export const validation = (data: any) => {
   }
   return errors;
 };
-export const onKeyPress = (evt: any, reg?: any) => {
-  var theEvent = evt || window.event;
-  var key = theEvent.keyCode || theEvent.which;
-  key = String.fromCharCode(key);
-  var regex = reg ? reg : /^[0-9\b]+$/;
-  if (!regex.test(key)) {
-    theEvent.returnValue = false;
-    if (theEvent.preventDefault) theEvent.preventDefault();
-  }
-};
 const inputValidation = (data: any, property: any) => {
   const errors: any = {};
   if (
@@ -95,11 +85,11 @@ const inputValidation = (data: any, property: any) => {
   return errors;
 };
 export const passwordCheck = (password: string) => {
-  if (password.length < 8) return "At least 8 characters";
+  // if (password.length < 8) return "At least 8 characters";
   const regex =
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[^\w\d\s]).{8,}$/;
   if (!regex.test(password))
-    return "Your password is incorrect. Please try again";
+    return "Password must contain at least 8 characters, including one uppercase and lowercase letter, one number, and one special character.";
 };
 export const ValidateEmailAddress = (emailString: string) => {
   if (!emailString) return "Please enter email";
