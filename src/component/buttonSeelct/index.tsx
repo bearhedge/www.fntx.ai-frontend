@@ -4,11 +4,12 @@ interface Iprops {
     type: string;
     value: string | number;
     label: string;
-    id: string
-    handleChange: (val: string | number) => void
+    id?: string
+    className?:string
+    handleChange?: (val: string | number) => void
 }
 
-const SelectionComponent = ({ type, value, label, id, handleChange }: Iprops) => {
+const SelectionComponent = ({ type, value, label, id,className, handleChange }: Iprops) => {
     // State for checkboxes (multiple selection)
     const [selectedCheckboxes, setSelectedCheckboxes] = useState<(string | number)[]>([]);
 
@@ -27,16 +28,17 @@ const SelectionComponent = ({ type, value, label, id, handleChange }: Iprops) =>
             }
         } else {
             setSelectedRadio(parsedValue);
-            handleChange(parsedValue)
+            handleChange&&handleChange(parsedValue)
         }
     };
 
     return (
-        <label htmlFor={id}>
+        <label htmlFor={id} className={`form-input-check d-flex align-items-center justify-content-center mb-3 ${selectedCheckboxes.includes(value) || selectedRadio === value ? 'active' :''} ${className}`}>
             <input
                 type={type}
                 value={value}
                 id={id}
+                className='d-none'
                 checked={type === "checkbox" ? selectedCheckboxes.includes(value) : selectedRadio === value}
                 onChange={handleCheckboxChange}
             />

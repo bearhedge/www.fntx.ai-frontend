@@ -16,7 +16,7 @@ const settings = {
     slidesToShow: 1,
     slidesToScroll: 1
 };
-export default function AuthLayout({ children }: Iprops) {
+export default function AuthLayout({ children}: Iprops) {
     const colRef = useRef<HTMLDivElement>(null); // Create a ref for the column
     const [colHeight, setColHeight] = useState<number | null>(null); // State to store the height
 
@@ -25,19 +25,20 @@ export default function AuthLayout({ children }: Iprops) {
             setColHeight(colRef.current.offsetHeight); // Get the height of the column
         }
 
-        // Optional: Add a resize event listener to update the height on window resize
-        const handleResize = () => {
-            if (colRef.current) {
-                setColHeight(colRef.current.offsetHeight);
-            }
-        };
-
         window.addEventListener('resize', handleResize);
 
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [colRef.current]);
+
+    // Optional: Add a resize event listener to update the height on window resize
+    const handleResize = () => {
+        if (colRef.current) {
+        console.log(colRef.current.offsetHeight,'offsetHeight===');
+            setColHeight(colRef.current.offsetHeight);
+        }
+    };
     return <div className="row auth align-items-center m-0">
         <div className="col-md-5 col-12" ref={colRef}>
             <div className="text-center mb-5">
@@ -48,13 +49,13 @@ export default function AuthLayout({ children }: Iprops) {
         <div className="col-md-7 d-none d-md-block p-0" >
             <Slider {...settings}>
                 <div>
-                <img src={AuthImgOne} alt='logo' className="auth-banner img-fluid" style={{height:colHeight+'px'}} />
+                    <img src={AuthImgOne} alt='logo' className="auth-banner img-fluid" style={{ height: colHeight + 'px' }} />
                 </div>
                 <div>
-                <img src={AuthImgSecond} alt='logo' className="auth-banner img-fluid" style={{height:colHeight+'px'}}/>
+                    <img src={AuthImgSecond} alt='logo' className="auth-banner img-fluid" style={{ height: colHeight + 'px' }} />
                 </div>
                 <div>
-                <img src={AuthImgThrid} alt='logo' className="auth-banner img-fluid" style={{height:colHeight+'px'}}/>
+                    <img src={AuthImgThrid} alt='logo' className="auth-banner img-fluid" style={{ height: colHeight + 'px' }} />
                 </div>
             </Slider>
         </div>

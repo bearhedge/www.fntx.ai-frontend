@@ -71,7 +71,7 @@ export default function OnBoarding() {
                             <p className="mt-2">An IBKR margin account is required before accessing the platform.</p>
                         </div>
                         {platform.ibkr ? <CardLinkConfirm message='IBKR Account Connected' /> : <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-1" onClick={linkIBKRAcc}>Link Account</Button>
+                            <Button className="btn btn-primary w-100 me-2" onClick={linkIBKRAcc}>Link Account</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1" onClick={() => openFullWidthWindow('https://www.interactivebrokers.co.in/Universal/Application')}>Create Account</Button>
                         </div>}
                     </Card>
@@ -84,7 +84,7 @@ export default function OnBoarding() {
                             <p className="mt-2">Our strategy requires level 4 options trading approval in your account before accessing the platform.</p>
                         </div>
                         <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-1">Check Level</Button>
+                            <Button className="btn btn-primary w-100 me-2">Check Level</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco/> </Button>
                         </div>
                     </Card>
@@ -97,7 +97,7 @@ export default function OnBoarding() {
                             <p className="mt-2">We require your account to have a subscription to options data, covering the SPY index, before accessing the platform.</p>
                         </div>
                         <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-1">Contact IBKR</Button>
+                            <Button className="btn btn-primary w-100 me-2">Contact IBKR</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco/> </Button>
                         </div>
                     </Card>
@@ -110,7 +110,7 @@ export default function OnBoarding() {
                             <p className="mt-2">Connect a decentralised wallet to enable secure and efficient transactions on the platform.</p>
                         </div>
                         <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-1">Connect Now</Button>
+                            <Button className="btn btn-primary w-100 me-2">Connect Now</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco/> </Button>
                         </div>
                     </Card>
@@ -123,7 +123,7 @@ export default function OnBoarding() {
                             <p className="mt-2">Access to the platform is token-gated by an NFT and requires the burning of utility tokens for select features.</p>
                         </div>
                         <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-1">Token Marketplace</Button>
+                            <Button className="btn btn-primary w-100 me-2">Token Marketplace</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco/> </Button>
                         </div>
                     </Card>

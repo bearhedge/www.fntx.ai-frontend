@@ -2,6 +2,9 @@
     min-height: 100vh;
     overflow: hidden;
     padding: 1rem;
+    .slick-slider{
+        margin-bottom: -6px;
+    }
     h3{
         font-size: 32px;
         font-weight: 600;

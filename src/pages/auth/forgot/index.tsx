@@ -6,6 +6,7 @@ import Button from "../../../component/form/button";
 import Fetch from "../../../common/api/fetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FormC } from "../../../common/api/validation";
+import { arrayString } from "../../../lib/utilits";
 
 export default function ForgotPassword() {
     const navigate = useNavigate()
@@ -20,12 +21,15 @@ export default function ForgotPassword() {
         Fetch('accounts/send-otp/', state, { method: 'post' }).then((res: any) => {
             if (res.status) {
                 setMessage('We have sent the otp to you email please check.')
-                setIsLoading(false)
                 setTimeout(() => {
                     setMessage('')
                     navigate('/reset-password', { state: state })
                 }, 3000)
+            }else{
+                let resErr = arrayString(res);
+                handleNewError(resErr);
             }
+            setIsLoading(false)
         })
     }
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +38,7 @@ export default function ForgotPassword() {
             [e.target.name]: e.target.value
         })
     }
-    const { errors, handleSubmit, removeAllError } = FormC({
+    const { errors, handleSubmit, handleNewError } = FormC({
         values: state,
         onSubmit,
     });
@@ -45,7 +49,7 @@ export default function ForgotPassword() {
             <form onSubmit={handleSubmit}>
                 <div className="auth-form-inputs">
                     <Input
-                        errorText={errors.email}
+                        errorText={errors.email || errors.message}
                         onChange={onChange}
                         placeholder='email@example.com'
                         label='Email'

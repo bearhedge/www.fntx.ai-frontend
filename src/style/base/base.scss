@@ -23,7 +23,9 @@ svg {
     font-family: var(--font-family);
     box-sizing: border-box;
 }
-
+.font-bold{
+    font-weight: 600;
+}
 .loaderBtn {
     border: 4px solid var(--white);
     border-radius: 50%;
@@ -96,6 +98,17 @@ svg {
 .form {
     &-input {
         margin-bottom: 16px;
+        &-check{
+            cursor: pointer;
+            background-color: #EEEEEE;
+            border: 1px solid var(--border-color);
+            min-height: 54px;
+            border-radius: 8px;
+            &.active{
+                background-color: var(--menu-bg);
+                color: var(--white);
+            }
+        }
     }
 
     &-label {
