@@ -63,8 +63,8 @@ export default function ResetPassword() {
                     />
                     :
                     <>
-                        <h3 className="mb-4">Enter your new password</h3>
-                        <p className="mb-2">Please enter the old password and new password associated with your account.</p>
+                        <h3 className="mb-4">Reset your password</h3>
+                        <p className="mb-2">Please enter the OTP, Password, and Verify Password fields to reset your password.</p>
                         <form className="mt-4" onSubmit={handleSubmit}>
                             <Input
                                 errorText={errors.otp}
@@ -90,7 +90,7 @@ export default function ResetPassword() {
                                 name='confirm_password'
                                 type='password'
                             />
-                            <Button disabled={isLoading} isLoading={isLoading} type="submit" className="btn btn-primary w-100 mt-4">Update Password</Button>
+                            <Button disabled={isLoading} isLoading={isLoading} type="submit" className="btn btn-primary w-100 mt-4">Reset Password</Button>
                         </form>
                     </>
             }
