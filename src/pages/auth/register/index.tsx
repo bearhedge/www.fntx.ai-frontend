@@ -26,7 +26,7 @@ export default function Register() {
         Fetch('signup/', params, { method: 'post' }).then((res: any) => {
             if (res.status) {
                 setIsSubmit(true)
-            }else{
+            } else {
                 let resErr = arrayString(res);
                 handleNewError(resErr);
             }
@@ -50,12 +50,12 @@ export default function Register() {
             {
                 isSubmit ?
                     <Confirmation
-                    className='signup__confirm'
+                        className='signup__confirm'
                         onHandleConfirm={() => navigate('/onboarding')}
                         btnText='Continue'
                         title='Registration completed!'
                         para1='Your account has been successfully created.'
-                        para2='Welcome to FNTX.ai, a platform focused on developing effective and modular options trading systems. You may now explore our platform'
+                        para2='Welcome to FNTX.ai, a platform focused on developing effective and modular options trading systems. You may now explore our platform.'
                     />
                     :
                     <>
@@ -64,13 +64,13 @@ export default function Register() {
                             <Input
                                 errorText={errors.username}
                                 onChange={onChange}
-                                onKeyPress={(evt:React.KeyboardEvent<HTMLInputElement>)=>onKeyPress(evt,  /^[^\s]+$/)}
+                                onKeyPress={(evt: React.KeyboardEvent<HTMLInputElement>) => onKeyPress(evt, /^[^\s]+$/)}
                                 onPaste={(event: React.ClipboardEvent<HTMLInputElement>) => {
                                     event.preventDefault();
                                     const text = event.clipboardData.getData('text');
                                     const noSpaceText = text.replace(/\s+/g, '');
-                                    console.log(noSpaceText,text);
-                                    
+                                    console.log(noSpaceText, text);
+
                                     setState({
                                         ...state,
                                         username: noSpaceText,
@@ -106,11 +106,11 @@ export default function Register() {
                                 label='Verify Password'
                                 type='password'
                             />
-                            <Button type="submit" className="btn btn-primary w-100 mt-2">Sign-up</Button>
+                            <Button isLoading={isLoading} disabled={isLoading} type="submit" className="btn btn-primary w-100 mt-2">Sign-up</Button>
                         </form>
                         <p className="have-account text-left mt-4 mb-0">By signing up, you agree to our <Link to='/register'>Terms & Conditions.</Link></p>
                         <hr />
-                        <Button isLoading={isLoading} disabled={isLoading} type="submit" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24} />Sign-in with Google</Button>
+                        <Button type="submit" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24} />Sign-in with Google</Button>
                         <p className="have-account text-center mt-4 mb-0">Already have an account? <Link to='/signin'>Sign-in</Link></p>
                     </>
             }
