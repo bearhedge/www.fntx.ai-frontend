@@ -58,7 +58,7 @@ export default function ForgotPassword() {
                     />
                 </div>
                 <Alert type="success" label={message} />
-                <Button disabled={isLoading} isLoading={isLoading} type="submit" className="btn btn-primary w-100 mt-4">Send Reset Link</Button>
+                <Button disabled={isLoading} isLoading={isLoading} type="submit" className="btn btn-primary w-100 mt-4">Send OTP</Button>
             </form>
         </div>
     </AuthLayout>
