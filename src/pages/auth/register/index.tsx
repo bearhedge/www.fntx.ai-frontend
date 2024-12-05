@@ -108,7 +108,7 @@ export default function Register() {
                             />
                             <Button isLoading={isLoading} disabled={isLoading} type="submit" className="btn btn-primary w-100 mt-2">Sign-up</Button>
                         </form>
-                        <p className="have-account text-left mt-4 mb-0">By signing up, you agree to our <Link to='/register'>Terms & Conditions.</Link></p>
+                        {/* <p className="have-account text-left mt-4 mb-0">By signing up, you agree to our <Link to='/register'>Terms & Conditions.</Link></p> */}
                         <hr />
                         {/* <Button type="submit" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24} />Sign-in with Google</Button> */}
                         <p className="have-account text-center mt-4 mb-0">Already have an account? <Link to='/signin'>Sign-in</Link></p>
