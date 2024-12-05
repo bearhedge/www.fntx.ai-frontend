@@ -45,6 +45,7 @@ export default function OnBoarding() {
         }
         Fetch('ibkr/auth-status/').then((res: any) => {
             if (res.status) {
+    console.log(platform.ibkr,res?.data);
                 if (res?.data?.authenticated) {
                     setPlatform((prev) => ({ ...prev, ibkr: res?.data?.authenticated }))
                     setPlatformError((prev) => ({ ...prev, ibkr: '' }))
@@ -72,20 +73,27 @@ export default function OnBoarding() {
             `width=${fullWidth},height=${fullHeight},top=0,left=0,scrollbars=yes`
         );
     };
+    useEffect(() => {
+        let interval: NodeJS.Timeout | null = null;
+    
+        if (isRefreshIbkr) {
+            interval = setInterval(() => {
+                if (!platform.ibkr) {
+                    setIsLoading(true);
+                    getIbkrConnected();
+                } else {
+                    clearInterval(interval!);
+                }
+            }, 2000);
+        }
+    
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [isRefreshIbkr, platform.ibkr]);
     const linkIbkrAccount = () => {
         setIsRefreshIbkr(true)
         openFullWidthWindow('https://client.fntx.ai/sso/Login?forwardTo=22&RL=1&ip2loc=US')
-        console.log(platform.ibkr);
-        
-        const interval = setInterval(() => {
-            if(!platform.ibkr){
-                setIsLoading(true)
-                getIbkrConnected()
-            }else {
-                clearInterval(interval);
-            }
-        }, 2000)
-        return () => clearInterval(interval);
     }
     console.log(platform.ibkr);
     return <BaseLayout>
