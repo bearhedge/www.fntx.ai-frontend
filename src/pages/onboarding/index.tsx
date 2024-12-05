@@ -40,6 +40,9 @@ export default function OnBoarding() {
         })
     }
     const getIbkrConnected = () => {
+        if(platform.ibkr){
+            return;
+        }
         Fetch('ibkr/auth-status/').then((res: any) => {
             if (res.status) {
                 if (res?.data?.authenticated) {

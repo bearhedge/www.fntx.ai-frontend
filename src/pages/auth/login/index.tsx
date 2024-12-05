@@ -9,6 +9,7 @@ import Fetch from "../../../common/api/fetch";
 import { arrayString } from "../../../lib/utilits";
 import { useDispatch } from "react-redux";
 import { setLoginUser } from "../../../services/slices/authSlice";
+import AuthInstance from "../../../common/api/Auth";
 export default function Login() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -22,11 +23,14 @@ export default function Login() {
         Fetch('login/', state, { method: 'post' }).then((res: any) => {
             if (res.status) {
                 const { access, user } = res.data
+                AuthInstance.setToken(access)
                 localStorage.token = access
                 localStorage.user = JSON.stringify(user)
                 localStorage.onboarding = !(user.active_subscription && user.metamask_address && user.ibkr_authentication)
                 dispatch(setLoginUser(true))
-                navigate('/onboarding')
+                setTimeout(()=>{
+                    navigate('/onboarding')
+                },500)
             } else {
                 let resErr = arrayString(res);
                 handleNewError(resErr);

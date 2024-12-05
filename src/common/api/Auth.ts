@@ -20,7 +20,11 @@ class Auth {
       // You can also handle an error case here, like return this.signOut();
     }
   }
-
+  async setToken(token:string){
+    if(token){
+      this.token = token
+    }
+  } 
   // Checks if the user is authenticated based on the token
   isAuthenticated(): boolean {
     this.token = localStorage.getItem("token") || "";
