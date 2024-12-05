@@ -50,6 +50,7 @@ export default function OnBoarding() {
                     setPlatform((prev) => ({ ...prev, ibkr: res?.data?.authenticated }))
                     setPlatformError((prev) => ({ ...prev, ibkr: '' }))
                     setIsLoading(false)
+                    setIsRefreshIbkr(false)
                 } else if (res?.data?.authenticated === false) {
                     setPlatformError((prev) => ({ ...prev, ibkr: 'Login through IBKR client portal gateway to proceed.' }))
                 }
