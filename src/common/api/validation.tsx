@@ -28,6 +28,8 @@ const inputValidation = (data: any, property: any) => {
   ){
     if (property === "verify_password") {
       errors[property] = 'Please verify your password.'
+    }else if (property === "otp") {
+      errors[property] = 'Please enter OTP.'
     } else {
       errors[property] = property.startsWith("select.")
         ? `Please select ${property.split(".")[1].replace(/_/g, " ")}.`

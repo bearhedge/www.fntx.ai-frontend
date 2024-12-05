@@ -55,7 +55,7 @@ export default function Register() {
                         btnText='Continue'
                         title='Registration completed!'
                         para1='Your account has been successfully created.'
-                        para2='Welcome to FNTX.ai, a platform focused on developing effective and modular options trading systems. You may now explore our platform.'
+                        para2='Welcome to fntx.ai, a platform focused on developing effective and modular options trading systems. You may now explore our platform.'
                     />
                     :
                     <>

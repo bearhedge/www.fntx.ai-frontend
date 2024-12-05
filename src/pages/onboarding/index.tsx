@@ -35,8 +35,8 @@ export default function OnBoarding() {
                     active_subscription: res.data?.active_subscription,
                     metamask_address: res.data?.metamask_address
                 }))
-                setIsRefreshIbkr(false)
             }
+            setIsRefreshIbkr(false)
         })
     }
     const getIbkrConnected = () => {
@@ -105,7 +105,7 @@ export default function OnBoarding() {
                             <h6>IBKR Margin Account</h6>
                             <p className="mt-2">An IBKR margin account is required before accessing the platform.</p>
                         </div>
-                        {isLoading === false ? isRefreshIbkr ?null: platform.ibkr ? <CardLinkConfirm message='IBKR Account Connected' /> : <div className="d-flex mt-2">
+                        {isLoading === false ? isRefreshIbkr ? null : platform.ibkr ? <CardLinkConfirm message='IBKR Account Connected' /> : <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2" onClick={linkIbkrAccount}>Link Account</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1" onClick={() => openFullWidthWindow('https://www.interactivebrokers.co.in/Universal/Application')}>Create Account</Button>
                         </div> : null}
