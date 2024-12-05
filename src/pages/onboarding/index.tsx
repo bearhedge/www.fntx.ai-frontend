@@ -6,11 +6,13 @@ import BaseLayout from "../../layout/baseLayout";
 import { IBKRMarginIco, NFTMarketplaceIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco, ArrowIco } from "../../lib/icons";
 import { arrayString } from "../../lib/utilits";
 import TickDarkIco from "@assets/svg/tick-dark.svg"
-import RefreshIco from "@assets/svg/refresh-icon.svg"
+import TickIco from "@assets/svg/tick.svg"
 import Alert from "../../component/Alert";
+import LoaderSpin from "../../component/loader";
 
 export default function OnBoarding() {
-    const [isRefreshIbkr, setIsRefreshIbkr] = useState(false)
+    const [isRefreshIbkr, setIsRefreshIbkr] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [platform, setPlatform] = useState({
         ibkr: false,
         active_subscription: false,
@@ -22,19 +24,29 @@ export default function OnBoarding() {
         metamask_address: ''
     })
     useEffect(() => {
-        const params = localStorage.user ? JSON.parse(localStorage.user) : {}
-        setPlatform({
-            active_subscription: params.active_subscription,
-            ibkr: params.ibkr_authentication,
-            metamask_address: params.metamask_address,
-        })
+        getPlatformConnected()
     }, [])
+    const getPlatformConnected = () => {
+        Fetch('ibkr/onboarding/user-onboarding').then((res: any) => {
+            if (res.status) {
+                setPlatform((prev) => ({ 
+                    ...prev,
+                    ibkr: res.data?.authenticated,
+                    active_subscription: res.data?.active_subscription,
+                    metamask_address: res.data?.metamask_address
+                }))
+                setIsRefreshIbkr(false)
+            }
+        })
+    }
     const getIbkrConnected = () => {
         Fetch('ibkr/auth-status/').then((res: any) => {
             if (res.status) {
                 if (res?.data?.authenticated) {
                     setPlatform((prev) => ({ ...prev, ibkr: res?.data?.authenticated }))
-                } else {
+                    setPlatformError((prev) => ({ ...prev, ibkr: '' }))
+                    setIsLoading(false)
+                } else if (res?.data?.authenticated === false) {
                     setPlatformError((prev) => ({ ...prev, ibkr: 'Login through IBKR client portal gateway to proceed.' }))
                 }
             } else {
@@ -60,7 +72,19 @@ export default function OnBoarding() {
     const linkIbkrAccount = () => {
         setIsRefreshIbkr(true)
         openFullWidthWindow('https://client.fntx.ai/sso/Login?forwardTo=22&RL=1&ip2loc=US')
+        console.log(platform.ibkr);
+        
+        const interval = setInterval(() => {
+            if(!platform.ibkr){
+                setIsLoading(true)
+                getIbkrConnected()
+            }else {
+                clearInterval(interval);
+            }
+        }, 2000)
+        return () => clearInterval(interval);
     }
+    console.log(platform.ibkr);
     return <BaseLayout>
         <section className="container onboarding">
             <h3 className="mb-0">Platform Requirements</h3>
@@ -71,17 +95,20 @@ export default function OnBoarding() {
                             <Alert type='danger' label={platformError?.ibkr} />
                             <div className="d-flex align-items-center justify-content-between">
                                 <IBKRMarginIco />
-                                {isRefreshIbkr && !platform.ibkr && <Button type="button" onClick={getIbkrConnected} className="btn" title="Refresh IBKR Account">
-                                    <img src={RefreshIco} alt='refresh' />
-                                </Button>}
+                                {
+                                    isLoading ?
+                                        <LoaderSpin />
+                                        :
+                                        isRefreshIbkr ?null: platform.ibkr && <img src={TickIco} alt='refresh' />
+                                }
                             </div>
                             <h6>IBKR Margin Account</h6>
                             <p className="mt-2">An IBKR margin account is required before accessing the platform.</p>
                         </div>
-                        {platform.ibkr ? <CardLinkConfirm message='IBKR Account Connected' /> : <div className="d-flex mt-2">
+                        {isLoading === false ? isRefreshIbkr ?null: platform.ibkr ? <CardLinkConfirm message='IBKR Account Connected' /> : <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2" onClick={linkIbkrAccount}>Link Account</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1" onClick={() => openFullWidthWindow('https://www.interactivebrokers.co.in/Universal/Application')}>Create Account</Button>
-                        </div>}
+                        </div> : null}
                     </Card>
                 </div>
                 <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">

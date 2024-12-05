@@ -25,14 +25,18 @@ const inputValidation = (data: any, property: any) => {
     data[property] === null ||
     data[property] === undefined ||
     !data[property].toString().trim().length
-  )
-    errors[property] = property.startsWith("select.")
-      ? `Please select ${property.split(".")[1].replace(/_/g, " ")}.`
-      : `Please ${property.includes("photo") ? "upload" : "enter"} ${
-          property === "email"
-            ? "email address."
-            : property.replace(/_/g, " ") + "."
+  ){
+    if (property === "verify_password") {
+      errors[property] = 'Please verify your password.'
+    } else {
+      errors[property] = property.startsWith("select.")
+        ? `Please select ${property.split(".")[1].replace(/_/g, " ")}.`
+        : `Please ${property.includes("photo") ? "upload" : "enter"} ${property === "email"
+          ? "email address."
+          : property.replace(/_/g, " ") + "."
         }`;
+    }
+  }
   if (property === "email" && data[property]?.length) {
     if (ValidateEmailAddress(data[property])) {
       errors[property] = ValidateEmailAddress(data[property]);
@@ -54,12 +58,12 @@ const inputValidation = (data: any, property: any) => {
       errors[property] = passwordCheck(data[property]);
     }
   }
-  if (property === "confirm_password" && data["confirm_password"]?.length) {
-    if (data["confirm_password"] !== data["password"]) {
-      errors["confirm_password"] =
+  if (property === "verify_password" && data["verify_password"]?.length) {
+    if (data["verify_password"] !== data["password"]) {
+      errors["verify_password"] =
         "Password do not match. Please make sure they match.";
     } else {
-      delete errors["confirm_password"];
+      delete errors["verify_password"];
     }
   }
   if (property === "confirm_new_password") {
@@ -179,7 +183,7 @@ export const FormC = ({
         var stateparam: any = {
           ...state,
         };
-        if (name === "confirm_password") {
+        if (name === "verify_password") {
           stateparam = {
             ...stateparam,
             password: stateParam?.password,

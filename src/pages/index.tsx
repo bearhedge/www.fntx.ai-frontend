@@ -12,7 +12,7 @@ export default function Home() {
                 <div className="col-md-6 mb-4 mmb-md-0">
                     <h1 className="mb-0">Systematic Options Trading</h1>
                     <p className="py-4">Applying a process-driven framework to generate superior risk-adjusted returns.</p>
-                    {!isLogin && <Link to='/register' className="btn btn-primary btn-baselay">Register</Link>}
+                    {!isLogin ? <Link to='/register' className="btn btn-primary btn-baselay">Register</Link>:<Link to='/onboarding' className="btn btn-primary btn-baselay">Platform Requirement</Link>}
                 </div>
                 <div className="col-md-6 text-right">
                     <img src={HomeHero} className='img-fluid'/>

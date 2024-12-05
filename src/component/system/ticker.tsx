@@ -1,5 +1,6 @@
 import SelectionComponent from "../buttonSeelct";
 import Card from "../Card";
+import Button from "../form/button";
 
 export default function Ticker() {
     return <div className="system-form">
@@ -39,6 +40,7 @@ export default function Ticker() {
                     <SelectionComponent type='checkbox' label='IBIT' value='IBIT' id='IBIT' />
                 </div>
             </div>
+            <Button className="btn btn-primary btn">Next Step</Button>
         </Card>
     </div>
 }

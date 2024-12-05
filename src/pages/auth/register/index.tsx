@@ -17,12 +17,12 @@ export default function Register() {
         email: '',
         password: '',
         username: '',
-        confirm_password: ''
+        verify_password: ''
     })
     const onSubmit = () => {
         setIsLoading(true)
         let params: any = { ...state }
-        delete params.confirm_password
+        delete params.verify_password
         Fetch('signup/', params, { method: 'post' }).then((res: any) => {
             if (res.status) {
                 setIsSubmit(true)
@@ -101,8 +101,8 @@ export default function Register() {
                             <Input
                                 onChange={onChange}
                                 placeholder='******'
-                                errorText={errors.confirm_password}
-                                name='confirm_password'
+                                errorText={errors.verify_password}
+                                name='verify_password'
                                 label='Verify Password'
                                 type='password'
                             />
@@ -110,7 +110,7 @@ export default function Register() {
                         </form>
                         <p className="have-account text-left mt-4 mb-0">By signing up, you agree to our <Link to='/register'>Terms & Conditions.</Link></p>
                         <hr />
-                        <Button type="submit" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24} />Sign-in with Google</Button>
+                        {/* <Button type="submit" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24} />Sign-in with Google</Button> */}
                         <p className="have-account text-center mt-4 mb-0">Already have an account? <Link to='/signin'>Sign-in</Link></p>
                     </>
             }

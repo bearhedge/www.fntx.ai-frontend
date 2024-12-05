@@ -4,6 +4,7 @@ import AuthImgOne from '@assets/images/auth-img.png';
 import AuthImgSecond from '@assets/images/auth-img-1.png';
 import AuthImgThrid from '@assets/images/auth-img-2.png';
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
 
 interface Iprops {
     children: ReactNode
@@ -42,7 +43,9 @@ export default function AuthLayout({ children}: Iprops) {
     return <div className="row auth align-items-center m-0">
         <div className="col-md-5 col-12" ref={colRef}>
             <div className="text-center mb-5">
+                <Link to='/'>
                 <img src={Logo} alt='logo' className="auth-logo" />
+                </Link>
             </div>
             {children}
         </div>

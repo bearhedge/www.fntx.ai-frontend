@@ -8,6 +8,7 @@
     h3{
         font-size: 32px;
         font-weight: 600;
+        line-height: 32px;
         color: var(--text-color);
     }
     &-logo{
@@ -52,6 +53,7 @@
     .have-account{
         font-size: 14px;
         line-height: 20px;
+        color: #404040;
         a{
             color: var(--text-color);
             text-decoration: none;

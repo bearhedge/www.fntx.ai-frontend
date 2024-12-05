@@ -7,9 +7,11 @@ import AppLayout from "../../layout/appLayout";
 export default function System() {
     const [tab, setTab] = useState(0)
     return <AppLayout>
-        <Card>
-            <Tabs tab={tab} handleTab={setTab} />
-        </Card>
-        <Ticker />
+        <div className="system">
+            <Card>
+                <Tabs tab={tab} handleTab={setTab} />
+            </Card>
+            {tab === 0 && <Ticker />}
+        </div>
     </AppLayout>
 }

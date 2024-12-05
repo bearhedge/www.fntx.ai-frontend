@@ -17,7 +17,7 @@ export default function ResetPassword() {
         password: '',
         otp: '',
         email: '',
-        confirm_password: ''
+        verify_password: ''
     })
     useEffect(() => {
         if (location.state) {
@@ -30,7 +30,7 @@ export default function ResetPassword() {
     const onSubmit = () => {
         setIsLoading(true)
         const params: any = { ...state }
-        delete params.confirm_password
+        delete params.verify_password
         Fetch('accounts/reset-password/', params, { method: 'post' }).then((res: any) => {
             if (res.status) {
                 setIsSubmit(true)
@@ -83,11 +83,11 @@ export default function ResetPassword() {
                                 type='password'
                             />
                             <Input
-                                errorText={errors.confirm_password || errors.message}
+                                errorText={errors.verify_password || errors.message}
                                 onChange={onChange}
                                 placeholder='******'
                                 label='Verify Password'
-                                name='confirm_password'
+                                name='verify_password'
                                 type='password'
                             />
                             <Button disabled={isLoading} isLoading={isLoading} type="submit" className="btn btn-primary w-100 mt-4">Reset Password</Button>

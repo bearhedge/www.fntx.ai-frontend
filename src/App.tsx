@@ -35,7 +35,7 @@ const routes: RouteType[] = [
   { path: '/system', component: System, type: 'public' },
   { path: '/signin', component: Login, type: 'auth' },
   { path: '/register', component: Register, type: 'auth' },
-  { path: '/forgot', component: ForgotPassword, type: 'auth' },
+  { path: '/forgot-password', component: ForgotPassword, type: 'auth' },
   { path: '/reset-password', component: ResetPassword, type: 'auth' },
   { path: '/onboarding', component: OnBoarding, type: 'onboarding' },
 ];
