@@ -4,7 +4,7 @@ import { FormC } from "../../../common/api/validation";
 import Button from "../../../component/form/button";
 import Input from "../../../component/form/input";
 import AuthLayout from "../../../layout/authLayout";
-import SocialGoogle from '@assets/svg/social_google.svg'
+// import SocialGoogle from '@assets/svg/social_google.svg'
 import Fetch from "../../../common/api/fetch";
 import { arrayString } from "../../../lib/utilits";
 import { useDispatch } from "react-redux";
