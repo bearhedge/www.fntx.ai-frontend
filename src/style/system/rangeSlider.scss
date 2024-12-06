@@ -1,0 +1,40 @@
+$slider-height: 4px;
+$slider-thumb-size: 12px;
+$marker-height: 4px;
+$marker-width: 1px;
+$ticks-color: #aaa;
+$background-color: #ddd;
+$circle-color: #0000001a;
+
+.slider-container {
+  position: relative;
+
+  .range-slider {
+    -webkit-appearance: none;
+    height: $slider-height;
+    background: $background-color;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: $slider-thumb-size;
+      height: $slider-thumb-size;
+      border: 1px solid $circle-color;
+      background: var(--white);
+      box-shadow: 0px 2px 4px 0px $circle-color;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+
+  .slider-markers {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+
+    .marker {
+      width: $marker-width;
+      height: $marker-height;
+      background-color: $ticks-color;
+    }
+  }
+}
