@@ -26,6 +26,7 @@ const putsSection = [
   [121.36, "00", "0.00", "-", 10],
   [121.36, "00", "0.00", "-", 10],
   [121.36, "00", "0.00", "-", 10],
+  
 ];
 
 export default function Contracts({ handleTabChange }: SystemPagesProps) {
