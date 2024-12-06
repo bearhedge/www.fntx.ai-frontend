@@ -1,10 +1,11 @@
+import { SystemPagesProps } from "../../common/type";
 import RadioCheckboxOption from "../buttonSeelct";
 import Card from "../Card";
 import Button from "../form/button";
 import CircularButton from "./CircularButton";
 import RangeSlider from "./RangeSlider";
 
-export default function Timing() {
+export default function Timing({ handleTabChange }: SystemPagesProps) {
   return (
     <div className="system-form">
       <Card className="mb-4">
@@ -115,7 +116,10 @@ export default function Timing() {
             <CircularButton text={"D"} />
           </div>
         </div>
-        <Button className="btn btn-primary btn-next-step mx-auto">
+        <Button
+          className="btn btn-primary btn-next-step mx-auto mt-4"
+          onClick={handleTabChange}
+        >
           Next Step
         </Button>
       </Card>

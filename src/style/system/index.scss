@@ -18,8 +18,52 @@
   font-weight: 400;
   font-size: 56.4px;
   cursor: pointer;
+  box-shadow: 2.28px 2.28px 22.78px 0px #0000004d;
 }
 
 .h-100 {
   height: 100%;
+}
+
+.input-card {
+  .form-input {
+    margin-bottom: 0;
+  }
+}
+
+.stock-table {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 14px;
+    color: var(--menu-tex-color);
+    text-align: center;
+
+    gap: 16px;
+
+    th {
+      background: none;
+      padding-bottom: 12px;
+    }
+
+    td {
+      font-size: 12px;
+      background: var(--white);
+      padding: 6px;
+    }
+
+    .grey-bg {
+      tr {
+        td {
+          background-color: #ebebeb;
+        }
+      }
+    }
+
+    .strike-bg {
+      background-color: var(--bgColor);
+    }
+  }
 }

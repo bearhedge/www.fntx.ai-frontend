@@ -1,9 +1,10 @@
+import { SystemPagesProps } from "../../common/type";
 import RadioCheckboxOption from "../buttonSeelct";
 import Card from "../Card";
 import Button from "../form/button";
-import Input from "../form/input";
+import InputCard from "./InputCard";
 
-export default function Risk() {
+export default function Risk({ handleTabChange }: SystemPagesProps) {
   return (
     <div className="system-form">
       <div className="row">
@@ -72,6 +73,7 @@ export default function Risk() {
                   label="75%"
                   value="75%"
                   id="75%"
+                  className="bg-white"
                 />
               </div>
               <div className="col-sm-6 col-12">
@@ -88,31 +90,34 @@ export default function Risk() {
                   label="23"
                   value="23"
                   id="23"
+                  className="bg-white"
                 />
               </div>
 
               <div className="col-12">
-                <Button className="btn btn-primary btn-next-step w-100">
+                <Button
+                  className="btn btn-primary btn-next-step w-100"
+                  onClick={handleTabChange}
+                >
                   Next Step
                 </Button>
               </div>
+
+              <label className="fw-600 mt-2">
+                Note:{" "}
+                <span className="fw-normal">
+                  The maximum number of contracts to be sold the SPY asset Would
+                  be thirty contracts
+                </span>
+              </label>
             </div>
           </div>
           <div className="col-sm-6 col-12 mb-4">
-            <Card className="h-100">
-              <div className="flex-grow-1">
-                <div className="col-sm-3 col-6"></div>
-                <div className="col-sm-9 col-6">
-                  <label htmlFor="">
-                    Selecting a 60% confidence level indicates, that for a cash
-                    position of HKD 100,000.00, the estimated exposure will be
-                    18 contracts.
-                  </label>
-                </div>
-              </div>
-
-              <Input placeholder="Type your question here..." />
-            </Card>
+            <InputCard
+              text={
+                "Selecting a 60% confidence level indicates, that for a cash position of HKD 100,000.00, the estimated exposure will be 18 contracts."
+              }
+            />
           </div>
         </div>
       </Card>

@@ -1,8 +1,9 @@
+import { SystemPagesProps } from "../../common/type";
 import RadioCheckboxOption from "../buttonSeelct";
 import Card from "../Card";
 import Button from "../form/button";
 
-export default function Ticker() {
+export default function Ticker({ handleTabChange }: SystemPagesProps) {
   return (
     <div className="system-form">
       <Card className="mb-4">
@@ -84,7 +85,10 @@ export default function Ticker() {
             />
           </div>
         </div>
-        <Button className="btn btn-primary btn-next-step mx-auto">
+        <Button
+          className="btn btn-primary btn-next-step mx-auto mt-4"
+          onClick={handleTabChange}
+        >
           Next Step
         </Button>
       </Card>

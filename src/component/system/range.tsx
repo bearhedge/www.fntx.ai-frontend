@@ -1,9 +1,10 @@
+import { SystemPagesProps } from "../../common/type";
 import RadioCheckboxOption from "../buttonSeelct";
 import Card from "../Card";
 import Button from "../form/button";
-import Input from "../form/input";
+import InputCard from "./InputCard";
 
-export default function Range() {
+export default function Range({ handleTabChange }: SystemPagesProps) {
   return (
     <div className="system-form">
       <div className="row">
@@ -208,6 +209,7 @@ export default function Range() {
                   label="1 Day"
                   value="1 Day"
                   id="1 Day"
+                  className="bg-white"
                 />
               </div>
               <div className="col-sm-6 col-12">
@@ -224,6 +226,7 @@ export default function Range() {
                   label="2"
                   value="2"
                   id="2"
+                  className="bg-white"
                 />
               </div>
               <div className="col-sm-6 col-12">
@@ -240,29 +243,25 @@ export default function Range() {
                   label="2 days"
                   value="2 days"
                   id="2 days"
+                  className="bg-white"
                 />
               </div>
               <div className="col-12">
-                <Button className="btn btn-primary btn-next-step w-100">
+                <Button
+                  className="btn btn-primary btn-next-step w-100"
+                  onClick={handleTabChange}
+                >
                   Next Step
                 </Button>
               </div>
             </div>
           </div>
           <div className="col-sm-6 col-12 mb-4">
-            <Card className="h-100">
-              <div className="flex-grow-1">
-                <div className="col-sm-3 col-6"></div>
-                <div className="col-sm-9 col-6">
-                  <label htmlFor="">
-                    According to the previous 2 time steps under the 1-day
-                    timeframe, the upper bound is at __________ and the lower
-                    bound is at __________.
-                  </label>
-                </div>
-              </div>
-              <Input placeholder="Type your question here..." />
-            </Card>
+            <InputCard
+              text={
+                " According to the previous 2 time steps under the 1-day timeframe, the upper bound is at __________ and the lower bound is at __________."
+              }
+            />
           </div>
         </div>
       </Card>
