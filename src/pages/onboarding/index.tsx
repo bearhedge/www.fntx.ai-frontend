@@ -3,8 +3,8 @@ import Fetch from "../../common/api/fetch";
 import Card from "../../component/Card";
 import Button from "../../component/form/button";
 import BaseLayout from "../../layout/baseLayout";
-import { IBKRMarginIco, NFTMarketplaceIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco, ArrowIco } from "../../lib/icons";
-import { arrayString } from "../../lib/utilits";
+import { IBKRMarginIco, NFTMarketplaceIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco, ArrowIco, TickGreenIcon } from "../../lib/icons";
+import { arrayString, connectMetaMask } from "../../lib/utilits";
 import TickDarkIco from "@assets/svg/tick-dark.svg"
 import TickIco from "@assets/svg/tick.svg"
 import Alert from "../../component/Alert";
@@ -29,7 +29,7 @@ export default function OnBoarding() {
     const getPlatformConnected = () => {
         Fetch('ibkr/onboarding/user-onboarding').then((res: any) => {
             if (res.status) {
-                setPlatform((prev) => ({ 
+                setPlatform((prev) => ({
                     ...prev,
                     ibkr: res.data?.authenticated,
                     active_subscription: res.data?.active_subscription,
@@ -40,12 +40,12 @@ export default function OnBoarding() {
         })
     }
     const getIbkrConnected = () => {
-        if(platform.ibkr){
+        if (platform.ibkr) {
             return;
         }
         Fetch('ibkr/auth-status/').then((res: any) => {
             if (res.status) {
-    console.log(platform.ibkr,res?.data);
+                console.log(platform.ibkr, res?.data);
                 if (res?.data?.authenticated) {
                     setPlatform((prev) => ({ ...prev, ibkr: res?.data?.authenticated }))
                     setPlatformError((prev) => ({ ...prev, ibkr: '' }))
@@ -76,7 +76,7 @@ export default function OnBoarding() {
     };
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
-    
+
         if (isRefreshIbkr) {
             interval = setInterval(() => {
                 if (!platform.ibkr) {
@@ -87,7 +87,7 @@ export default function OnBoarding() {
                 }
             }, 2000);
         }
-    
+
         return () => {
             if (interval) clearInterval(interval);
         };
@@ -96,7 +96,42 @@ export default function OnBoarding() {
         setIsRefreshIbkr(true)
         openFullWidthWindow('https://client.fntx.ai/sso/Login?forwardTo=22&RL=1&ip2loc=US')
     }
-    console.log(platform.ibkr);
+    const addMetaMask = (id: string) => {
+
+    }
+    const handleConnectWallet = async () => {
+        try {
+            const account = await connectMetaMask();
+            console.log("Connected account:", account);
+            if (account?.account) {
+                addMetaMask(account?.account)
+            }
+        } catch (error) {
+            console.error("Failed to connect:", error);
+        }
+    }
+    // useEffect(() => {
+    //     const ethereum = (window as any).ethereum;
+    //     // Function to handle account changes
+    //     const handleAccountsChanged = (accounts:any) => {
+    //         if (accounts.length === 0) {
+    //             console.log("Please connect to MetaMask");
+    //         } else {
+    //             console.log("Account changed to:", accounts[0]);
+    //         }
+    //     };
+
+    //     // Get the initial account
+    //     ethereum.request({ method: 'eth_accounts' }).then(handleAccountsChanged).catch(console.error);
+
+    //     // Listen for account changes
+    //     ethereum.on('chainChanged', handleAccountsChanged);
+
+    //     // Cleanup listener on unmount
+    //     return () => {
+    //         ethereum.removeListener('accountsChanged', handleAccountsChanged);
+    //     };
+    // }, [window])
     return <BaseLayout>
         <section className="container onboarding">
             <h3 className="mb-0">Platform Requirements</h3>
@@ -111,7 +146,7 @@ export default function OnBoarding() {
                                     isLoading ?
                                         <LoaderSpin />
                                         :
-                                        isRefreshIbkr ?null: platform.ibkr && <img src={TickIco} alt='refresh' />
+                                        isRefreshIbkr ? null : platform.ibkr && <TickGreenIcon className={'onboarding-confirm-tick'} />
                                 }
                             </div>
                             <h6>IBKR Margin Account</h6>
@@ -157,7 +192,7 @@ export default function OnBoarding() {
                             <p className="mt-2">Connect a decentralised wallet to enable secure and efficient transactions on the platform.</p>
                         </div>
                         <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-2">Connect Now</Button>
+                            <Button className="btn btn-primary w-100 me-2" onClick={handleConnectWallet}>Connect Now</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
                         </div>
                     </Card>

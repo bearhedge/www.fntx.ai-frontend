@@ -1,6 +1,10 @@
 .onboarding {
     // margin-top: 20px;
     padding-top: 60px;
+    &-confirm-tick{
+        width: 40px;
+        height: 40px;
+    }
     .col-12{
         padding: 0 12px;
     }
@@ -8,6 +12,7 @@
         font-size: 40px;
         font-weight: 600;
         line-height: 30px;
+        color: var(--text-color);
         @media only screen and (max-width: 500px) {
             line-height: 50px;
         }
