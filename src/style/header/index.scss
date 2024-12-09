@@ -4,14 +4,18 @@
     align-items: center;
     justify-content: space-between;
     padding: 24px 20px;
-    &-app{
-            font-size: 16px;
-            line-height: 20px;
-        label{
+
+    &-app {
+        font-size: 16px;
+        line-height: 20px;
+        margin-top: 14px;
+
+        label {
             font-weight: 600;
             margin-right: 5px;
         }
     }
+
     &-base {
         .btn {
             min-width: 215px;
@@ -22,15 +26,18 @@
         }
     }
 }
-.footer{
+
+.footer {
     border-top: 1px solid var(--border-color);
     padding: 16px 0;
-    p{
+
+    p {
         margin: 0;
         font-size: 14px;
         line-height: 20px;
     }
 }
+
 .home {
     min-height: calc(100vh - 190px);
     display: flex;
@@ -63,6 +70,7 @@
         font-size: 32px;
         line-height: 40px;
         margin: 0;
+
         @media only screen and (max-width: 998px) {
             font-size: 20px;
             line-height: 35px;

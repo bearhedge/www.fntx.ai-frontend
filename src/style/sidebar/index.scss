@@ -6,12 +6,21 @@
         font-size: 22px;
         color: var(--text-color);
     }
-    .card{
-        padding: 15px;
-        height: calc(100vh - 20px);
-        overflow: auto;
+
+    .card {
+        padding: 16px;
+        // height: calc(100vh - 20px);
+        // overflow: auto;
     }
+
     &__content {
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        margin: 20px 0px 3px;
+        padding-top: 20px;
+        height: calc(100vh - 330px);
+        overflow: auto;
+
         &__label {
             text-transform: uppercase;
             color: #6f6f6f;
@@ -20,19 +29,9 @@
         }
 
         &__item {
-            margin-bottom: 10px;
-            &-noLink{
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                width: 100%;
-                color: var(--menu-tex-color);
-                padding: 16px 10px;
-                border-radius: 5px;
-                font-size: 16px;
-                line-height: 20px;      
-            }
-            a {
+            margin-bottom: 2px;
+
+            &-noLink {
                 text-decoration: none;
                 display: flex;
                 align-items: center;
@@ -42,8 +41,23 @@
                 border-radius: 5px;
                 font-size: 16px;
                 line-height: 20px;
-                
-                &.active {
+            }
+
+            a,
+            &-user,
+            &-btn .btn {
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                width: 100%;
+                color: var(--menu-tex-color);
+                padding: 16px 10px;
+                border-radius: 5px;
+                font-size: 16px;
+                line-height: 20px;
+
+                &.active,
+                &:hover {
                     color: var(--white);
                     background-color: var(--menu-bg);
 
@@ -54,6 +68,44 @@
                             }
                         }
                     }
+                }
+            }
+
+            &-btn .btn {
+                cursor: pointer;
+
+                &:hover {
+                    background-color: transparent;
+                    color: var(--menu-tex-color);
+                }
+
+                label {
+                    cursor: pointer;
+                }
+            }
+
+            &-user {
+                color: var(--text-color);
+
+                &:hover {
+                    background-color: transparent;
+                    color: var(--text-color);
+                }
+
+                span {
+                    width: 30px !important;
+                    height: 30px !important;
+
+                    img {
+                        width: 30px;
+                        height: 30px;
+                        object-fit: cover;
+                        border-radius: 50%;
+                    }
+                }
+
+                label {
+                    margin-left: 8px;
                 }
             }
 

@@ -1,10 +1,11 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
-@import './font.scss';
-@import './base/base.scss';
-@import './header/index.scss';
-@import './auth/index.scss';
-@import './onboarding/index.scss';
-@import './sidebar/index.scss';
+@import "./font.scss";
+@import "./base/base.scss";
+@import "./header/index.scss";
+@import "./auth/index.scss";
+@import "./onboarding/index.scss";
+@import "./sidebar/index.scss";
+@import "./system/index.scss";
 body {
   background-color: var(--bgColor);
 }
@@ -15,7 +16,6 @@ body {
   padding: 10px;
   &__wrapper {
     &__content {
-      padding: 20px;
       min-height: calc(100vh - 72px);
     }
   }
@@ -149,5 +149,4 @@ body {
   input[type="checkbox"]:checked {
     background-color: var(--text-color);
   }
-
 }

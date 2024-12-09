@@ -1,0 +1,110 @@
+@import "./rangeSlider.scss";
+.btn-next-step {
+  width: 400px;
+  height: 50px;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.round-button {
+  width: 126px;
+  height: 126px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  border: 2.45px solid var(--text-color);
+  color: var(--text-color);
+  font-weight: 400;
+  font-size: 56.4px;
+  cursor: pointer;
+  box-shadow: 2.28px 2.28px 22.78px 0px #0000004d;
+}
+.system{
+  &-form{
+    .note{
+      font-size: 14px;
+      color: var(--text-color);
+    }
+  }
+}
+.h-100 {
+  height: 100%;
+}
+
+.input-card {
+  .form-input {
+    margin-bottom: 0;
+  }
+  .btn{
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.stock-table {
+  label{
+    font-size: 18px;
+    line-height: 22px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 14px;
+    color: var(--menu-tex-color);
+    text-align: center;
+    tbody{
+      tr{
+        &:first-child{
+          border-radius: 8px;
+          td{
+            &:first-child{
+              border-radius: 8px 0 0 0;
+            }
+            &:last-child{
+              border-radius: 0px 8px 0 0;
+            }
+          }
+        }
+        &:last-child{
+          border-radius: 8px;
+          td{
+            &:first-child{
+              border-radius: 0 0 0 8px;
+            }
+            &:last-child{
+              border-radius: 0px 0 8px 0;
+            }
+          }
+        }
+      }
+    }
+    
+    th {
+      background: none;
+      padding-bottom: 12px;
+    }
+
+    td {
+      font-size: 12px;
+      background: var(--white);
+      padding: 6px;
+    }
+
+    .grey-bg {
+      tr {
+        td {
+          background-color: #ebebeb;
+        }
+      }
+    }
+
+    .strike-bg {
+      background-color: var(--bgColor);
+    }
+  }
+}
