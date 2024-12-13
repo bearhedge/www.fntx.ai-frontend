@@ -1,9 +1,9 @@
-import { SystemPagesProps } from "../../common/type";
-import RadioCheckboxOption from "../buttonSeelct";
-import Card from "../Card";
-import Button from "../form/button";
-import CircularButton from "./CircularButton";
-import RangeSlider from "./RangeSlider";
+import { SystemPagesProps } from "../../../common/type";
+import RadioCheckboxOption from "../../buttonSeelct";
+import Card from "../../Card";
+import Button from "../../form/button";
+import CircularButton from "./../CircularButton";
+import RangeSlider from "./../RangeSlider";
 
 export default function Timing({ handleTabChange }: SystemPagesProps) {
   return (
@@ -72,7 +72,7 @@ export default function Timing({ handleTabChange }: SystemPagesProps) {
         </div>
       </Card>
       <Card>
-        <RangeSlider />
+        <RangeSlider count={8}/>
         <div className="row justify-content-center mt-5">
           <div className="col-sm-6 col-12">
             <div className="row">

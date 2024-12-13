@@ -1,8 +1,8 @@
-import { SystemPagesProps } from "../../common/type";
-import RadioCheckboxOption from "../buttonSeelct";
-import Card from "../Card";
-import Button from "../form/button";
-import StockTable from "./StockTable";
+import { SystemPagesProps } from "../../../common/type";
+import RadioCheckboxOption from "../../buttonSeelct";
+import Card from "../../Card";
+import Button from "../../form/button";
+import StockTable from "../StockTable";
 
 const callsSection = [
   ["-", "-", "-", "-", "-"],

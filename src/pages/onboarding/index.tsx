@@ -6,15 +6,36 @@ import BaseLayout from "../../layout/baseLayout";
 import { IBKRMarginIco, NFTMarketplaceIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco, ArrowIco, TickGreenIcon } from "../../lib/icons";
 import { arrayString, connectMetaMask } from "../../lib/utilits";
 import TickDarkIco from "@assets/svg/tick-dark.svg"
-import TickIco from "@assets/svg/tick.svg"
 import Alert from "../../component/Alert";
 import LoaderSpin from "../../component/loader";
-
+import DialogConfirm from "../../component/modal";
+let modalContent: any = {
+    1: {
+        title: 'Interactive Brokers Account not connected',
+        des: 'Unable to detect a connected IBKR account. Please log in and try again.'
+    },
+    2: {
+        title: 'Connect Your DeFi Wallet with MetaMask',
+        des: "To securely link your DeFi wallet, you'll need the MetaMask extension. It's a quick and easy way to enhance your connection.",
+        des1: 'After installing MetaMask, refresh the page to enable full functionality.'
+    },
+    3: {
+        title: '',
+        des: ''
+    }
+}
 export default function OnBoarding() {
-    const [isRefreshIbkr, setIsRefreshIbkr] = useState(true)
+    const [isRefreshIbkr, setIsRefreshIbkr] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingMeta, setIsLoadingMeta] = useState(false)
+    const [isRefreshMeta, setIsRefreshMeta] = useState(false)
+    const [isOpen, setIsOpen] = useState(0)
+    const [isOneTimeModal, setIsOneTimeModal] = useState(false)
+    const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(false);
+    
     const [platform, setPlatform] = useState({
         ibkr: false,
+        id: '',
         active_subscription: false,
         metamask_address: false
     })
@@ -31,12 +52,14 @@ export default function OnBoarding() {
             if (res.status) {
                 setPlatform((prev) => ({
                     ...prev,
+                    id: res.data?.id,
                     ibkr: res.data?.authenticated,
                     active_subscription: res.data?.active_subscription,
                     metamask_address: res.data?.metamask_address
                 }))
             }
             setIsRefreshIbkr(false)
+            setIsRefreshMeta(false)
         })
     }
     const getIbkrConnected = () => {
@@ -52,14 +75,24 @@ export default function OnBoarding() {
                     setIsLoading(false)
                     setIsRefreshIbkr(false)
                 } else if (res?.data?.authenticated === false) {
-                    setPlatformError((prev) => ({ ...prev, ibkr: 'Login through IBKR client portal gateway to proceed.' }))
+                    setIsOpen(1)
+                    // setPlatformError((prev) => ({ ...prev, ibkr: 'Login through IBKR client portal gateway to proceed.' }))
                 }
             } else {
                 let resErr = arrayString(res);
-                setPlatformError((prev) => ({ ...prev, ibkr: resErr.message }))
+                console.log(resErr.message, isOneTimeModal);
+
+                if (resErr.message && isOneTimeModal) {
+                    modalContent[1].des = resErr.message
+                    setIsOpen(1)
+                } else {
+                    // setIsOneTimeModal(false)
+                }
             }
         })
     }
+    console.log(isOneTimeModal, 'isOneTimeModal===');
+
     const openFullWidthWindow = (url: string) => {
         if (!url) {
             return <></>
@@ -93,23 +126,51 @@ export default function OnBoarding() {
         };
     }, [isRefreshIbkr, platform.ibkr]);
     const linkIbkrAccount = () => {
+        setIsOneTimeModal(true)
         setIsRefreshIbkr(true)
         openFullWidthWindow('https://client.fntx.ai/sso/Login?forwardTo=22&RL=1&ip2loc=US')
     }
     const addMetaMask = (id: string) => {
-
+        setIsLoadingMeta(true);
+        Fetch(`ibkr/onboarding/${platform.id}/`, { metamask_address: id }, { method: 'patch' }).then(res => {
+            if (res.status) {
+                setPlatform((prev) => ({ ...prev, metamask_address: true }))
+                setIsLoadingMeta(false)
+                setIsRefreshMeta(false)
+            } else {
+                let resErr = arrayString(res);
+                if (resErr.message) {
+                    modalContent[3].des = resErr.message
+                    setIsOpen(3)
+                }
+            }
+        })
     }
     const handleConnectWallet = async () => {
         try {
             const account = await connectMetaMask();
+            setIsRefreshMeta(true)
             console.log("Connected account:", account);
             if (account?.account) {
+                setIsRefreshMeta(true)
                 addMetaMask(account?.account)
+            } else {
+                setIsRefreshMeta(false)
+                setIsOneTimeModal(true)
+                setIsOpen(2)
             }
         } catch (error) {
             console.error("Failed to connect:", error);
         }
     }
+    useEffect(() => {
+        const ethereum = (window as any).ethereum;
+        if (!ethereum) {
+            setIsMetaMaskInstalled(true);
+        } else {
+            setIsMetaMaskInstalled(false);
+        }
+    }, []);
     // useEffect(() => {
     //     const ethereum = (window as any).ethereum;
     //     // Function to handle account changes
@@ -131,7 +192,11 @@ export default function OnBoarding() {
     //     return () => {
     //         ethereum.removeListener('accountsChanged', handleAccountsChanged);
     //     };
-    // }, [window])
+    // }, [])
+    const handleClose = () => {
+        setIsOneTimeModal(false)
+        setIsOpen(0)
+    }
     return <BaseLayout>
         <section className="container onboarding">
             <h3 className="mb-0">Platform Requirements</h3>
@@ -187,14 +252,22 @@ export default function OnBoarding() {
                 <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">
                     <Card>
                         <div>
-                            <WalletIntegrationIco />
+                            <div className="d-flex align-items-center justify-content-between">
+                                <WalletIntegrationIco />
+                                {
+                                    isLoadingMeta ?
+                                        <LoaderSpin />
+                                        :
+                                        isRefreshMeta ? null : platform.metamask_address && !isMetaMaskInstalled && <TickGreenIcon className={'onboarding-confirm-tick'} />
+                                }
+                            </div>
                             <h6>DeFi Wallet Integration</h6>
                             <p className="mt-2">Connect a decentralised wallet to enable secure and efficient transactions on the platform.</p>
                         </div>
-                        <div className="d-flex mt-2">
+                        {isLoadingMeta === false? isRefreshMeta  ? null : platform.metamask_address && !isMetaMaskInstalled ? <CardLinkConfirm message='DeFi Wallet Connected' /> : <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2" onClick={handleConnectWallet}>Connect Now</Button>
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
-                        </div>
+                        </div> : null}
                     </Card>
                 </div>
                 <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">
@@ -216,6 +289,21 @@ export default function OnBoarding() {
                 <Button className="btn btn-primary me-1" disabled>Dashboard</Button>
             </div>
         </section>
+        <DialogConfirm isOpen={isOpen} title={modalContent[isOpen]?.title} des={modalContent[isOpen]?.des} des1={modalContent[isOpen]?.des1} onClose={handleClose}>
+            <div className="d-flex align-items-center mt-4">
+                {
+                    isOpen === 1 ?
+                        <>
+                            <Button type='button' className="btn  w-100 me-1" onClick={() => openFullWidthWindow('https://www.interactivebrokers.co.in/Universal/Application')}>Create Account</Button>
+                            <Button className="btn btn-primary w-100 me-2" onClick={linkIbkrAccount}>Link IBKR Account</Button>
+                        </>
+                        : isOpen === 2 ? <>
+                            <Button type='button' className="btn w-100 me-1 d-flex align-items-center justify-content-center" onClick={handleClose}>Install Later</Button>
+                            <Button className="btn btn-primary w-100 me-2" onClick={() => openFullWidthWindow('https://metamask.io/download/')}>Install Now</Button>
+                        </> : null
+                }
+            </div>
+        </DialogConfirm>
     </BaseLayout>
 }
 interface Iprops {

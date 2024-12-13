@@ -35,13 +35,17 @@ interface MetaMaskConnection {
   provider: ethers.BrowserProvider;
   signer: any;
   network: ethers.Network;
+  error?:string
+}
+interface MetaMaskErro{
+  error:string
+  account?:null
 }
 
-export const connectMetaMask = async (): Promise<MetaMaskConnection | null> => {
+export const connectMetaMask = async (): Promise<MetaMaskConnection | MetaMaskErro> => {
     const ethereum = (window as any).ethereum;
   if (!ethereum) {
-    alert("MetaMask is not installed. Please install it to use this app.");
-    return null;
+    return {error: "MetaMask is not installed. Please install it to use this app."};
   }
 
   try {
@@ -60,7 +64,8 @@ export const connectMetaMask = async (): Promise<MetaMaskConnection | null> => {
 
     return { account, provider, signer, network };
   } catch (error: any) {
-    console.error("Error connecting to MetaMask:", error.message || error);
-    throw new Error("Failed to connect to MetaMask");
+    // console.error("Error connecting to MetaMask:", error.message || error);
+    // throw new Error("Failed to connect to MetaMask");
+    return {error: "MetaMask is not installed. Please install it to use this app."};
   }
 };

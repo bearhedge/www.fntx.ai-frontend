@@ -2,9 +2,8 @@ $slider-height: 4px;
 $slider-thumb-size: 12px;
 $marker-height: 4px;
 $marker-width: 1px;
-$ticks-color: #aaa;
-$background-color: #ddd;
-$circle-color: #0000001a;
+$background-color: #DFDFDF;
+$circle-color: rgba(0, 0, 0, 0.1);
 
 .slider-container {
   position: relative;
@@ -13,6 +12,7 @@ $circle-color: #0000001a;
     -webkit-appearance: none;
     height: $slider-height;
     background: $background-color;
+    border-radius: 100px;     
 
     &::-webkit-slider-thumb {
       appearance: none;
@@ -29,12 +29,23 @@ $circle-color: #0000001a;
   .slider-markers {
     display: flex;
     justify-content: space-between;
-    padding: 0 5px;
 
     .marker {
-      width: $marker-width;
+      position: relative;
+      color: var(--menu-text-color);
+      font-size: 8px;
+      margin-top: 5px;
+      &:before{
+        content: '';
+        position: absolute;
+        border-radius: 1px;
+        top: -5px;
+        width: $marker-width;
       height: $marker-height;
-      background-color: $ticks-color;
+      background-color: var(--menu-text-color);
+      left: 50%;
+      transform: translateX(-50%);
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
-import { SystemPagesProps } from "../../common/type";
-import RadioCheckboxOption from "../buttonSeelct";
-import Card from "../Card";
-import Button from "../form/button";
+import { SystemPagesProps } from "../../../common/type";
+import RadioCheckboxOption from "../../buttonSeelct";
+import Card from "../../Card";
+import Button from "../../form/button";
 
 export default function Ticker({ handleTabChange }: SystemPagesProps) {
   return (

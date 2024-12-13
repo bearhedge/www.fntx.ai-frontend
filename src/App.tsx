@@ -33,6 +33,7 @@ const routes: RouteType[] = [
   { path: '/', component: Home, type: 'public' },
   { path: '/dashboard', component: Dashboard, type: 'public' },
   { path: '/system', component: System, type: 'public' },
+  { path: '/system/:id', component: System, type: 'public' },
   { path: '/signin', component: Login, type: 'auth' },
   { path: '/register', component: Register, type: 'auth' },
   { path: '/forgot-password', component: ForgotPassword, type: 'auth' },

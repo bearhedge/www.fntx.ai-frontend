@@ -1,8 +1,8 @@
-import { SystemPagesProps } from "../../common/type";
-import RadioCheckboxOption from "../buttonSeelct";
-import Card from "../Card";
-import Button from "../form/button";
-import InputCard from "./InputCard";
+import { SystemPagesProps } from "../../../common/type";
+import RadioCheckboxOption from "../../buttonSeelct";
+import Card from "../../Card";
+import Button from "../../form/button";
+import InputCard from "./../InputCard";
 
 export default function Range({ handleTabChange }: SystemPagesProps) {
   return (
