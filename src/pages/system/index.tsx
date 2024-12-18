@@ -22,8 +22,6 @@ export default function System() {
   }
   },[params.id])
   const handleTab =(val:number)=>{
-    console.log(val);
-    
     setTab(val)
     navigate(`/system/${val}`,{replace:true})
   }

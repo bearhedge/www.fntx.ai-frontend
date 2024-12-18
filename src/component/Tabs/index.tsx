@@ -11,7 +11,7 @@ export default function Tabs({ handleTab, tab }: Iprops) {
         <li
           key={key}
           className={`tabs__list ${tab === key ? "active" : tab > key ? "completed" :""}`}
-          onClick={() => handleTab(key)}
+          onClick={() => tab < key ? {}:handleTab(key)}
         >
           <span
             className={`tabs__list-dot ${tab === key ? "active" : ""}`}

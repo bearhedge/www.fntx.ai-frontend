@@ -32,7 +32,7 @@ export default function OnBoarding() {
     const [isOpen, setIsOpen] = useState(0)
     const [isOneTimeModal, setIsOneTimeModal] = useState(false)
     const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(false);
-    
+
     const [platform, setPlatform] = useState({
         ibkr: false,
         id: '',
@@ -53,9 +53,9 @@ export default function OnBoarding() {
                 setPlatform((prev) => ({
                     ...prev,
                     id: res.data?.id,
-                    ibkr: res.data?.authenticated,
+                    ibkr: res.data?.authenticated ? true : false,
                     active_subscription: res.data?.active_subscription,
-                    metamask_address: res.data?.metamask_address
+                    metamask_address: res.data?.metamask_address ? true : false
                 }))
             }
             setIsRefreshIbkr(false)
@@ -91,8 +91,6 @@ export default function OnBoarding() {
             }
         })
     }
-    console.log(isOneTimeModal, 'isOneTimeModal===');
-
     const openFullWidthWindow = (url: string) => {
         if (!url) {
             return <></>
@@ -150,7 +148,6 @@ export default function OnBoarding() {
         try {
             const account = await connectMetaMask();
             setIsRefreshMeta(true)
-            console.log("Connected account:", account);
             if (account?.account) {
                 setIsRefreshMeta(true)
                 addMetaMask(account?.account)
@@ -165,11 +162,18 @@ export default function OnBoarding() {
     }
     useEffect(() => {
         const ethereum = (window as any).ethereum;
-        if (!ethereum) {
-            setIsMetaMaskInstalled(true);
-        } else {
-            setIsMetaMaskInstalled(false);
-        }
+        console.log(ethereum, 'ethereum==');
+        ethereum.request({ method: 'eth_accounts' })
+            .then((accounts: any) => {
+                if (accounts.length > 0) {
+                    setIsMetaMaskInstalled(false);
+                } else {
+                    setIsMetaMaskInstalled(true);
+                }
+            })
+            .catch((error: any) => {
+                setIsMetaMaskInstalled(true);
+            });
     }, []);
     // useEffect(() => {
     //     const ethereum = (window as any).ethereum;
@@ -226,32 +230,6 @@ export default function OnBoarding() {
                 <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">
                     <Card>
                         <div>
-                            <TradingIco />
-                            <h6>Level 4 Options Trading</h6>
-                            <p className="mt-2">Our strategy requires level 4 options trading approval in your account before accessing the platform.</p>
-                        </div>
-                        <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-2">Check Level</Button>
-                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
-                        </div>
-                    </Card>
-                </div>
-                <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">
-                    <Card>
-                        <div>
-                            <SubscriptionDataIco />
-                            <h6>Options Data Subscription</h6>
-                            <p className="mt-2">We require your account to have a subscription to options data, covering the SPY index, before accessing the platform.</p>
-                        </div>
-                        <div className="d-flex mt-2">
-                            <Button className="btn btn-primary w-100 me-2">Contact IBKR</Button>
-                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
-                        </div>
-                    </Card>
-                </div>
-                <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">
-                    <Card>
-                        <div>
                             <div className="d-flex align-items-center justify-content-between">
                                 <WalletIntegrationIco />
                                 {
@@ -264,13 +242,40 @@ export default function OnBoarding() {
                             <h6>DeFi Wallet Integration</h6>
                             <p className="mt-2">Connect a decentralised wallet to enable secure and efficient transactions on the platform.</p>
                         </div>
-                        {isLoadingMeta === false? isRefreshMeta  ? null : platform.metamask_address && !isMetaMaskInstalled ? <CardLinkConfirm message='DeFi Wallet Connected' /> : <div className="d-flex mt-2">
+                        {isLoadingMeta === false ? isRefreshMeta ? null : platform.metamask_address && !isMetaMaskInstalled ? <CardLinkConfirm message='DeFi Wallet Connected' /> : <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2" onClick={handleConnectWallet}>Connect Now</Button>
-                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
+                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center" onClick={() => openFullWidthWindow('https://metamask.io/download/')}>Learn More <ArrowIco /> </Button>
                         </div> : null}
                     </Card>
                 </div>
                 <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">
+                    <Card>
+                        <div>
+                            <TradingIco />
+                            <h6>Level 4 Options Trading</h6>
+                            <p className="mt-2">Our strategy requires level 4 options trading approval in your account before accessing the platform.</p>
+                        </div>
+                        {/* <div className="d-flex mt-2">
+                            <Button className="btn btn-primary w-100 me-2">Check Level</Button>
+                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
+                        </div> */}
+                    </Card>
+                </div>
+                <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">
+                    <Card>
+                        <div>
+                            <SubscriptionDataIco />
+                            <h6>Options Data Subscription</h6>
+                            <p className="mt-2">We require your account to have a subscription to options data, covering the SPY index, before accessing the platform.</p>
+                        </div>
+                        {/* <div className="d-flex mt-2">
+                            <Button className="btn btn-primary w-100 me-2">Contact IBKR</Button>
+                            <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
+                        </div> */}
+                    </Card>
+                </div>
+
+                {/* <div className="col-md-6 col-12 col-lg-4 mb-3 mt-4">
                     <Card>
                         <div>
                             <NFTMarketplaceIco />
@@ -282,11 +287,11 @@ export default function OnBoarding() {
                             <Button type='button' className="btn btn-outline-primary w-100 ms-1 d-flex align-items-center justify-content-center">Learn More <ArrowIco /> </Button>
                         </div>
                     </Card>
-                </div>
+                </div> */}
             </div>
             <h4 className="mt-4 mb-0 pb-5">Please ensure the following requirements are met.</h4>
             <div className="mt-5 d-flex justify-content-end mb-5 pt-3">
-                <Button className="btn btn-primary me-1" disabled>Dashboard</Button>
+                <Button className="btn btn-primary me-1" disabled={!(platform?.ibkr && (platform?.metamask_address && !isMetaMaskInstalled))}>Dashboard</Button>
             </div>
         </section>
         <DialogConfirm isOpen={isOpen} title={modalContent[isOpen]?.title} des={modalContent[isOpen]?.des} des1={modalContent[isOpen]?.des1} onClose={handleClose}>

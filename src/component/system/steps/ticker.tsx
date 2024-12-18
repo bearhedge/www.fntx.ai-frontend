@@ -15,7 +15,7 @@ export default function Ticker({ handleTabChange }: SystemPagesProps) {
           </div>
           <div className="col-sm-4 col-12">
             <RadioCheckboxOption
-              type="checkbox"
+              type="radio"
               label="Equity"
               value="equity"
               id="equity"
@@ -24,7 +24,7 @@ export default function Ticker({ handleTabChange }: SystemPagesProps) {
           </div>
           <div className="col-sm-4 col-12">
             <RadioCheckboxOption
-              type="checkbox"
+              type="radio"
               label="Commodity"
               value="commodity"
               id="commodity"
@@ -33,7 +33,7 @@ export default function Ticker({ handleTabChange }: SystemPagesProps) {
           </div>
           <div className="col-sm-4 col-12">
             <RadioCheckboxOption
-              type="checkbox"
+              type="radio"
               label="Crypto"
               value="crypto"
               id="crypto"
