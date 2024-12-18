@@ -1,9 +1,31 @@
-import { SystemPagesProps } from "../../../common/type";
+import { useState } from "react";
+import {
+  ConidsProps,
+  InstrumentsProps,
+  TickerList,
+} from "../../../common/type";
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
-
-export default function Ticker({ handleTabChange }: SystemPagesProps) {
+import Input from "../../form/input";
+interface Iprops {
+  handleTabChange: () => void;
+  list: TickerList | any;
+  instrument: string;
+  conIds: ConidsProps[];
+  onChange: (value: InstrumentsProps) => void;
+}
+export default function Ticker({
+  handleTabChange,
+  list,
+  conIds,
+  instrument,
+  onChange,
+}: Iprops) {
+  const [instrumentsOpt, setInstrumentsOpt] = useState<string>("");
+  const handleChange = (val: string) => {
+    setInstrumentsOpt(val);
+  };
   return (
     <div className="system-form">
       <Card className="mb-4">
@@ -15,28 +37,34 @@ export default function Ticker({ handleTabChange }: SystemPagesProps) {
           </div>
           <div className="col-sm-4 col-12">
             <RadioCheckboxOption
-              type="checkbox"
+              type="radio"
               label="Equity"
-              value="equity"
-              id="equity"
+              value="EQUITY"
+              name="equity"
               className="font-bold"
+              checked={instrumentsOpt === "EQUITY"}
+              handleChange={handleChange}
             />
           </div>
           <div className="col-sm-4 col-12">
             <RadioCheckboxOption
-              type="checkbox"
+              type="radio"
               label="Commodity"
-              value="commodity"
-              id="commodity"
+              value="COMMODITY"
+              checked={instrumentsOpt === "COMMODITY"}
+              name="commodity"
               className="font-bold"
+              handleChange={handleChange}
             />
           </div>
           <div className="col-sm-4 col-12">
             <RadioCheckboxOption
-              type="checkbox"
+              type="radio"
+              checked={instrumentsOpt === "CRYPTO"}
               label="Crypto"
-              value="crypto"
-              id="crypto"
+              value="CRYPTO"
+              name="crypto"
+              handleChange={handleChange}
               className="font-bold"
             />
           </div>
@@ -44,47 +72,38 @@ export default function Ticker({ handleTabChange }: SystemPagesProps) {
       </Card>
       <Card>
         <div className="row justify-content-center">
-          <div className="col-sm-3 col-12 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="SPY"
-              value="SPY"
-              id="SPY"
-            />
-          </div>
-          <div className="col-sm-3 col-12 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="QQQ"
-              value="QQQ"
-              id="QQQ"
-            />
-          </div>
-          <div className="col-sm-3 col-12 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="IWM"
-              value="IWM"
-              id="IWM"
-            />
-          </div>
-          <div className="col-sm-3 col-12 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="GLD"
-              value="GLD"
-              id="GLD"
-            />
-          </div>
-          <div className="col-sm-3 col-12 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="IBIT"
-              value="IBIT"
-              id="IBIT"
-            />
-          </div>
+          {list[instrumentsOpt]?.map((item: InstrumentsProps) => (
+            <div className="col-sm-3 col-12 mb-1" key={item.id}>
+              <RadioCheckboxOption
+                type="radio"
+                label={item.instrument}
+                checked={instrument === item.id}
+                value={item.id}
+                name="instrument"
+                id={item.instrument.replace(/ /g, "")}
+                handleChange={() => onChange(item)}
+              />
+            </div>
+          ))}
         </div>
+        {conIds?.length ? (
+          <div className="row justify-content-center">
+            <Input
+              type="select"
+              label="Symbol Connections"
+              name="instrument_data"
+            >
+              <option disabled selected value="">
+                Select
+              </option>
+              {conIds?.map((items: ConidsProps) => (
+                <option key={items.conid} value={JSON.stringify(items)}>
+                  {items.companyHeader}
+                </option>
+              ))}
+            </Input>
+          </div>
+        ) : null}
         <Button
           className="btn btn-primary btn-next-step mx-auto mt-4"
           onClick={handleTabChange}

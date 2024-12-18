@@ -4,17 +4,21 @@ interface Iprops {
   type: string;
   value: string | number;
   label: string;
-  id?: string;
+  name?: string;
   className?: string;
-  handleChange?: (val: string | number) => void;
+  checked?:boolean
+  id?:string
+  handleChange?: (val: string) => void;
 }
 
 const RadioCheckboxOption = ({
   type,
   value,
   label,
-  id,
+  name,
+  checked,
   className,
+  id,
   handleChange,
 }: Iprops) => {
   // State for checkboxes (multiple selection)
@@ -23,31 +27,31 @@ const RadioCheckboxOption = ({
   >([]);
 
   // State for radio buttons (single selection)
-  const [selectedRadio, setSelectedRadio] = useState<string | number>("");
+  const [selectedRadio, setSelectedRadio] = useState<string>("");
 
   // Handle checkbox change
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
-    const parsedValue = isNaN(Number(value)) ? value : Number(value);
     if (type === "checkbox") {
       if (checked) {
-        setSelectedCheckboxes((prev) => [...prev, parsedValue]);
+        setSelectedCheckboxes((prev) => [...prev, value]);
       } else {
         setSelectedCheckboxes((prev) =>
-          prev.filter((item) => item !== parsedValue)
+          prev.filter((item) => item !== value)
         );
       }
     } else {
-      setSelectedRadio(parsedValue);
-      handleChange && handleChange(parsedValue);
+      console.log(value);
+      
+      handleChange && handleChange(value);
     }
   };
 
   return (
     <label
-      htmlFor={id}
+      htmlFor={id || name}
       className={`form-input-check d-flex align-items-center justify-content-center mb-3 ${
-        selectedCheckboxes.includes(value) || selectedRadio === value
+        selectedCheckboxes.includes(value) || checked
           ? "active"
           : ""
       } ${className}`}
@@ -55,12 +59,13 @@ const RadioCheckboxOption = ({
       <input
         type={type}
         value={value}
-        id={id}
+        id={id || name}
+        name={name}
         className="d-none"
         checked={
           type === "checkbox"
             ? selectedCheckboxes.includes(value)
-            : selectedRadio === value
+            : checked
         }
         onChange={handleCheckboxChange}
       />

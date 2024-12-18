@@ -10,30 +10,65 @@ import Contracts from "../../component/system/steps/Contracts";
 import Trade from "../../component/system/steps/trade";
 import Manage from "../../component/system/steps/manage";
 import { useNavigate, useParams } from "react-router-dom";
+import Fetch from "../../common/api/fetch";
+import { InstrumentsProps } from "../../common/type";
 
 export default function System() {
-  const params = useParams()
-  const navigate = useNavigate()
+  const params = useParams();
+  const navigate = useNavigate();
+  const [tickerList, setTickerList] = useState({});
+  const [conIds, setConIds] = useState([]);
   const [tab, setTab] = useState(0);
-  
-  useEffect(()=>{
-    if(params.id){
-    setTab(+params.id)
-  }
-  },[params.id])
-  const handleTab =(val:number)=>{
-    console.log(val);
+  const [state, setState] = useState({
+    instruments: "",
+    instrument_data:''
+
     
-    setTab(val)
-    navigate(`/system/${val}`,{replace:true})
-  }
+  });
+  useEffect(() => {
+    getTicker();
+  }, []);
+  const getTicker = () => {
+    Fetch("ibkr/instruments/").then((res) => {
+      if (res.status) {
+        setTickerList(res.data);
+      }
+    });
+  };
+  useEffect(() => {
+    if (params.id) {
+      setTab(+params.id);
+    }
+  }, [params.id]);
+  const handleTab = (val: number) => {
+    setTab(val);
+    navigate(`/system/${val}`, { replace: true });
+  };
+  const onChangeTicker = (val: InstrumentsProps) => {
+    Fetch(`ibkr/symbol_conid?symbol=${val.instrument}`).then((res) => {
+      if (res.status) {
+        setConIds(res.data?.data);
+      }
+    });
+    setState(prev=>({...prev, instruments:val.id}))
+  };
+  console.log(conIds);
+  
   return (
     <AppLayout>
       <div className="system">
         <Card className="mb-4 system-tabs">
           <Tabs tab={tab} handleTab={handleTab} />
         </Card>
-        {tab === 0 && <Ticker handleTabChange={() => handleTab(1)} />}
+        {tab === 0 && (
+          <Ticker
+            instrument={state.instruments}
+            conIds={conIds}
+            list={tickerList}
+            handleTabChange={() => handleTab(1)}
+            onChange={onChangeTicker}
+          />
+        )}
         {tab === 1 && <Timing handleTabChange={() => handleTab(2)} />}
         {tab === 2 && <Range handleTabChange={() => handleTab(3)} />}
         {tab === 3 && <Risk handleTabChange={() => handleTab(4)} />}

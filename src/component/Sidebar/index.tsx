@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom"
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import { menu } from "../../lib/menu"
 import Logo from '@assets/svg/logo.svg';
 import LogOutIco from '@assets/svg/logout_ico.svg';
@@ -7,17 +7,26 @@ import Card from "../Card";
 import Button from "../form/button";
 import { SettingIco } from "../../lib/icons";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setLoginUser } from "../../services/slices/authSlice";
 
 interface Iprops {
     width: number
 }
 export default function Sidebar({ width }: Iprops) {
     const location = useLocation()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [activeDropdown, setActiveDropdown] = useState<number | null>(null); // State to manage active dropdown
 
     const handleDropdownToggle = (key: number) => {
         setActiveDropdown((prevKey:number | null) => (prevKey === key ? null : key)); // Toggle dropdown
     };
+    const handleLogout = () => {
+        localStorage.clear();
+        dispatch(setLoginUser(false))
+        navigate('/')
+    }
     return <div className='sidebar' style={{ width: width }}>
         <Card>
             <img src={Logo} width='179px' />
@@ -67,7 +76,7 @@ export default function Sidebar({ width }: Iprops) {
                         </NavLink>
                     </div>
                     <div className="sidebar__content__item sidebar__content__item-btn">
-                        <Button type="button" className="btn w-100">
+                        <Button type="button" className="btn w-100" onClick={handleLogout}>
                             <span><img src={LogOutIco} alt='logout' /></span>
                             <label>Logout</label>
                         </Button>

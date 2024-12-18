@@ -1,7 +1,7 @@
 import Required from "./required";
 
 export default function Input(props: any): JSX.Element {
-  const { errorText, type, label, login, error, ...rest } = props;
+  const { errorText, type, label, login, error,children, ...rest } = props;
   return (
     <div className="form-input">
       {label?.length ? (
@@ -17,7 +17,15 @@ export default function Input(props: any): JSX.Element {
       >
         {type === "textarea" ? (
           <textarea {...rest}></textarea>
-        ) : (
+        ) : type === "select" ?
+        <div className="form-control">
+            <select
+              {...rest}
+            >
+              {children}
+            </select>
+          </div>
+        : (
           <div className="form-control">
             <input
               type={type}
