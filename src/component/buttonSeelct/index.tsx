@@ -29,7 +29,7 @@ const RadioCheckboxOption = ({
   >([]);
 
   // State for radio buttons (single selection)
-  const [selectedRadio, setSelectedRadio] = useState<string>("");
+  // const [selectedRadio, setSelectedRadio] = useState<string>("");
 
   // Handle checkbox change
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {

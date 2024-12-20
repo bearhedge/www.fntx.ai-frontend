@@ -1,5 +1,4 @@
 import Card from "../Card";
-import TickIcon from "@assets/svg/tick.svg"
 import AttachIcon from "@assets/svg/attach.svg"
 import { TickGreenIcon } from "../../lib/icons";
 export default function Header() {

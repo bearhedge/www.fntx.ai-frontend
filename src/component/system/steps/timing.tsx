@@ -1,9 +1,7 @@
-import { SystemPagesProps } from "../../../common/type";
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
 import CircularButton from "./../CircularButton";
-import RangeSlider from "./../RangeSlider";
 import { useState, useEffect } from "react";
 import DialogConfirm from "../../modal";
 

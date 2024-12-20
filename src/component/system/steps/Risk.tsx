@@ -34,7 +34,7 @@ export default function Risk({ handleTabChange, isLoading, state, onChange }: Ip
                     id={item + 'level'}
                     name='confidence_level'
                     className="font-bold"
-                    handleChange={(val: string, event: React.ChangeEvent<HTMLInputElement>) => onChange(event)}
+                    handleChange={(_: string, event: React.ChangeEvent<HTMLInputElement>) => onChange(event)}
                   />
                 </div>)
               }

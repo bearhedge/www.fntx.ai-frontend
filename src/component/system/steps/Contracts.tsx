@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import Fetch from "../../../common/api/fetch";
-import { SystemPagesProps } from "../../../common/type";
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
@@ -42,6 +41,7 @@ export default function Contracts({ handleTabChange, onChange, state,isLoading }
                     // Convert the result to a string and parse it into JSON
                     const jsonString:any = reader.result;
                     const jsonData = JSON.parse(jsonString);
+                  setMessage((prevMessages: any) => [...prevMessages, jsonData]);
                     console.log("Parsed JSON data:", jsonData);
                 } catch (error) {
                     console.error("Error parsing JSON:", error);
@@ -50,7 +50,6 @@ export default function Contracts({ handleTabChange, onChange, state,isLoading }
     
             // Read the blob as text
             reader.readAsText(blob);
-            // setMessage((prevMessages: any) => [...prevMessages, event.data]);
           };
 
           // When the WebSocket encounters an error
@@ -106,7 +105,7 @@ export default function Contracts({ handleTabChange, onChange, state,isLoading }
               value=""
               name="contract_type"
               id="SingleLeg"
-              handleChange={(val, e: React.ChangeEvent<HTMLInputElement>) => { setContractType('Single Leg'); onChange(e) }}
+              handleChange={(_, e: React.ChangeEvent<HTMLInputElement>) => { setContractType('Single Leg'); onChange(e) }}
               className="font-bold"
             />
           </div>
@@ -118,7 +117,7 @@ export default function Contracts({ handleTabChange, onChange, state,isLoading }
               value="both"
               id="DoubleLeg"
               name="contract_type"
-              handleChange={(val: string, e: React.ChangeEvent<HTMLInputElement>) => { onChange(e); setContractType('') }}
+              handleChange={(_: string, e: React.ChangeEvent<HTMLInputElement>) => { onChange(e); setContractType('') }}
               className="font-bold"
             />
           </div>
@@ -132,7 +131,7 @@ export default function Contracts({ handleTabChange, onChange, state,isLoading }
                   label="Call"
                   value="call"
                   id="Call"
-                  handleChange={(val: string, e: React.ChangeEvent<HTMLInputElement>) => { onChange(e) }}
+                  handleChange={(_: string, e: React.ChangeEvent<HTMLInputElement>) => { onChange(e) }}
                   className="font-bold"
                 />
               </div>
@@ -142,7 +141,7 @@ export default function Contracts({ handleTabChange, onChange, state,isLoading }
                   name="contract_type"
                   label="Put"
                   checked={state.contract_type === 'put'}
-                  handleChange={(val: string, e: React.ChangeEvent<HTMLInputElement>) => { onChange(e) }}
+                  handleChange={(_: string, e: React.ChangeEvent<HTMLInputElement>) => { onChange(e) }}
                   value="put"
                   id="Put"
                   className="font-bold"

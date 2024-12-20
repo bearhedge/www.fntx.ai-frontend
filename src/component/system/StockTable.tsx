@@ -11,7 +11,6 @@ const StockTable: React.FC<StockTableProps> = ({
   className,
   rows,
   columns,
-  showStrike = false,
 }) => {
   return (
     <div className="stock-table">

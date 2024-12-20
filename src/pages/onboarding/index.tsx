@@ -3,7 +3,7 @@ import Fetch from "../../common/api/fetch";
 import Card from "../../component/Card";
 import Button from "../../component/form/button";
 import BaseLayout from "../../layout/baseLayout";
-import { IBKRMarginIco, NFTMarketplaceIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco, ArrowIco, TickGreenIcon } from "../../lib/icons";
+import { IBKRMarginIco, SubscriptionDataIco, TradingIco, WalletIntegrationIco, ArrowIco, TickGreenIcon } from "../../lib/icons";
 import { arrayString, connectMetaMask } from "../../lib/utilits";
 import TickDarkIco from "@assets/svg/tick-dark.svg"
 import Alert from "../../component/Alert";
@@ -174,7 +174,7 @@ export default function OnBoarding() {
                         setIsMetaMaskInstalled(true);
                     }
                 })
-                .catch((error: any) => {
+                .catch(() => {
                     setIsMetaMaskInstalled(true);
                 });
             // Listen for account changes

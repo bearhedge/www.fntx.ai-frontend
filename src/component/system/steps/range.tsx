@@ -1,4 +1,3 @@
-import { SystemPagesProps } from "../../../common/type";
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
@@ -64,7 +63,7 @@ export default function Range({ handleTabChange, state, isLoading, handleChangeR
                     type="radio"
                     label={key + 1}
                     value={key + 1}
-                    id={'timesteps' + key}
+                    id={'timesteps' + key + items}
                     className="font-bold"
                     checked={state.time_steps === (key + 1)}
                     handleChange={() => handleChangeRange((key + 1), 'time_steps')}

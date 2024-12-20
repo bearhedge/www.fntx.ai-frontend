@@ -5,7 +5,6 @@ import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
 import Input from "../../form/input";
-import RangeSlider from "../RangeSlider";
 
 export default function Manage({ handleTabChange }: SystemPagesProps) {
     return <div className="system-trade">
