@@ -1,10 +1,20 @@
-import { SystemPagesProps } from "../../../common/type";
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
 import InputCard from "./../InputCard";
-
-export default function Risk({ handleTabChange }: SystemPagesProps) {
+const confidenceLevel = [
+  25,
+  50,
+  75,
+  100,
+]
+interface Iprops {
+  handleTabChange: () => void;
+  state: any;
+  isLoading: boolean
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+export default function Risk({ handleTabChange, isLoading, state, onChange }: Iprops) {
   return (
     <div className="system-form">
       <div className="row">
@@ -14,42 +24,20 @@ export default function Risk({ handleTabChange }: SystemPagesProps) {
               <div className="col-12 mb-3 pb-1 d-flex justify-content-between">
                 <label className="fw-600">Confidence Level</label>
               </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="25%"
-                  value="25%"
-                  id="25%"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="50%"
-                  value="50%"
-                  id="50%"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="75%"
-                  value="75%"
-                  id="75%"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="100%"
-                  value="100%"
-                  id="100%"
-                  className="font-bold"
-                />
-              </div>
+              {
+                confidenceLevel?.map(item => <div className="col-sm-3 col-12">
+                  <RadioCheckboxOption
+                    type="radio"
+                    checked={+state.confidence_level === item}
+                    label={`${item}%`}
+                    value={item}
+                    id={item + 'level'}
+                    name='confidence_level'
+                    className="font-bold"
+                    handleChange={(val: string, event: React.ChangeEvent<HTMLInputElement>) => onChange(event)}
+                  />
+                </div>)
+              }
             </div>
           </Card>
         </div>
@@ -60,43 +48,21 @@ export default function Risk({ handleTabChange }: SystemPagesProps) {
           <div className="col-sm-6 col-12 mb-4">
             <div className="row">
               <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="Confidence Level"
-                  value="Confidence Level"
-                  id="Confidence Level"
-                />
+                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Confidence Level</div>
               </div>
               <div className="col-sm-6 col-12">
                 <RadioCheckboxOption
                   type="checkbox"
-                  label="75%"
-                  value="75%"
-                  id="75%"
+                  label={state.confidence_level ? `${state.confidence_level}%`:'N/A'}
+                  disabled
                   className="bg-white"
                 />
               </div>
-              <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="Number of Contracts"
-                  value="Number of Contracts"
-                  id="Number of Contracts"
-                />
-              </div>
-              <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="23"
-                  value="23"
-                  id="23"
-                  className="bg-white"
-                />
-              </div>
-
               <div className="col-12">
                 <Button
                   className="btn btn-primary btn-next-step w-100"
+                  isLoading={isLoading}
+                  disabled={!state.confidence_level || isLoading}
                   onClick={handleTabChange}
                 >
                   Next Step

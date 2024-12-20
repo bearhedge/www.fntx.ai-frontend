@@ -11,7 +11,12 @@
     --danger: #dc6666;
     --font-family: "Century Gothic";
 }
-
+.input-disabled{
+    cursor: unset;
+}
+.green{
+    background-color: #5abf5a !important;
+}
 img,
 svg {
     vertical-align: unset;
@@ -136,7 +141,7 @@ svg {
         height: 50px;
         padding: 0;
 
-        input {
+        input,select {
             border: 1px solid;
             border-color: var(--btnBgColor);
             background-color: transparent;

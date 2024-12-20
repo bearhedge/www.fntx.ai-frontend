@@ -3,8 +3,29 @@ import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
 import InputCard from "./../InputCard";
-
-export default function Range({ handleTabChange }: SystemPagesProps) {
+const time = [
+  '1-day',
+  '4-hours',
+  '1-hour',
+  '30-mins',
+  '15-mins',
+  '5-mins',
+]
+interface Iprops {
+  handleTabChange: () => void;
+  state: any;
+  isLoading: boolean
+  handleChangeRange: (value: string | number, name: string) => void;
+}
+export default function Range({ handleTabChange, state, isLoading, handleChangeRange }: Iprops) {
+  const handleGetTotal = (): string | number => {
+    const val = state.time_frame?.split('-')
+    let result = 'N/A'
+    if (val?.length && state.time_steps) {
+      result = `${+val[0] * state.time_steps} ${val[1]}`
+    }
+    return result
+  }
   return (
     <div className="system-form">
       <div className="row">
@@ -17,60 +38,19 @@ export default function Range({ handleTabChange }: SystemPagesProps) {
                   <input type="checkbox" /> <span className="ms-3">IDE</span>
                 </div>
               </div>
-              <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="1-day"
-                  value="1-day"
-                  id="1-day"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="4-hours"
-                  value="4-hours"
-                  id="4-hours"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="1-hour"
-                  value="1-hour"
-                  id="1-hour"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="30-mins"
-                  value="30-mins"
-                  id="30-mins"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="15-mins"
-                  value="15-mins"
-                  id="15-mins"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="5-mins"
-                  value="5-mins"
-                  id="5-mins"
-                  className="font-bold"
-                />
-              </div>
+              {
+                time?.map((items, key) => <div key={key} className="col-sm-6 col-12">
+                  <RadioCheckboxOption
+                    type="radio"
+                    label={items}
+                    value={items}
+                    id={items}
+                    className="font-bold"
+                    checked={state.time_frame === items}
+                    handleChange={() => handleChangeRange(items, 'time_frame')}
+                  />
+                </div>)
+              }
             </div>
           </Card>
         </div>
@@ -78,114 +58,19 @@ export default function Range({ handleTabChange }: SystemPagesProps) {
           <Card>
             <div className="row">
               <label className="fw-600 pb-1 mb-3">Timesteps</label>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="1"
-                  value="1"
-                  id="1"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="2"
-                  value="2"
-                  id="2"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="3"
-                  value="3"
-                  id="3"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="4"
-                  value="4"
-                  id="4"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="5"
-                  value="5"
-                  id="5"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="6"
-                  value="6"
-                  id="6"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="7"
-                  value="7"
-                  id="7"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="8"
-                  value="8"
-                  id="8"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="9"
-                  value="9"
-                  id="9"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="10"
-                  value="10"
-                  id="10"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="11"
-                  value="11"
-                  id="11"
-                  className="font-bold"
-                />
-              </div>
-              <div className="col-sm-3 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="12"
-                  value="12"
-                  id="12"
-                  className="font-bold"
-                />
-              </div>
+              {
+                [...new Array(12)]?.map((items: number, key: number) => <div key={key} className="col-sm-3 col-12">
+                  <RadioCheckboxOption
+                    type="radio"
+                    label={key + 1}
+                    value={key + 1}
+                    id={'timesteps' + key}
+                    className="font-bold"
+                    checked={state.time_steps === (key + 1)}
+                    handleChange={() => handleChangeRange((key + 1), 'time_steps')}
+                  />
+                </div>)
+              }
             </div>
           </Card>
         </div>
@@ -196,53 +81,38 @@ export default function Range({ handleTabChange }: SystemPagesProps) {
           <div className="col-sm-6 col-12 mb-4">
             <div className="row">
               <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="Timeframe"
-                  value="Timeframe"
-                  id="Timeframe"
-                />
+                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Timeframe</div>
               </div>
               <div className="col-sm-6 col-12">
                 <RadioCheckboxOption
                   type="checkbox"
-                  label="1 Day"
-                  value="1 Day"
-                  id="1 Day"
+                  label={state.time_frame.replace('-', ' ') || 'N/A'}
+                  disabled
                   className="bg-white"
                 />
               </div>
               <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="Timesteps"
-                  value="Timesteps"
-                  id="Timesteps"
-                />
+                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Timesteps</div>
               </div>
               <div className="col-sm-6 col-12">
                 <RadioCheckboxOption
                   type="checkbox"
-                  label="2"
-                  value="2"
+                  label={state.time_steps || 'N/A'}
+                  disabled
                   id="2"
                   className="bg-white"
                 />
               </div>
               <div className="col-sm-6 col-12">
-                <RadioCheckboxOption
-                  type="checkbox"
-                  label="Total Time"
-                  value="Total Time"
-                  id="Total Time"
-                />
+                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Total Time</div>
               </div>
               <div className="col-sm-6 col-12">
                 <RadioCheckboxOption
                   type="checkbox"
-                  label="2 days"
+                  label={handleGetTotal()}
                   value="2 days"
                   id="2 days"
+                  disabled
                   className="bg-white"
                 />
               </div>
@@ -250,6 +120,8 @@ export default function Range({ handleTabChange }: SystemPagesProps) {
                 <Button
                   className="btn btn-primary btn-next-step w-100"
                   onClick={handleTabChange}
+                  isLoading={isLoading}
+                  disabled={!(state.time_frame && state.time_steps) || isLoading}
                 >
                   Next Step
                 </Button>

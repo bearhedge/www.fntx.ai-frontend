@@ -1,6 +1,7 @@
 type StockTableProps = {
   title: string;
   className?: string;
+  columns?: any
   rows: Array<Array<string | number>>;
   showStrike?: boolean;
 };
@@ -9,6 +10,7 @@ const StockTable: React.FC<StockTableProps> = ({
   title,
   className,
   rows,
+  columns,
   showStrike = false,
 }) => {
   return (
@@ -17,22 +19,35 @@ const StockTable: React.FC<StockTableProps> = ({
       <table>
         <thead>
           <tr>
-            <th>Last Price</th>
-            <th>Change</th>
-            <th>%Change</th>
-            <th>Volume</th>
-            <th>Open Interest</th>
-            {showStrike && <th>Strike</th>}
+            {columns.map((column: any) => (
+              <th
+                key={column.id}
+                align={column.align}
+                style={{
+                  minWidth: column?.minWidth,
+                  maxWidth: column?.maxWidth,
+                }}
+              >
+                {column.label}
+              </th>
+            ))}
           </tr>
         </thead>
 
         <tbody className={className}>
           {rows.map((row, index) => (
             <tr key={index}>
-              {row.map((cell, cellIndex) => (
-                <td key={cellIndex}>{cell}</td>
-              ))}
-              {showStrike && <td className="strike-bg">-</td>}
+              {columns.map((column: any, cellIndex: number) => {
+                const value = row[column.id];
+                return <td key={cellIndex}>
+                  {column.formatHtmls
+                    ? column.formatHtmls(row)
+                    : value
+                      ? value
+                      : "-"}
+                </td>
+              })}
+              {/* {showStrike && <td className="strike-bg">-</td>} */}
             </tr>
           ))}
         </tbody>

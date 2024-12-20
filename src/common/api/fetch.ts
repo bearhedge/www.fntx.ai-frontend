@@ -72,8 +72,6 @@ export default function Fetch(
     return formData;
   };
   const fetch = (token: any) => {
-    console.log(token,'token==');
-    
     return axios[method](
       url ? url : baseURL + endPoint,
       inFormData

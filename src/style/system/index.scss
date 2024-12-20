@@ -98,6 +98,18 @@
   }
 
   &-form {
+    &-conId{
+      margin: 0;
+      padding: 0;
+      li{
+        list-style: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 5px 0px;
+        p{
+          margin-bottom: 10px;
+        }
+      }
+    }
     .note {
       font-size: 14px;
       color: var(--text-color);

@@ -74,6 +74,7 @@ export default function OnBoarding() {
                     setPlatformError((prev) => ({ ...prev, ibkr: '' }))
                     setIsLoading(false)
                     setIsRefreshIbkr(false)
+                    setIsOpen(0)
                 } else if (res?.data?.authenticated === false) {
                     setIsOpen(1)
                     // setPlatformError((prev) => ({ ...prev, ibkr: 'Login through IBKR client portal gateway to proceed.' }))
@@ -162,18 +163,32 @@ export default function OnBoarding() {
     }
     useEffect(() => {
         const ethereum = (window as any).ethereum;
-        console.log(ethereum, 'ethereum==');
-        ethereum.request({ method: 'eth_accounts' })
-            .then((accounts: any) => {
-                if (accounts.length > 0) {
-                    setIsMetaMaskInstalled(false);
-                } else {
+        if (ethereum) {
+            ethereum?.request({ method: 'eth_requestAccounts' })
+                .then((accounts: any) => {
+                    if (accounts.length > 0) {
+                        setIsMetaMaskInstalled(false);
+                    } else {
+                        modalContent[2].des = 'After installing MetaMask, connect the metamask and refresh the page to enable full functionality.'
+                        modalContent[2].des1 = ''
+                        setIsMetaMaskInstalled(true);
+                    }
+                })
+                .catch((error: any) => {
                     setIsMetaMaskInstalled(true);
+                });
+            // Listen for account changes
+            const handleAccountsChanged = (accounts: any) => {
+                if (accounts.length === 0) {
+                    console.log("Please connect to MetaMask.");
+                } else {
+                    addMetaMask(accounts[0])
                 }
-            })
-            .catch((error: any) => {
-                setIsMetaMaskInstalled(true);
-            });
+            };
+            ethereum.on("accountsChanged", handleAccountsChanged);
+        } else {
+            setIsMetaMaskInstalled(true);
+        }
     }, []);
     // useEffect(() => {
     //     const ethereum = (window as any).ethereum;
@@ -201,6 +216,7 @@ export default function OnBoarding() {
         setIsOneTimeModal(false)
         setIsOpen(0)
     }
+
     return <BaseLayout>
         <section className="container onboarding">
             <h3 className="mb-0">Platform Requirements</h3>
