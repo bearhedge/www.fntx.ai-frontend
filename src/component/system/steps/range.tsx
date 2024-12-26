@@ -85,7 +85,7 @@ export default function Range({ handleTabChange, state, isLoading, handleChangeR
               <div className="col-sm-6 col-12">
                 <RadioCheckboxOption
                   type="checkbox"
-                  label={state.time_frame.replace('-', ' ') || 'N/A'}
+                  label={state.time_frame?.replace('-', ' ') || 'N/A'}
                   disabled
                   className="bg-white"
                 />

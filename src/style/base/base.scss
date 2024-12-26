@@ -11,12 +11,15 @@
     --danger: #dc6666;
     --font-family: "Century Gothic";
 }
-.input-disabled{
+
+.input-disabled {
     cursor: unset;
 }
-.green{
+
+.green {
     background-color: #5abf5a !important;
 }
+
 img,
 svg {
     vertical-align: unset;
@@ -28,6 +31,7 @@ svg {
     font-family: var(--font-family);
     box-sizing: border-box;
 }
+
 .font-bold {
     font-weight: 600;
 }
@@ -64,9 +68,11 @@ svg {
         transform: rotate(360deg);
     }
 }
-.col-25{
+
+.col-25 {
     width: calc(100% / 5);
 }
+
 .error {
     font-size: 14px;
     color: var(--danger);
@@ -122,6 +128,7 @@ svg {
             line-height: 22px;
             color: var(--text-color);
             text-transform: capitalize;
+
             &.active {
                 background-color: var(--menu-bg);
                 color: var(--white);
@@ -141,7 +148,8 @@ svg {
         height: 50px;
         padding: 0;
 
-        input,select {
+        input,
+        select {
             border: 1px solid;
             border-color: var(--btnBgColor);
             background-color: transparent;
@@ -212,6 +220,7 @@ svg {
     margin: 0;
     position: relative;
     margin-top: 15px;
+
     &:before {
         content: "";
         height: 2px;
@@ -236,6 +245,7 @@ svg {
         margin-top: -11px;
         cursor: pointer;
         text-transform: uppercase;
+
         &.active {
             color: var(--text-color);
 
@@ -390,9 +400,11 @@ svg {
 .fade.show {
     opacity: 1;
 }
+
 .modal {
     z-index: 1072;
 }
+
 .modal {
     position: fixed;
     top: 0;
@@ -403,37 +415,46 @@ svg {
     display: none;
     overflow: hidden;
     outline: 0;
-    &.show .modal-dialog{
+
+    &.show .modal-dialog {
         transform: translate(0, 0);
     }
-    &-content{
+
+    &-content {
         border-radius: 16px;
         border: unset;
     }
-    &-body{
+
+    &-body {
         padding: 1.5rem;
-        .btn-close{
+
+        .btn-close {
             background: unset;
             position: absolute;
             top: 0px;
             right: 0px;
             padding: 22px;
         }
-        &-info{
+
+        &-info {
             color: var(--text-color);
-            h5{
+
+            h5 {
                 font-size: 18px;
                 font-weight: 600;
                 line-height: 22px;
             }
-            p{
+
+            p {
                 font-size: 16px;
                 line-height: 22px;
             }
         }
     }
-    &-backdrop{
+
+    &-backdrop {
         z-index: 10;
+
         &.show {
             opacity: .5;
         }

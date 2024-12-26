@@ -26,59 +26,6 @@ export default function Dashboard() {
     //     { id: "message", label: "Message", },
     // ];
     return <AppLayout>
-        <div className="row ">
-            <div className="col-6">
-                <div className="row">
-                    <div className="col-4">
-                        <Card className='card__count mb-3'>
-                            <label>Average Win</label>
-                            <h5>$642.00</h5>
-                        </Card>
-                    </div>
-                    <div className="col-4">
-                        <Card className='card__count mb-3'>
-                            <label>Average Win</label>
-                            <h5>$642.00</h5>
-                        </Card>
-                    </div>
-                    <div className="col-4">
-                        <Card className='card__count mb-3'>
-                            <label>Average Win</label>
-                            <h5>$642.00</h5>
-                        </Card>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-4">
-                        <Card className='card__count mb-3'>
-                            <label>Average Win</label>
-                            <h5>$642.00</h5>
-                        </Card>
-                    </div>
-                    <div className="col-4">
-                        <Card className='card__count mb-3'>
-                            <label>Average Win</label>
-                            <h5>$642.00</h5>
-                        </Card>
-                    </div>
-                    <div className="col-4">
-                        <Card className='card__count mb-3'>
-                            <label>Average Win</label>
-                            <h5>$642.00</h5>
-                        </Card>
-                    </div>
-                </div>
-            </div>
-            {/* <div className="col-6">
-                <Card className='card__head mb-3'>
-                    <h4>Notifications</h4>
-                    <DynamicTable columns={columnsNotify} rows={notify} rowsPerPage={2} />
-                </Card>
-            </div> */}
-        </div>
-        {/* <Card className='card__head'>
-            <h4>Order History</h4>
-            <DynamicTable columns={columns} rows={orders} rowsPerPage={5} />
-        </Card> */}
+        <h4 className="text-center">Coming Soon</h4>
     </AppLayout>
 }

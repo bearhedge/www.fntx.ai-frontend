@@ -150,7 +150,14 @@
     text-align: center;
 
     tbody {
+      height: 400px !important;
+        overflow: auto;
+        display: block;
       tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        line-height: 26px;
         &:first-child {
           border-radius: 8px;
 

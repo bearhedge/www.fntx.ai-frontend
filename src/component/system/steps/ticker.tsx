@@ -9,12 +9,13 @@ import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
 import Input from "../../form/input";
+import MultiCodeEvaluator from "../../ide";
 interface Iprops {
   handleTabChange: () => void;
   list: TickerList | any;
   state: any;
   conIds: ConidsProps[];
-  isLoading:boolean
+  isLoading: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onChangeTicker: (value: InstrumentsProps) => void;
 }
@@ -27,6 +28,7 @@ export default function Ticker({
   onChange,
   onChangeTicker,
 }: Iprops) {
+  const [isIde,setIsIde] = useState(false)
   const [instrumentsOpt, setInstrumentsOpt] = useState<string>("");
   const handleChange = (val: string) => {
     setInstrumentsOpt(val);
@@ -37,7 +39,7 @@ export default function Ticker({
   }
   return (
     <div className="system-form">
-      <Card className="mb-4">
+      {!isIde ? <Card className="mb-4">
         <div className="row">
           <div className="col-12 mb-3 pb-1">
             <div className="switch d-flex align-items-center justify-content-end">
@@ -45,7 +47,7 @@ export default function Ticker({
             </div>
           </div>
           {
-            ins?.map((items: string,key:number) => <div className="col-sm-4 col-12" key={key}>
+            ins?.map((items: string, key: number) => <div className="col-sm-4 col-12" key={key}>
               <RadioCheckboxOption
                 type="radio"
                 label={items}
@@ -58,7 +60,10 @@ export default function Ticker({
             </div>)
           }
         </div>
-      </Card>
+      </Card> :
+      <Card className="mb-4">
+        <MultiCodeEvaluator />
+      </Card>}
       <Card>
         <div className="row justify-content-center">
           {list[instrumentsOpt || state.ticker_data?.instruments_opt]?.map((item: InstrumentsProps) => (
@@ -89,7 +94,7 @@ export default function Ticker({
                   Select
                 </option>
                 {conIds?.map((items: ConidsProps) => (
-                  <option key={items.conid} value={JSON.stringify({...items, instruments_opt:instrumentsOpt})}>
+                  <option key={items.conid} value={JSON.stringify({ ...items, instruments_opt: instrumentsOpt })}>
                     {items.companyHeader}
                   </option>
                 ))}
@@ -98,7 +103,7 @@ export default function Ticker({
             <div className="col-md-6">
               <ul className="system-form-conId">
                 {
-                  state?.ticker_data?.sections?.map((items: sectionsProps,key:number) => <li key={key}>
+                  state?.ticker_data?.sections?.map((items: sectionsProps, key: number) => <li key={key}>
                     <p><strong>Type: </strong> {items.secType}</p>
                     {items.months && <p><strong>Months: </strong> {items.months?.split(';').join(', ')}</p>}
                     {items.exchange && <p><strong>Exchange: </strong> {items.exchange?.split(';').join(', ')}</p>}

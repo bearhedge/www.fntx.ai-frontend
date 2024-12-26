@@ -2,7 +2,7 @@ import Button from "../form/button"
 import CrossIco from "@assets/svg/cross_ico.svg"
 import CrossFillIco from "@assets/svg/cross_fill.svg"
 interface IProps {
-    isOpen: number | boolean | string
+    isOpen: number | boolean | string | null
     title?: string
     children?: React.ReactNode
     des?: string

@@ -13,13 +13,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import Fetch from "../../common/api/fetch";
 import { InstrumentsProps } from "../../common/type";
 interface IpropsState {
-    instrument:string,
-    ticker_data: any,
-    timer: any,
-    time_frame: string,
-    time_steps: string,
-    confidence_level:number | null
-    contract_type:string
+  instrument: string,
+  ticker_data: any,
+  timer: any,
+  original_timer_value:string,
+  time_frame: string | null,
+  time_steps: string | null,
+  confidence_level: number | null
+  contract_type: string
 }
 export default function System() {
   const params = useParams();
@@ -33,20 +34,21 @@ export default function System() {
     instrument: "",
     ticker_data: {},
     timer: {},
-    time_frame: '',
-    time_steps: '',
-    confidence_level:null,
-    contract_type:''
+    time_frame: null,
+    original_timer_value:'',
+    time_steps: null,
+    confidence_level: null,
+    contract_type: ''
   });
   useEffect(() => {
     if (params.id) {
-      setTab(+params.id);
+        setTab(+params.id);
     }
   }, [params.id]);
   useEffect(() => {
     getTicker();
     getSystemList();
-  }, []);
+  }, [params.id]);
   const handleTab = (val: number) => {
     setTab(val);
     navigate(`/system/${val}`, { replace: true });
@@ -55,23 +57,27 @@ export default function System() {
   const getSystemList = () => {
     Fetch("ibkr/system-data/").then((res) => {
       if (res.status) {
-        setId(res.data.id)
-        getConIds(res.data.instrument?.instrument)
-        setState(prev => ({
-          ...prev,
-          instrument: res.data.instrument?.id,
-          ticker_data: res.data?.ticker_data,
-          timer: res.data?.timer,
-          confidence_level:res.data?.confidence_level,
-          time_frame:res.data?.time_frame,
-          time_steps:res.data?.time_steps,
-        }))
+        if (res.data?.id) {
+          setId(res.data.id)
+          getConIds(res.data.instrument?.instrument)
+          // setTab(res.data.form_step);
+          setState(prev => ({
+            ...prev,
+            instrument: res.data.instrument?.id,
+            ticker_data: res.data?.ticker_data,
+            timer: res.data?.timer,
+            confidence_level: res.data?.confidence_level,
+            original_timer_value: res.data?.original_timer_value,
+            time_frame: res.data?.time_frame,
+            time_steps: res.data?.time_steps,
+          }))
+        }
       }
     });
   };
   const handleStepSubmit = (val: number) => {
     setIsLoading(true)
-    Fetch(`ibkr/system-data/${id ? id + '/' : ''}`, state, { method: id ? 'patch' : 'post' }).then((res) => {
+    Fetch(`ibkr/system-data/${id ? id + '/' : ''}`, { ...state, form_step: tab }, { method: id ? 'patch' : 'post' }).then((res) => {
       setIsLoading(false)
       if (res.status) {
         setId(res.data.id)
@@ -113,7 +119,7 @@ export default function System() {
 
 
   // Timer Steps
-  const handleChangeTime = (val: string) => {
+  const handleChangeTime = (val: number | null) => {
     const obj = {
       timer_value: val,
       original_timer_value: val,
@@ -136,10 +142,12 @@ export default function System() {
       [name]: val
     }
     if (obj?.time_frame && obj?.time_steps) {
-      Fetch(`ibkr/range`, { time_frame: obj?.time_frame, time_steps: obj?.time_steps,conid:obj.ticker_data?.conid }, { method: 'post' })
+      Fetch(`ibkr/range`, { time_frame: obj?.time_frame, time_steps: obj?.time_steps, conid: obj.ticker_data?.conid }, { method: 'post' })
     }
     setState(obj)
   }
+  console.log(state,'state===');
+  
   return (
     <AppLayout>
       <div className="system">

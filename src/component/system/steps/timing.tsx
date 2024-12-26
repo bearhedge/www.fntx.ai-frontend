@@ -8,39 +8,39 @@ import DialogConfirm from "../../modal";
 const time = [
   {
     label: '90 min',
-    value: '90'
+    value: 90
   },
   {
     label: '120 min',
-    value: '120'
+    value: 120
   },
   {
     label: '150 min',
-    value: '150'
+    value: 150
   },
   {
     label: '180 min',
-    value: '180'
+    value: 180
   },
   {
     label: '210 min',
-    value: '210'
+    value: 210
   },
   {
     label: '240 min',
-    value: '240'
+    value: 240
   },
 ]
 interface Iprops {
   handleTabChange: () => void;
   state: any;
   isLoading: boolean
-  handleChangeTime: (value: string) => void;
+  handleChangeTime: (value: number | null) => void;
 }
 export default function Timing({ handleTabChange, handleChangeTime, isLoading, state }: Iprops) {
   const [countdown, setCountdown] = useState<number | null>(null); // 120 minutes in seconds
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
-  const [isOpen, setIsOpen] = useState('')
+  const [isOpen, setIsOpen] = useState<number | null>(null)
   useEffect(() => {
     if (state?.timer?.timer_value) {
       const timerCountDown = +state?.timer?.timer_value * 60
@@ -68,7 +68,7 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
     const hours = Math.floor(timeInMinutes / 60); // Convert total minutes to hours
     return `${hours.toString().padStart(2, "0")}`;
   };
-  const handleClose = (val = '') => {
+  const handleClose = (val:number | null) => {
     setIsOpen(val)
   }
   return (
@@ -86,9 +86,9 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
                 type="radio"
                 label={items.label}
                 value={items.value}
-                checked={items.value === state.timer?.original_timer_value}
+                checked={items.value === +state.timer?.original_timer_value}
                 disabled={state.timer?.original_timer_value ? items.value !== state.timer?.original_timer_value : false}
-                id={items.value}
+                id={'${items.value}'}
                 handleChange={() => handleClose(items.value)}
                 className="font-bold"
               />
@@ -124,10 +124,10 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
           Next Step
         </Button>
       </Card>
-      <DialogConfirm isOpen={isOpen} title={'Are you sure?'} des={'Are you sure you want to set this time? This action cannot be undone.'} onClose={handleClose}>
+      <DialogConfirm isOpen={isOpen} title={'Are you sure?'} des={'Are you sure you want to set this time? This action cannot be undone.'} onClose={()=>handleClose(null)}>
         <div className="d-flex align-items-center">
-          <Button type='button' className="btn w-100 me-1" onClick={() => handleClose()}>Cancel</Button>
-          <Button className="btn btn-primary w-100 me-2" onClick={() => { handleChangeTime(isOpen); handleClose() }}>Confirm</Button>
+          <Button type='button' className="btn w-100 me-1" onClick={() => handleClose(0)}>Cancel</Button>
+          <Button className="btn btn-primary w-100 me-2" onClick={() => { handleChangeTime(isOpen); handleClose(0) }}>Confirm</Button>
         </div>
       </DialogConfirm>
     </div>

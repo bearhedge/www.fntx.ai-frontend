@@ -52,11 +52,13 @@ export default function Sidebar({ width }: Iprops) {
                                     }}
                                     >
                                         {
-                                            item.chiildren?.map((child, index) => <div key={key + index} className="sidebar__content__item">
+                                            item.chiildren?.map((child, index) => child.route ? <div key={key + index} className="sidebar__content__item">
                                                 <NavLink to={child.route} end className={({ isActive }) => (isActive ? 'active' : '')}>
                                                     <label>{child.label}</label>
                                                 </NavLink>
-                                            </div>)
+                                            </div>: <div className={`sidebar__content__item-noLink ${location.pathname?.includes(child.route) || activeDropdown === key?'active':''}`} onClick={() => handleDropdownToggle(key)}>
+                                        <label>{item.label}</label>
+                                    </div>)
                                         }
                                     </div>
                                 </div>
