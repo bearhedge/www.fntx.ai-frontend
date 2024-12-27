@@ -46,7 +46,14 @@
     min-height: calc(100vh - 190px);
     display: flex;
     align-items: center;
-
+    &-dashboard{
+        &-list{
+            p{
+            font-size: 16px;
+            line-height: 22px;
+        }
+        }
+    }
     .btn-baselay {
         max-width: 295px;
         width: 100%;

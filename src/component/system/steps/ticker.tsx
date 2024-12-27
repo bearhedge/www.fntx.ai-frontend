@@ -28,7 +28,7 @@ export default function Ticker({
   onChange,
   onChangeTicker,
 }: Iprops) {
-  const [isIde,setIsIde] = useState(false)
+  const [isIde,setIsIde] = useState(true)
   const [instrumentsOpt, setInstrumentsOpt] = useState<string>("");
   const handleChange = (val: string) => {
     setInstrumentsOpt(val);

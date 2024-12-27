@@ -7,6 +7,7 @@ import Login from './pages/auth/login';
 import Register from './pages/auth/register';
 import ResetPassword from './pages/auth/reset';
 import Dashboard from './pages/Dashboard';
+import HomeDashboard from './pages/Home';
 import OnBoarding from './pages/onboarding';
 import System from './pages/system';
 import { setLoginUser } from './services/slices/authSlice';
@@ -32,6 +33,7 @@ interface RouteType {
 const routes: RouteType[] = [
   { path: '/', component: Home, type: 'public' },
   { path: '/dashboard', component: Dashboard, type: 'public' },
+  { path: '/home', component: HomeDashboard, type: 'public' },
   { path: '/system', component: System, type: 'public' },
   { path: '/system/:id', component: System, type: 'public' },
   { path: '/signin', component: Login, type: 'auth' },

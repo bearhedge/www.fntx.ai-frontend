@@ -35,13 +35,14 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
 
           ws.onopen = () => {
             console.log('WebSocket connected');
-            ws.send(JSON.stringify({ session: token }));
+            // ws.send(JSON.stringify({ session: '9662a788374c67e313b6710f3e0a9599' }));
+            ws.send(JSON.stringify({ cookie: `api=${'{"session":"9662a788374c67e313b6710f3e0a9599"}'}` }));
             ws.send('smd+' + state.ticker_data?.conid + '+' + JSON.stringify({ fields: ["31", "82", "83", "7089", "201", "7635",'7086','7085'] }));
           };
 
           // When a message is received from the server
           ws.onmessage = (event) => {
-            console.log('Message received:', event.data);
+            console.log('Message received:', event,event.data);
             const blob = event.data;
 
             // Use FileReader to read the Blob

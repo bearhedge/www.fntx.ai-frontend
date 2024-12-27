@@ -31,11 +31,6 @@ export default function Trade({ handleTabChange }: SystemPagesProps) {
                             <RangeSlider className='mx-3' count={11} oddNumbers={true} />
                             <Input type='text' onKeyPress={onKeyPress} />
                         </div>
-                        <div className="d-flex">
-                            <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Take-profit</div>
-                            <RangeSlider className='mx-3' count={11} oddNumbers={true} />
-                            <Input type='text' onKeyPress={onKeyPress} />
-                        </div>
                     </div>
                 </div>
                 <div className="col-12 col-md-6 pt-3">
@@ -51,11 +46,6 @@ export default function Trade({ handleTabChange }: SystemPagesProps) {
                         </div>
                         <div className="d-flex">
                             <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Stop-Loss</div>
-                            <RangeSlider className='mx-3' count={11} oddNumbers={true} />
-                            <Input type='text' onKeyPress={onKeyPress} />
-                        </div>
-                        <div className="d-flex">
-                            <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Take-profit</div>
                             <RangeSlider className='mx-3' count={11} oddNumbers={true} />
                             <Input type='text' onKeyPress={onKeyPress} />
                         </div>
@@ -91,15 +81,6 @@ export default function Trade({ handleTabChange }: SystemPagesProps) {
                             <div className="system-trade-card-btn mb-0 d-flex align-items-center justify-content-center">Stop-Loss</div>
                             <Input type='text' onKeyPress={onKeyPress} />
                         </div>
-                        <div className="d-flex gap-3  align-items-center system-trade-card-check">
-                        <input type='radio' className="d-none" id='limit-sell' />
-                            <label htmlFor="limit-sell">
-                                <div className="circle"></div>
-                                <TickGreenIcon />
-                            </label>
-                            <div className="system-trade-card-btn mb-0 d-flex align-items-center justify-content-center">Take-profit</div>
-                            <Input type='text' onKeyPress={onKeyPress} />
-                        </div>
                     </div>
                 </div>
                 <div className="col-12 col-md-6">
@@ -121,15 +102,6 @@ export default function Trade({ handleTabChange }: SystemPagesProps) {
                                 <TickGreenIcon />
                             </label>
                             <div className="system-trade-card-btn mb-0 d-flex align-items-center justify-content-center">Stop-Loss</div>
-                            <Input type='text' onKeyPress={onKeyPress} />
-                        </div>
-                        <div className="d-flex gap-3  align-items-center system-trade-card-check">
-                        <input type='radio' className="d-none" id='limit-sell' />
-                            <label htmlFor="limit-sell">
-                                <div className="circle"></div>
-                                <TickGreenIcon />
-                            </label>
-                            <div className="system-trade-card-btn mb-0 d-flex align-items-center justify-content-center">Take-profit</div>
                             <Input type='text' onKeyPress={onKeyPress} />
                         </div>
                     </div>
