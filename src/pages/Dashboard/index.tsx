@@ -1,6 +1,6 @@
 // import { Column } from "../../common/type";
 // import Badge from "../../component/badge";
-import Card from "../../component/Card";
+// import Card from "../../component/Card";
 // import DynamicTable from "../../component/Table";
 import AppLayout from "../../layout/appLayout";
 // import { notify, orders } from "../../lib/dummyArray";

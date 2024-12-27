@@ -30,11 +30,11 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
           setStrikes(JSON.parse(event.data)?.valid_strikes)
         }
         Fetch('ibkr/get-token').then(res => {
-          const token = res.data;
+          // const token = res.data;
           const ws = new WebSocket('wss://localhost:8000/v1/api/ws'); // WebSocket URL must start with 'wss://'
 
           ws.onopen = () => {
-            console.log('WebSocket connected');
+            console.log('WebSocket connected',res);
             // ws.send(JSON.stringify({ session: '9662a788374c67e313b6710f3e0a9599' }));
             ws.send(JSON.stringify({ cookie: `api=${'{"session":"9662a788374c67e313b6710f3e0a9599"}'}` }));
             ws.send('smd+' + state.ticker_data?.conid + '+' + JSON.stringify({ fields: ["31", "82", "83", "7089", "201", "7635",'7086','7085'] }));
