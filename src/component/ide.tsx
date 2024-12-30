@@ -1,71 +1,86 @@
-import * as React from "react";
-import { useState } from "react";
-import Button from "./form/button";
-import Input from "./form/input";
+import { useState, useEffect } from "react";
 
-const MultiCodeEvaluator: React.FC = () => {
-  const [codeInputs, setCodeInputs] = useState<string[]>(["", ""]); // State for multiple textareas
-  const [result, setResult] = useState<string>(""); // State for evaluation result
+declare global {
+  interface Window {
+    pyodide: any;
+    loadPyodide: () => Promise<void>;
+  }
+}
 
-  // Update the specific code input
-  const updateCodeInput = (index: number, value: string): void => {
-    const updatedInputs = [...codeInputs];
-    updatedInputs[index] = value;
-    setCodeInputs(updatedInputs);
+const PyodideExample: React.FC = () => {
+  const [inputs, setInputs] = useState<string[]>([""]);
+  const [output, setOutput] = useState<string>("");
+  const [pyodideReady, setPyodideReady] = useState<boolean>(false);
+
+  // Load Pyodide once when the component mounts
+  useEffect(() => {
+    const loadPyodide = async () => {
+      await window.loadPyodide();
+      setPyodideReady(true);
+    };
+    loadPyodide();
+  }, []);
+
+  // Function to handle input changes dynamically
+  const handleInputChange = (index: number, value: string) => {
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
   };
 
-  // Evaluate the combined code from all textareas
-  const evaluateCombinedCode = (): void => {
-    const combinedCode = codeInputs.join("\n"); // Combine all code inputs
-
-    try {
-      // Create a new function to execute code in the shared context
-      const functionBody = `
-        with (evaluateCombinedCode) {
-          ${combinedCode}
-        }
-      `;
-      const func = new Function("return", functionBody);
-
-      // Execute the function with the shared context
-      const evalResult = func();
-      console.log(evalResult);
-
-      // Handle undefined results
-      setResult(evalResult !== undefined ? evalResult.toString() : "undefined");
-    } catch (error) {
-      setResult(`Error: ${(error as Error).message}`);
-    }
+  // Function to add a new input field
+  const addInputField = () => {
+    setInputs([...inputs, ""]);
   };
 
-  // Add a new empty textarea
-  const addTextarea = (): void => {
-    setCodeInputs([...codeInputs, ""]);
+  // Function to remove an input field
+  const removeInputField = (index: number) => {
+    const newInputs = inputs.filter((_, i) => i !== index);
+    setInputs(newInputs);
+  };
+
+  // Function to execute Python code
+  const executePythonCode = async () => {
+    if (!pyodideReady) return;
+    
+    const pythonCode = `
+def process_inputs(inputs):
+    # Here you can process the inputs in any way
+    result = sum([float(i) for i in inputs])
+    return result
+
+output = process_inputs(${JSON.stringify(inputs)});
+output
+    `;
+    
+    const result = await window.pyodide.runPython(pythonCode);
+    setOutput(result);
   };
 
   return (
-    <div className="multi-input">
-      {codeInputs.map((code, index) => (
-        <Input
-          key={index}
-          value={code}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateCodeInput(index, e.target.value)}
-        />
-      ))}
-      <div className="d-flex justify-content-end">
-        <Button className='btn' onClick={evaluateCombinedCode}>Run Combined Code</Button>
-        <Button onClick={addTextarea} className='btn'>
-          Add Code Block
-        </Button>
-      </div>
-      <div style={{ marginTop: "20px" }}>
-        <strong>Output:</strong>
-        <div style={{ marginTop: "10px", padding: "10px", backgroundColor: "#f9f9f9" }}>
-          {result}
+    <div>
+      <h2>Pyodide Example with Multiple Inputs</h2>
+
+      {/* Render input fields dynamically */}
+      {inputs.map((input, index) => (
+        <div key={index}>
+          <input
+            type="number"
+            value={input}
+            onChange={(e) => handleInputChange(index, e.target.value)}
+          />
+          <button onClick={() => removeInputField(index)}>Remove</button>
         </div>
+      ))}
+      
+      <button onClick={addInputField}>Add Input</button>
+      <button onClick={executePythonCode}>Execute Python Code</button>
+
+      <div>
+        <h3>Output: {output}</h3>
       </div>
     </div>
   );
 };
 
-export default MultiCodeEvaluator;
+export default PyodideExample;

@@ -147,9 +147,9 @@ svg {
         background-color: transparent;
         height: 50px;
         padding: 0;
-
+        
         input,
-        select {
+        select,textarea {
             border: 1px solid;
             border-color: var(--btnBgColor);
             background-color: transparent;
@@ -166,6 +166,10 @@ svg {
                 background-color: transparent;
                 outline: 0;
             }
+        }
+        textarea{
+            height: auto;
+            min-height: 50px;
         }
     }
 }

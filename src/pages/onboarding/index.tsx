@@ -27,7 +27,7 @@ let modalContent: any = {
 export default function OnBoarding() {
     const [isRefreshIbkr, setIsRefreshIbkr] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [isLoadingMeta, setIsLoadingMeta] = useState(false)
+    const [isLoadingMeta, setIsLoadingMeta] = useState(true)
     const [isRefreshMeta, setIsRefreshMeta] = useState(false)
     const [isOpen, setIsOpen] = useState(0)
     const [isOneTimeModal, setIsOneTimeModal] = useState(false)
@@ -58,6 +58,7 @@ export default function OnBoarding() {
                     metamask_address: res.data?.metamask_address ? true : false
                 }))
             }
+            setIsLoadingMeta(false)
             setIsRefreshIbkr(false)
             setIsRefreshMeta(false)
         })
@@ -68,7 +69,6 @@ export default function OnBoarding() {
         }
         Fetch('ibkr/auth-status/').then((res: any) => {
             if (res.status) {
-                console.log(platform.ibkr, res?.data);
                 if (res?.data?.authenticated) {
                     setPlatform((prev) => ({ ...prev, ibkr: res?.data?.authenticated }))
                     setPlatformError((prev) => ({ ...prev, ibkr: '' }))
@@ -81,8 +81,6 @@ export default function OnBoarding() {
                 }
             } else {
                 let resErr = arrayString(res);
-                console.log(resErr.message, isOneTimeModal);
-
                 if (resErr.message && isOneTimeModal) {
                     modalContent[1].des = resErr.message
                     setIsOpen(1)
@@ -168,6 +166,9 @@ export default function OnBoarding() {
                 .then((accounts: any) => {
                     if (accounts.length > 0) {
                         setIsMetaMaskInstalled(false);
+                        if(!platform?.metamask_address && platform.id){
+                            addMetaMask(accounts[0])
+                        }
                     } else {
                         modalContent[2].des = 'After installing MetaMask, connect the metamask and refresh the page to enable full functionality.'
                         modalContent[2].des1 = ''
@@ -189,7 +190,7 @@ export default function OnBoarding() {
         } else {
             setIsMetaMaskInstalled(true);
         }
-    }, []);
+    }, [platform?.metamask_address , platform.id]);
     // useEffect(() => {
     //     const ethereum = (window as any).ethereum;
     //     // Function to handle account changes
