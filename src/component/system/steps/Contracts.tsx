@@ -13,9 +13,7 @@ interface Iprops {
 }
 export default function Contracts({ handleTabChange, onChange, state, isLoading }: Iprops) {
   const [contractType, setContractType] = useState('')
-  const [callOrder, setCallOrder] = useState<any>([]);
   const [order, setOrders] = useState<any>([]);
-  const [strikes, setStrikes] = useState<any>([]);
   const socketRef = useRef<any>()
   useEffect(() => {
     // Create the WebSocket connection

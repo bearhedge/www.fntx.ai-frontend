@@ -41,7 +41,7 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
   const [countdown, setCountdown] = useState<number | null>(null); // 120 minutes in seconds
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<number | null>(null)
-  const [placeOrder, setPlaceOrder] = useState<boolean | null>(false)
+  const [placeOrder] = useState<boolean | null>(false)
   useEffect(() => {
     if (state?.timer?.timer_value) {
       const timerCountDown = +state?.timer?.timer_value * 60
