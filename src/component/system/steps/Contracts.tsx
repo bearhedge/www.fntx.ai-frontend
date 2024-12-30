@@ -65,11 +65,11 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
     { id: "call", label: "Open Interest",formatHtmls: (item: any) => item?.call?.live_data[0][7085]  || '-'},
   ];
   const columnsPut: readonly any[] = [
-    { id: "put", label: "Last Price", formatHtmls: (item: any) => item?.call?.live_data[0][31]?.replace('C','') || '-'},
+    { id: "put", label: "Last Price", formatHtmls: (item: any) => item?.put?.live_data[0][31]?.replace('C','') || '-'},
     { id: "put", label: "Change",formatHtmls: (item: any) => item?.put?.live_data[0][82] || '-'},
     { id: "put", label: "%Change",formatHtmls: (item: any) => item?.put?.live_data[0][83] || '-'},
     { id: "put", label: "Volume",formatHtmls: (item: any) => item?.put?.live_data[0][7086] || '-'},
-    { id: "put", label: "Open Interest",formatHtmls: (item: any) => item?.call?.live_data[0][7085]  || '-'},
+    { id: "put", label: "Open Interest",formatHtmls: (item: any) => item?.put?.live_data[0][7085]  || '-'},
 
   ];
   const columnsStrikes: readonly any[] = [
