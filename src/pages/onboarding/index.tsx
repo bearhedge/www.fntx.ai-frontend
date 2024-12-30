@@ -9,6 +9,7 @@ import TickDarkIco from "@assets/svg/tick-dark.svg"
 import Alert from "../../component/Alert";
 import LoaderSpin from "../../component/loader";
 import DialogConfirm from "../../component/modal";
+import { useNavigate } from "react-router-dom";
 let modalContent: any = {
     1: {
         title: 'Interactive Brokers Account not connected',
@@ -25,6 +26,7 @@ let modalContent: any = {
     }
 }
 export default function OnBoarding() {
+    const navigate = useNavigate()
     const [isRefreshIbkr, setIsRefreshIbkr] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingMeta, setIsLoadingMeta] = useState(true)
@@ -308,7 +310,7 @@ export default function OnBoarding() {
             </div>
             <h4 className="mt-4 mb-0 pb-5">Please ensure the following requirements are met.</h4>
             <div className="mt-5 d-flex justify-content-end mb-5 pt-3">
-                <Button className="btn btn-primary me-1" disabled={!(platform?.ibkr && (platform?.metamask_address && !isMetaMaskInstalled))}>Dashboard</Button>
+                <Button className="btn btn-primary me-1" onClick={()=>navigate('/dashboard')} disabled={!(platform?.ibkr && (platform?.metamask_address && !isMetaMaskInstalled))}>Dashboard</Button>
             </div>
         </section>
         <DialogConfirm isOpen={isOpen} title={modalContent[isOpen]?.title} des={modalContent[isOpen]?.des} des1={modalContent[isOpen]?.des1} onClose={handleClose}>

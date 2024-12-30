@@ -46,8 +46,14 @@ svg {
     /* Safari */
     animation: spin 2s linear infinite;
     margin: 0px auto;
+    &__dark{
+        border-color: var(--text-color);
+    border-top: 3px solid transparent;
+    }
 }
-
+.table-responsive{
+    overflow: auto;
+}
 /* Safari */
 @-webkit-keyframes spin {
     0% {

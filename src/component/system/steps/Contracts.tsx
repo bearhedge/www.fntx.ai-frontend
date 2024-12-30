@@ -13,7 +13,8 @@ interface Iprops {
 }
 export default function Contracts({ handleTabChange, onChange, state, isLoading }: Iprops) {
   const [contractType, setContractType] = useState('')
-  const [message, setMessage] = useState<any>([]);
+  const [callOrder, setCallOrder] = useState<any>([]);
+  const [order, setOrders] = useState<any>([]);
   const [strikes, setStrikes] = useState<any>([]);
   const socketRef = useRef<any>()
   useEffect(() => {
@@ -26,57 +27,21 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
           console.log('WebSocket Strikes connected');
           wsStrikes.send(JSON.stringify({ contract_id: state.ticker_data?.conid }));
         }
-        wsStrikes.onmessage = (event) => {
-          setStrikes(JSON.parse(event.data)?.valid_strikes)
+        wsStrikes.onmessage = (event:any) => {
+          setOrders(JSON.parse(event.data)?.option_chain_data)
         }
-        // Fetch('ibkr/get-token').then(res => {
-          // const token = res.data;
-          const ws = new WebSocket('wss://localhost:8000/v1/api/ws'); // WebSocket URL must start with 'wss://'
+        // When the WebSocket encounters an error
+        wsStrikes.onerror = (error) => {
+          console.log('WebSocket error:', error);
+        };
 
-          ws.onopen = () => {
-            console.log('WebSocket connected');
-            // ws.send(JSON.stringify({ session: '9662a788374c67e313b6710f3e0a9599' }));
-            ws.send(JSON.stringify({ cookie: `api=${'{"session":"bf82015cf618cbd448a67b9d28143596"}'}` }));
-            ws.send('smd+' + state.ticker_data?.conid + '+' + JSON.stringify({ fields: ["31", "82", "83", "7089", "201", "7635",'7086','7085'] }));
-          };
+        // When the WebSocket closes
+        wsStrikes.onclose = () => {
+          console.log('WebSocket connection closed');
+        };
 
-          // When a message is received from the server
-          ws.onmessage = (event) => {
-            console.log('Message received:', event,event.data);
-            const blob = event.data;
-
-            // Use FileReader to read the Blob
-            const reader = new FileReader();
-            reader.onload = () => {
-              try {
-                // Convert the result to a string and parse it into JSON
-                const jsonString: any = reader.result;
-                const jsonData = JSON.parse(jsonString);
-                console.log(jsonData);
-                
-                setMessage((prevMessages: any) => [...prevMessages, jsonData]);
-                console.log("Parsed JSON data:", jsonData);
-              } catch (error) {
-                console.error("Error parsing JSON:", error);
-              }
-            };
-
-            // Read the blob as text
-            reader.readAsText(blob);
-          };
-
-          // When the WebSocket encounters an error
-          ws.onerror = (error) => {
-            console.log('WebSocket error:', error);
-          };
-
-          // When the WebSocket closes
-          ws.onclose = () => {
-            console.log('WebSocket connection closed');
-          };
-
-          // Store the WebSocket connection in state
-          socketRef.current = ws
+        // Store the WebSocket connection in state
+        socketRef.current = wsStrikes
         // })
 
       } catch (error) {
@@ -94,19 +59,27 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
     };
   }, [state.ticker_data]);
 
-  const columns: readonly any[] = [
-    { id: "31", label: "Last Price" },
-    { id: "82", label: "Change" },
-    { id: "83", label: "%Change" },
-    { id: "87", label: "Volume" },
-    // { id: "billable_time_spend", label: "Open Interest" },
+  const columnsCall: readonly any[] = [
+    { id: "call", label: "Last Price", formatHtmls: (item: any) => item?.call?.live_data[0][31]?.replace('C','')|| '-'},
+    { id: "call", label: "Change",formatHtmls: (item: any) => item?.call?.live_data[0][82] || '-'},
+    { id: "call", label: "%Change",formatHtmls: (item: any) => item?.call?.live_data[0][83] || '-'},
+    { id: "call", label: "Volume",formatHtmls: (item: any) => item?.call?.live_data[0][7086] || '-'},
+    { id: "call", label: "Open Interest",formatHtmls: (item: any) => item?.call?.live_data[0][7085]  || '-'},
+  ];
+  const columnsPut: readonly any[] = [
+    { id: "put", label: "Last Price", formatHtmls: (item: any) => item?.call?.live_data[0][31]?.replace('C','') || '-'},
+    { id: "put", label: "Change",formatHtmls: (item: any) => item?.put?.live_data[0][82] || '-'},
+    { id: "put", label: "%Change",formatHtmls: (item: any) => item?.put?.live_data[0][83] || '-'},
+    { id: "put", label: "Volume",formatHtmls: (item: any) => item?.put?.live_data[0][7086] || '-'},
+    { id: "put", label: "Open Interest",formatHtmls: (item: any) => item?.call?.live_data[0][7085]  || '-'},
+
   ];
   const columnsStrikes: readonly any[] = [
-    { id: "valid_strikes", label: "Strikes", formatHtmls:(val:number)=> val },
+    { id: "strike", label: "Strikes"},
     // { id: "billable_time_spend", label: "Open Interest" },
   ];
-  console.log(message,'message===');
-  
+  console.log(order, 'message===');
+
   return (
     <div className="system-form">
       <Card className="mb-4">
@@ -173,13 +146,13 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
       <Card>
         <div className="row mb-3">
           {(state.contract_type === 'call' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 12} col-12`}>
-            <StockTable title={"Calls"} rows={message} columns={columns} showStrike={true} />
+            <StockTable title={"Calls"} rows={order} columns={columnsCall} showStrike={true} />
           </div>}
           {state.contract_type && <div className={`col-sm-${state.contract_type === 'both' ? 2 : 6} col-12 strike-table`}>
-            <StockTable title={"Strikes"} rows={strikes} columns={columnsStrikes} showStrike={true} />
+            <StockTable title={"Strikes"} rows={order} columns={columnsStrikes} showStrike={true} />
           </div>}
           {(state.contract_type === 'put' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 12} col-12`}>
-            <StockTable title={"Puts"} className="grey-bg" columns={columns} rows={message} />
+            <StockTable title={"Puts"} className="grey-bg" columns={columnsPut} rows={order} />
           </div>}
         </div>
 

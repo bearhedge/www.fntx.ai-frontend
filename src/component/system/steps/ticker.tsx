@@ -9,6 +9,7 @@ import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
 import Input from "../../form/input";
+import Loader from "../../form/loader";
 import MultiCodeEvaluator from "../../ide";
 interface Iprops {
   handleTabChange: () => void;
@@ -16,6 +17,7 @@ interface Iprops {
   state: any;
   conIds: ConidsProps[];
   isLoading: boolean
+  isLoadingConid:boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onChangeTicker: (value: InstrumentsProps) => void;
 }
@@ -25,6 +27,7 @@ export default function Ticker({
   conIds,
   state,
   isLoading,
+  isLoadingConid,
   onChange,
   onChangeTicker,
 }: Iprops) {
@@ -81,6 +84,9 @@ export default function Ticker({
             </div>
           ))}
         </div>
+        {
+          isLoadingConid ? <Loader dark={true}/>:null
+        }
         {conIds?.length ? (
           <div className="row justify-content-center">
             <div className="col-md-6">

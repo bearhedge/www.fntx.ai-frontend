@@ -41,6 +41,7 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
   const [countdown, setCountdown] = useState<number | null>(null); // 120 minutes in seconds
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<number | null>(null)
+  const [placeOrder, setPlaceOrder] = useState<boolean | null>(false)
   useEffect(() => {
     if (state?.timer?.timer_value) {
       const timerCountDown = +state?.timer?.timer_value * 60
@@ -48,7 +49,6 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
       const countdownInterval = setInterval(() => {
         setCountdown((prev) => (prev ? prev - 1 : timerCountDown - 1));
       }, 1000);
-
       const timeInterval = setInterval(() => {
         setCurrentTime((prevTime) => new Date((prevTime?.getTime() || currentTimer) + 1000));
       }, 1000);
@@ -71,6 +71,8 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
   const handleClose = (val:number | null) => {
     setIsOpen(val)
   }
+  console.log(isOpen);
+  
   return (
     <div className="system-form">
       <Card className="mb-4">
@@ -88,7 +90,7 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
                 value={items.value}
                 checked={items.value === +state.timer?.original_timer_value}
                 disabled={state.timer?.original_timer_value ? items.value !== state.timer?.original_timer_value : false}
-                id={'${items.value}'}
+                id={`${items.value}`}
                 handleChange={() => handleClose(items.value)}
                 className="font-bold"
               />
@@ -112,7 +114,7 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
           <div className="col-sm-6 col-12 d-flex justify-content-around">
             <CircularButton text={"P"} bgColor={state.timer?.place_order === null ? 'green' : ''} />
             <CircularButton text={"N"} bgColor={state.timer?.place_order === false ? 'green' : ''} />
-            <CircularButton text={"D"} bgColor={state.timer?.place_order === true ? 'green' : ''} />
+            <CircularButton text={"D"} bgColor={(state.timer?.original_timer_value && placeOrder) || state.timer?.place_order === true ? 'green' : ''} />
           </div>
         </div>
         <Button

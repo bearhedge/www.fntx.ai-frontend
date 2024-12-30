@@ -15,6 +15,7 @@ const StockTable: React.FC<StockTableProps> = ({
   return (
     <div className="stock-table">
       <label className="fw-600 mb-3">{title}</label>
+      <div className="table-responsive">
       <table>
         <thead>
           <tr>
@@ -38,6 +39,8 @@ const StockTable: React.FC<StockTableProps> = ({
             <tr key={index}>
               {columns.map((column: any, cellIndex: number) => {
                 const value = row[column.id];
+                console.log(value,row,'value===');
+                
                 return <td key={cellIndex}>
                   {column.formatHtmls
                     ? column.formatHtmls(row)
@@ -51,6 +54,7 @@ const StockTable: React.FC<StockTableProps> = ({
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

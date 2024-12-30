@@ -16,7 +16,7 @@ interface IpropsState {
   instrument: string,
   ticker_data: any,
   timer: any,
-  original_timer_value:string,
+  original_timer_value: string,
   time_frame: string | null,
   time_steps: string | null,
   confidence_level: number | null
@@ -29,20 +29,21 @@ export default function System() {
   const [conIds, setConIds] = useState([]);
   const [tab, setTab] = useState(0);
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingConid, setIsLoadingConid] = useState(false)
   const [id, setId] = useState('')
   const [state, setState] = useState<IpropsState>({
     instrument: "",
     ticker_data: {},
     timer: {},
     time_frame: null,
-    original_timer_value:'',
+    original_timer_value: '',
     time_steps: null,
     confidence_level: null,
     contract_type: ''
   });
   useEffect(() => {
     if (params.id) {
-        setTab(+params.id);
+      setTab(+params.id);
     }
   }, [params.id]);
   useEffect(() => {
@@ -105,11 +106,13 @@ export default function System() {
     });
   };
   const getConIds = (instrument: string) => {
+    setIsLoadingConid(true)
     setConIds([])
     Fetch(`ibkr/symbol_conid?symbol=${instrument}`).then((res) => {
       if (res.status) {
         setConIds(res.data?.data);
       }
+      setIsLoadingConid(false)
     });
   }
   const onChangeTicker = (val: InstrumentsProps) => {
@@ -123,6 +126,7 @@ export default function System() {
     const obj = {
       timer_value: val,
       original_timer_value: val,
+      place_order:false,
       start_time: new Date()?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     }
     Fetch(`ibkr/timer/`, obj, { method: 'post' }).then((res) => {
@@ -146,8 +150,8 @@ export default function System() {
     }
     setState(obj)
   }
-  console.log(state,'state===');
-  
+  console.log(state, 'state===');
+
   return (
     <AppLayout>
       <div className="system">
@@ -158,6 +162,7 @@ export default function System() {
           <Ticker
             state={state}
             conIds={conIds}
+            isLoadingConid={isLoadingConid}
             list={tickerList}
             isLoading={isLoading}
             onChange={onChange}

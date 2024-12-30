@@ -139,7 +139,10 @@
     font-size: 18px;
     line-height: 22px;
   }
-
+.table-responsive{
+      height: 400px !important;
+      border-radius: 8px;
+}
   table {
     width: 100%;
     border-collapse: collapse;
@@ -150,11 +153,11 @@
     text-align: center;
 
     tbody {
-      height: 400px !important;
+      // height: 400px !important;
         overflow: auto;
-        display: block;
+        // display: block;
       tr {
-        display: table;
+        // display: table;
         width: 100%;
         table-layout: fixed;
         line-height: 26px;

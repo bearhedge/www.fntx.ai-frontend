@@ -1,3 +1,3 @@
-export default function Loader(){
-    return<div className="loaderBtn"></div>
+export default function Loader({ dark }: { dark?: boolean }) {
+    return <div className={`loaderBtn ${dark?'loaderBtn__dark':''}`}></div>
 }
