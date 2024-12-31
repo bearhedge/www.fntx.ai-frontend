@@ -12,6 +12,7 @@ import Manage from "../../component/system/steps/manage";
 import { useNavigate, useParams } from "react-router-dom";
 import Fetch from "../../common/api/fetch";
 import { InstrumentsProps } from "../../common/type";
+import { arrayString } from "../../lib/utilits";
 interface IpropsState {
   instrument: string,
   ticker_data: any,
@@ -31,6 +32,7 @@ export default function System() {
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingConid, setIsLoadingConid] = useState(false)
   const [id, setId] = useState('')
+  const [errorMessage,setErrorMsg]=useState('')
   const [state, setState] = useState<IpropsState>({
     instrument: "",
     ticker_data: {},
@@ -83,6 +85,12 @@ export default function System() {
       if (res.status) {
         setId(res.data.id)
         handleTab(val)
+      }else{
+        let resErr = arrayString(res);
+        console.log(resErr);
+        
+          // handleNewError(resErr);
+          setErrorMsg(resErr.error)
       }
     });
   };
@@ -150,7 +158,7 @@ export default function System() {
     }
     setState(obj)
   }
-  console.log(state, 'state===');
+  console.log(errorMessage, 'state===');
 
   return (
     <AppLayout>
@@ -161,6 +169,7 @@ export default function System() {
         {tab === 0 && (
           <Ticker
             state={state}
+            errorMessage={errorMessage}
             conIds={conIds}
             isLoadingConid={isLoadingConid}
             list={tickerList}
@@ -172,13 +181,14 @@ export default function System() {
         )}
         {tab === 1 && <Timing
           state={state}
+          errorMessage={errorMessage}
           handleChangeTime={handleChangeTime}
           isLoading={isLoading}
           handleTabChange={() => handleStepSubmit(2)}
         />}
-        {tab === 2 && <Range state={state} isLoading={isLoading} handleChangeRange={handleChangeRange} handleTabChange={() => handleStepSubmit(3)} />}
-        {tab === 3 && <Risk onChange={onChange} isLoading={isLoading} state={state} handleTabChange={() => handleStepSubmit(4)} />}
-        {tab === 4 && <Contracts isLoading={isLoading} state={state} onChange={onChange} handleTabChange={() => handleStepSubmit(5)} />}
+        {tab === 2 && <Range errorMessage={errorMessage} state={state} isLoading={isLoading} handleChangeRange={handleChangeRange} handleTabChange={() => handleStepSubmit(3)} />}
+        {tab === 3 && <Risk errorMessage={errorMessage} onChange={onChange} isLoading={isLoading} state={state} handleTabChange={() => handleStepSubmit(4)} />}
+        {tab === 4 && <Contracts errorMessage={errorMessage} isLoading={isLoading} state={state} onChange={onChange} handleTabChange={() => handleStepSubmit(5)} />}
         {tab === 5 && <Trade handleTabChange={() => handleStepSubmit(6)} />}
         {tab === 6 && <Manage handleTabChange={() => handleStepSubmit(6)} />}
       </div>

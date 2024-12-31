@@ -1,6 +1,7 @@
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
+import Required from "../../form/required";
 import InputCard from "./../InputCard";
 const time = [
   '1-day',
@@ -14,9 +15,10 @@ interface Iprops {
   handleTabChange: () => void;
   state: any;
   isLoading: boolean
+  errorMessage: string
   handleChangeRange: (value: string | number, name: string) => void;
 }
-export default function Range({ handleTabChange, state, isLoading, handleChangeRange }: Iprops) {
+export default function Range({ handleTabChange, state, isLoading, handleChangeRange, errorMessage }: Iprops) {
   const handleGetTotal = (): string | number => {
     const val = state.time_frame?.split('-')
     let result = 'N/A'
@@ -116,6 +118,7 @@ export default function Range({ handleTabChange, state, isLoading, handleChangeR
                 />
               </div>
               <div className="col-12">
+                <Required errorText={errorMessage} />
                 <Button
                   className="btn btn-primary btn-next-step w-100"
                   onClick={handleTabChange}

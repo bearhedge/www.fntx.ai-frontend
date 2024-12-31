@@ -4,14 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
+import Required from "../../form/required";
 import StockTable from "../StockTable";
 interface Iprops {
   handleTabChange: () => void;
   state: any;
+  errorMessage:string
   isLoading: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export default function Contracts({ handleTabChange, onChange, state, isLoading }: Iprops) {
+export default function Contracts({ handleTabChange, onChange, state, isLoading, errorMessage }: Iprops) {
   const [contractType, setContractType] = useState('')
   const [order, setOrders] = useState<any>([]);
   const socketRef = useRef<any>()
@@ -76,7 +78,7 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
     { id: "strike", label: "Strikes"},
     // { id: "billable_time_spend", label: "Open Interest" },
   ];
-  console.log(order, 'message===');
+    console.log(order, 'message===');
 
   return (
     <div className="system-form">
@@ -141,13 +143,13 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
           </div>}
         </div>
       </Card>
-      <Card>
+      <Card className="system-form-orders">
         <div className="row mb-3">
-          {(state.contract_type === 'call' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 12} col-12`}>
+          {(state.contract_type === 'call' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 9} col-12`}>
             <StockTable title={"Calls"} rows={order} columns={columnsCall} showStrike={true} />
           </div>}
-          {state.contract_type && <div className={`col-sm-${state.contract_type === 'both' ? 2 : 6} col-12 strike-table`}>
-            <StockTable title={"Strikes"} rows={order} columns={columnsStrikes} showStrike={true} />
+          {state.contract_type && <div className={`col-sm-${state.contract_type === 'both' ? 2 : 3} col-12 strike-table`}>
+            <StockTable title={""} rows={order} columns={columnsStrikes} showStrike={true} />
           </div>}
           {(state.contract_type === 'put' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 12} col-12`}>
             <StockTable title={"Puts"} className="grey-bg" columns={columnsPut} rows={order} />
@@ -192,7 +194,7 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading 
             />
           </div>
         </div>
-
+        <Required errorText={errorMessage}/> 
         <Button
           className="btn btn-primary btn-next-step mx-auto mt-4"
           onClick={handleTabChange}

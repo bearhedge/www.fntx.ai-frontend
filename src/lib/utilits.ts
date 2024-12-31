@@ -8,7 +8,7 @@ export function arrayString(valu: any) {
             const [key, value]: any = val;
             if (key != "status") {
                 if (key === "error") {
-                    error["message"] = Array.isArray(value) ? value[0] : value;
+                    error["error"] = Array.isArray(value) ? value[0] : value;
                 } else {
                     error[key] = Array.isArray(value) ? value[0] : value;
                 }

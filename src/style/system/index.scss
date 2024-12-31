@@ -98,6 +98,9 @@
   }
 
   &-form {
+    &-orders{
+        height: 400px !important;
+    }
     &-conId{
       margin: 0;
       padding: 0;
@@ -133,16 +136,17 @@
     transform: translateY(-50%);
   }
 }
-
+.strike-table{
+  .table-responsive{
+    padding-top: 15px;
+  }
+}
 .stock-table {
   label {
     font-size: 18px;
     line-height: 22px;
   }
-.table-responsive{
-      height: 400px !important;
-      border-radius: 8px;
-}
+
   table {
     width: 100%;
     border-collapse: collapse;

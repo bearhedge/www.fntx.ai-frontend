@@ -1,6 +1,7 @@
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
+import Required from "../../form/required";
 import InputCard from "./../InputCard";
 const confidenceLevel = [
   25,
@@ -12,9 +13,10 @@ interface Iprops {
   handleTabChange: () => void;
   state: any;
   isLoading: boolean
+  errorMessage:string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export default function Risk({ handleTabChange, isLoading, state, onChange }: Iprops) {
+export default function Risk({ handleTabChange, isLoading, state, onChange, errorMessage }: Iprops) {
   return (
     <div className="system-form">
       <div className="row">
@@ -59,6 +61,7 @@ export default function Risk({ handleTabChange, isLoading, state, onChange }: Ip
                 />
               </div>
               <div className="col-12">
+              <Required errorText={errorMessage} />
                 <Button
                   className="btn btn-primary btn-next-step w-100"
                   isLoading={isLoading}

@@ -10,12 +10,14 @@ import Card from "../../Card";
 import Button from "../../form/button";
 import Input from "../../form/input";
 import Loader from "../../form/loader";
+import Required from "../../form/required";
 import MultiCodeEvaluator from "../../ide";
 interface Iprops {
   handleTabChange: () => void;
   list: TickerList | any;
   state: any;
   conIds: ConidsProps[];
+  errorMessage:string
   isLoading: boolean
   isLoadingConid:boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -28,6 +30,7 @@ export default function Ticker({
   state,
   isLoading,
   isLoadingConid,
+  errorMessage,
   onChange,
   onChangeTicker,
 }: Iprops) {
@@ -120,6 +123,7 @@ export default function Ticker({
             </div>
           </div>
         ) : null}
+              <Required errorText={errorMessage} />
         <Button
           disabled={!(state.instrument && state.ticker_data) || isLoading}
           isLoading={isLoading}

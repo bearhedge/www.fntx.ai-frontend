@@ -4,6 +4,7 @@ import Button from "../../form/button";
 import CircularButton from "./../CircularButton";
 import { useState, useEffect } from "react";
 import DialogConfirm from "../../modal";
+import Required from "../../form/required";
 
 const time = [
   {
@@ -33,11 +34,12 @@ const time = [
 ]
 interface Iprops {
   handleTabChange: () => void;
+  errorMessage:string
   state: any;
   isLoading: boolean
   handleChangeTime: (value: number | null) => void;
 }
-export default function Timing({ handleTabChange, handleChangeTime, isLoading, state }: Iprops) {
+export default function Timing({ handleTabChange, handleChangeTime, isLoading, state, errorMessage }: Iprops) {
   const [countdown, setCountdown] = useState<number | null>(null); // 120 minutes in seconds
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<number | null>(null)
@@ -117,6 +119,7 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
             <CircularButton text={"D"} bgColor={(state.timer?.original_timer_value && placeOrder) || state.timer?.place_order === true ? 'green' : ''} />
           </div>
         </div>
+        <Required errorText={errorMessage} />
         <Button
           className="btn btn-primary btn-next-step mx-auto mt-4"
           onClick={handleTabChange}
