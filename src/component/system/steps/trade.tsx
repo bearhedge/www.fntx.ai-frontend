@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import Fetch from "../../../common/api/fetch";
-import { TickGreenIcon } from "../../../lib/icons";
 import { onKeyPress } from "../../../lib/utilits";
 import Card from "../../Card";
 import Button from "../../form/button";

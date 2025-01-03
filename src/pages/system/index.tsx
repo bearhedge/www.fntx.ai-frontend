@@ -245,7 +245,7 @@ export default function System() {
           state={state}
           errorMessage={errorMessage}
           handleChangeTime={handleChangeTime}
-          updatePlaceOrder={(val) => setState(prev => ({ ...prev, timer: { ...prev.timer, place_order: 'N' } }))}
+          updatePlaceOrder={() => setState(prev => ({ ...prev, timer: { ...prev.timer, place_order: 'N' } }))}
           isLoading={isLoading}
           handleTabChange={() => handleStepSubmit(2)}
         />}

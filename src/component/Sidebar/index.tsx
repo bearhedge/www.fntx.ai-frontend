@@ -5,7 +5,7 @@ import LogOutIco from '@assets/svg/logout_ico.svg';
 import DummyProfileico from '@assets/svg/dummy-img.svg';
 import Card from "../Card";
 import Button from "../form/button";
-import { ArrowDropdownIco, ArrowIco, SettingIco } from "../../lib/icons";
+import { ArrowDropdownIco, SettingIco } from "../../lib/icons";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLoginUser } from "../../services/slices/authSlice";
