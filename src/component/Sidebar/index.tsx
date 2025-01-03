@@ -55,7 +55,7 @@ export default function Sidebar({ width }: Iprops) {
                                         
                                         {
                                             item.chiildren?.map((child, index) => child.route ? <div key={key + index} className="sidebar__content__item">
-                                                <NavLink to={child.route} className={({ isActive }) => (fullUrl === child.route ? 'active' : '')}>
+                                                <NavLink to={child.route} className={() => (fullUrl === child.route ? 'active' : '')}>
                                                     <label>{child.label}</label>
                                                 </NavLink>
                                             </div>: 
