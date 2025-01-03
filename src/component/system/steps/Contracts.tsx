@@ -110,7 +110,7 @@ export default function Contracts({ handleTabChange, onChange, order, selectedOr
       <Card>
         {state.contract_type && <> <div className="row mb-3 system-form-orders">
           {(state.contract_type === 'call' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 9} col-12`}>
-            <StockTable selected={selectedOrder.call.selected} handleSelected={(row: any) => handleSelectedOrder({ ...row.call, selected: row.selected }, 'call')} title={"Calls"} rows={order} columns={columnsCall} showStrike={true} />
+            <StockTable selected={selectedOrder.call.selected} handleSelected={(row: any) => handleSelectedOrder({ ...row.call, selected: row.selected }, 'call')} title={"Calls"} rows={order} columns={columnsCall} />
           </div>}
           <div className={`col-sm-${state.contract_type === 'both' ? 2 : 3} ${state.contract_type === 'put' && 'order-1'} col-12 strike-table`}>
             <StockTable title={""} rows={order} columns={columnsStrikes} showStrike={true} />

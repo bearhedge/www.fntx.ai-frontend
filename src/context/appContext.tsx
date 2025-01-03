@@ -28,12 +28,17 @@ const AppContext: React.FC<IProps> = ({ children }) => {
       }
     });
   };
-
+  const updateIbkrAuth=(val:boolean)=>{
+    setSettings((prev) => ({
+      ...prev,
+      ibkr: val ? true : false,
+    }))
+  }
   useEffect(() => {
     getUserSettings();
   }, []);
   return (
-    <MainContext.Provider value={{ settings, getUserSettings }}>
+    <MainContext.Provider value={{ settings, getUserSettings,updateIbkrAuth }}>
       {children}
     </MainContext.Provider>
   );

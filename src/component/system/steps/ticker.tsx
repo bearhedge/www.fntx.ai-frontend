@@ -60,6 +60,7 @@ export default function Ticker({
                 type="radio"
                 label={items}
                 value={items}
+                disabled={isLoadingConid}
                 id={items}
                 className="font-bold"
                 checked={(instrumentsOpt || state.ticker_data?.instruments_opt) === items}
@@ -79,6 +80,7 @@ export default function Ticker({
               <RadioCheckboxOption
                 type="radio"
                 label={item.instrument}
+                disabled={isLoadingConid}
                 checked={state.instrument === item.id}
                 value={item.id}
                 name="instrument"

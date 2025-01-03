@@ -13,6 +13,7 @@ type StockTableProps = {
 const StockTable: React.FC<StockTableProps> = ({
   title,
   className,
+  showStrike,
   rows,
   selected,
   handleSelected,
@@ -20,12 +21,17 @@ const StockTable: React.FC<StockTableProps> = ({
 }) => {
   const [selectedRow,setSelectedRow] = useState<number | null | undefined>(null)
   const handleSelectRow = (item:any, index:number)=>{
+  if(showStrike){
+    return;
+  }
     setSelectedRow(index)
     handleSelected && handleSelected({...item, selected:index})
   }
   useEffect(()=>{
     setSelectedRow(selected)
   },[selected])
+  console.log(handleSelected,selectedRow);
+  
   return (
     <div className="stock-table">
       <label className="fw-600 mb-3">{title}</label>
@@ -50,7 +56,7 @@ const StockTable: React.FC<StockTableProps> = ({
 
           <tbody className={className}>
             {rows.map((row, index) => (
-              <tr key={index} className={selectedRow === index ? 'active' :''} onClick={() => handleSelectRow && handleSelectRow(row, index)}>
+              <tr key={index} className={selectedRow === index ? 'active' :''} onClick={() => handleSelectRow(row, index)}>
                 {columns.map((column: any, cellIndex: number) => {
                   const value = row[column.id];
                   return <td key={cellIndex}>

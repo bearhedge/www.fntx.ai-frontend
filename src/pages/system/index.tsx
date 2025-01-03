@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Fetch from "../../common/api/fetch";
 import { InstrumentsProps } from "../../common/type";
 import { arrayString } from "../../lib/utilits";
+import { withContext } from "../../context/appContext";
 interface IpropsState {
   instrument: string,
   ticker_data: any,
@@ -23,7 +24,7 @@ interface IpropsState {
   confidence_level: number | null
   contract_type: string
 }
-export default function System() {
+function System({ context }: any) {
   const params = useLocation();
   const searchParams = new URLSearchParams(params?.search);
   const query = searchParams.get('id');
@@ -96,7 +97,7 @@ export default function System() {
       }
     };
   }, [state.ticker_data?.conid]);
-  
+
   useEffect(() => {
     if (query) {
       setTab(+query);
@@ -112,6 +113,7 @@ export default function System() {
   }
   // SYSTEM FUNCTIONS
   const getSystemList = () => {
+    setErrorMsg('')
     Fetch("ibkr/system-data/").then((res) => {
       if (res.status) {
         if (res.data?.id) {
@@ -135,16 +137,23 @@ export default function System() {
         }
       } else {
         let resErr = arrayString(res);
+        if (resErr.error === 'You have been logout from IBKR client portal. Please login to continue.') {
+          context.updateIbkrAuth(false)
+        }
         setErrorMsg(resErr.error)
       }
     });
   };
   const handleStepSubmit = (val: number) => {
     setIsLoading(true)
-    Fetch(`ibkr/system-data/${id ? id + '/' : ''}`, { ...state, ...bound, form_step: tab }, { method: id ? 'patch' : 'post' }).then((res) => {
+    setErrorMsg('')
+    const params = { ...state }
+    delete params.timer
+    Fetch(`ibkr/system-data/${id ? id + '/' : ''}`, { ...params, ...bound, form_step: tab }, { method: id ? 'patch' : 'post' }).then((res) => {
       setIsLoading(false)
       if (res.status) {
         setId(res.data.id)
+        context.getUserSettings()
         handleTab(val)
       } else {
         let resErr = arrayString(res);
@@ -154,6 +163,7 @@ export default function System() {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setErrorMsg('')
     const { name, value } = e.target
     if (name === 'ticker_data') {
       setState(prev => ({ ...prev, [name]: JSON.parse(value) }))
@@ -165,6 +175,7 @@ export default function System() {
 
   // ticker first step
   const getTicker = () => {
+    setErrorMsg('')
     Fetch("ibkr/instruments/").then((res) => {
       if (res.status) {
         setTickerList(res.data);
@@ -182,6 +193,7 @@ export default function System() {
     });
   }
   const onChangeTicker = (val: InstrumentsProps | null) => {
+    setErrorMsg('')
     if (!val) {
       setConIds([])
       setState(prev => ({ ...prev, instrument: '', ticker_data: {} }))
@@ -271,3 +283,4 @@ export default function System() {
     </AppLayout>
   );
 }
+export default withContext(System)
