@@ -5,7 +5,7 @@ import LogOutIco from '@assets/svg/logout_ico.svg';
 import DummyProfileico from '@assets/svg/dummy-img.svg';
 import Card from "../Card";
 import Button from "../form/button";
-import { SettingIco } from "../../lib/icons";
+import { ArrowDropdownIco, ArrowIco, SettingIco } from "../../lib/icons";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLoginUser } from "../../services/slices/authSlice";
@@ -39,10 +39,10 @@ export default function Sidebar({ width }: Iprops) {
                                 <label>{item.label}</label>
                             </NavLink> :
                                 <div className="dropdown">
-                                    <div className={`sidebar__content__item-noLink ${location.pathname?.includes('/system') || activeDropdown === key?'active':''}`} onClick={() => handleDropdownToggle(key)}>
+                                    <div className={`sidebar__content__item-noLink ${location.pathname?.includes('/system') ?'active':''} ${activeDropdown === key && 'dropdown-open'}`} onClick={() => handleDropdownToggle(key)}>
                                         <span>{item.ico}</span>
                                         <label>{item.label}</label>
-                                        <span className="ms-2 ico">{item.ico}</span>
+                                        <span className="ms-2 ico"><ArrowDropdownIco color={location.pathname?.includes('/system') || activeDropdown === key?'#fff':''}/></span>
                                     </div>
                                     <div 
                                     className={`${activeDropdown === key ? 'open dropdown-container' : ''}`}

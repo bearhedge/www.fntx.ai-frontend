@@ -36,7 +36,6 @@ export default function AuthLayout({ children}: Iprops) {
     // Optional: Add a resize event listener to update the height on window resize
     const handleResize = () => {
         if (colRef.current) {
-        console.log(colRef.current.offsetHeight,'offsetHeight===');
             setColHeight(colRef.current.offsetHeight);
         }
     };

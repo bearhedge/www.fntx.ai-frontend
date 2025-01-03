@@ -2,14 +2,19 @@ import { useState } from "react";
 
 interface RangeSliderProps {
   className?: string
-  count:number,
-  oddNumbers?:boolean
+  count: number,
+  oddNumbers?: boolean
+  handleChange?: (event:React.ChangeEvent<HTMLInputElement>, val: number) => void
+  name?:string
+  min?: number | null
+  max?: number | null
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({ className = '', count,oddNumbers}) => {
+const RangeSlider: React.FC<RangeSliderProps> = ({ className = '', handleChange,name, min, max, count, oddNumbers }) => {
   const [value, setValue] = useState<number>(0);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChangeRange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    handleChange && handleChange(event, Number(event.target.value))
     setValue(Number(event.target.value));
   };
 
@@ -17,10 +22,11 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ className = '', count,oddNumb
     <div className={`slider-container w-100 ${className}`}>
       <input
         type="range"
-        min="0"
-        max="100"
+        min={min ? min : "0"}
+        max={max ? max : "100"}
+        name={name}
         value={value}
-        onChange={handleChange}
+        onChange={handleChangeRange}
         className="range-slider w-100"
       />
 
@@ -31,7 +37,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ className = '', count,oddNumb
             key={index}
             className={`marker`}
           >
-            {oddNumbers? index % 2 === 0 ? index : null : null}
+            {oddNumbers ? index % 2 === 0 ? index : null : null}
           </div>
         ))}
       </div>

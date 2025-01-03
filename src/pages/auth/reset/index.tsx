@@ -83,7 +83,7 @@ export default function ResetPassword() {
                                 type='password'
                             />
                             <Input
-                                errorText={errors.verify_password || errors.message}
+                                errorText={errors.verify_password || errors.error}
                                 onChange={onChange}
                                 placeholder='******'
                                 label='Verify Password'

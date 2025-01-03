@@ -72,13 +72,13 @@ export default function Risk({ handleTabChange, isLoading, state, onChange, erro
                 </Button>
               </div>
 
-              <label className="fw-600 note mt-2">
+              {/* <label className="fw-600 note mt-2">
                 Note:{" "}
                 <span className="fw-normal">
                   The maximum number of contracts to be sold the SPY asset Would
                   be thirty contracts
                 </span>
-              </label>
+              </label> */}
             </div>
           </div>
           <div className="col-sm-6 col-12 mb-4">

@@ -36,10 +36,11 @@ interface Iprops {
   handleTabChange: () => void;
   errorMessage:string
   state: any;
+  updatePlaceOrder:(val:boolean)=>void
   isLoading: boolean
   handleChangeTime: (value: number | null) => void;
 }
-export default function Timing({ handleTabChange, handleChangeTime, isLoading, state, errorMessage }: Iprops) {
+export default function Timing({ handleTabChange, handleChangeTime,updatePlaceOrder, isLoading, state, errorMessage }: Iprops) {
   const [countdown, setCountdown] = useState<number | null>(null); // 120 minutes in seconds
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<number | null>(null)
@@ -61,7 +62,12 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
       };
     }
   }, [state]);
-
+  useEffect(() => {
+    if (countdown === 0) {
+      updatePlaceOrder(true)
+      // setPlaceOrder(true); // Set placeOrder to true when countdown ends
+    }
+  }, [countdown]);
   // Format time in HH:MM:SS
   const formatTime = (timeInMinutes: number | null): string => {
     if (!timeInMinutes) {
@@ -73,7 +79,6 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
   const handleClose = (val:number | null) => {
     setIsOpen(val)
   }
-  console.log(isOpen);
   
   return (
     <div className="system-form">
@@ -114,9 +119,9 @@ export default function Timing({ handleTabChange, handleChangeTime, isLoading, s
             </div>
           </div>
           <div className="col-sm-6 col-12 d-flex justify-content-around">
-            <CircularButton text={"P"} bgColor={state.timer?.place_order === null ? 'green' : ''} />
-            <CircularButton text={"N"} bgColor={state.timer?.place_order === false ? 'green' : ''} />
-            <CircularButton text={"D"} bgColor={(state.timer?.original_timer_value && placeOrder) || state.timer?.place_order === true ? 'green' : ''} />
+            <CircularButton text={"P"} bgColor={state.timer?.place_order === 'P' ? 'green' : ''} />
+            <CircularButton text={"N"} bgColor={state.timer?.place_order === 'N' ? 'green' : ''} />
+            <CircularButton text={"D"} bgColor={(state.timer?.original_timer_value && placeOrder) || state.timer?.place_order === 'D' ? 'green' : ''} />
           </div>
         </div>
         <Required errorText={errorMessage} />

@@ -93,13 +93,15 @@
         line-height: 22px;
         margin-bottom: 20px;
         color: var(--text-color);
+        text-transform: capitalize;
       }
     }
   }
 
   &-form {
     &-orders{
-        height: 400px !important;
+        max-height: 400px !important;
+        overflow: auto;
     }
     &-conId{
       margin: 0;
@@ -162,6 +164,7 @@
         // display: block;
       tr {
         // display: table;
+        cursor: pointer;
         width: 100%;
         table-layout: fixed;
         line-height: 26px;
@@ -199,7 +202,11 @@
       background: none;
       padding-bottom: 12px;
     }
-
+    .active{
+      td{
+        background-color: #eee;
+      }
+    }
     td {
       font-size: 12px;
       background: var(--white);
@@ -207,6 +214,11 @@
     }
 
     .grey-bg {
+      .active{
+        td{
+          background-color: var(--white);
+        }
+      }
       tr {
         td {
           background-color: #ebebeb;

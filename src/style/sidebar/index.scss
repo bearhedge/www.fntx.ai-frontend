@@ -69,7 +69,7 @@
                 label{
                     cursor: pointer;
                 }
-                &.active{
+                &.dropdown-open{
                     .ico{
                         transform: rotate(180deg);
                     }

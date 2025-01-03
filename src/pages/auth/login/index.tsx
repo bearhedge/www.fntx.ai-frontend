@@ -66,7 +66,7 @@ export default function Login() {
                 />
                 <Input
                     onChange={onChange}
-                    errorText={errors.password || errors.message}
+                    errorText={errors.password || errors.error}
                     placeholder='******'
                     name='password'
                     label='Password'

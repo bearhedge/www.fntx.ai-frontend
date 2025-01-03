@@ -86,14 +86,14 @@ export default function Fetch(
         return dataParse;
       })
       .catch((err: any) => {
-        if (err?.response?.data?.code === "token_not_valid") {
-          return refreshToken().then((d: any) => {
-            if (d.status) {
-              localStorage.userJWT = d.data.access;
-              return fetch(d.data.access);
-            }
-          });
-        }
+        // if (err?.response?.data?.code === "token_not_valid") {
+        //   return refreshToken().then((d: any) => {
+        //     if (d.status) {
+        //       localStorage.userJWT = d.data.access;
+        //       return fetch(d.data.access);
+        //     }
+        //   });
+        // }
         return { ...err?.response?.data, status: false };
       });
   };

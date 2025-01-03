@@ -1,86 +1,82 @@
 import { useState, useEffect } from "react";
 
-declare global {
-  interface Window {
-    pyodide: any;
-    loadPyodide: () => Promise<void>;
-  }
-}
+const PyodideDynamicInputApp = () => {
+  const [pyodide, setPyodide] = useState<any>(null);
+  const [inputs, setInputs] = useState([{ id: 1, value: "" }]);
+  const [result, setResult] = useState("");
 
-const PyodideExample: React.FC = () => {
-  const [inputs, setInputs] = useState<string[]>([""]);
-  const [output, setOutput] = useState<string>("");
-  const [pyodideReady, setPyodideReady] = useState<boolean>(false);
-
-  // Load Pyodide once when the component mounts
+  // Load Pyodide on component mount
   useEffect(() => {
     const loadPyodide = async () => {
-      await window.loadPyodide();
-      setPyodideReady(true);
+        const loadPyodide = (window as any).loadPyodide;
+      const pyodideInstance = await loadPyodide({
+        indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.23.2/full',
+      });
+      setPyodide(pyodideInstance);
     };
     loadPyodide();
   }, []);
 
-  // Function to handle input changes dynamically
-  const handleInputChange = (index: number, value: string) => {
-    const newInputs = [...inputs];
-    newInputs[index] = value;
-    setInputs(newInputs);
+  // Handle input field changes
+  const handleInputChange = (id:number, value:string) => {
+    setInputs((prevInputs) =>
+      prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
+    );
   };
 
-  // Function to add a new input field
+  // Add a new input field
   const addInputField = () => {
-    setInputs([...inputs, ""]);
+    const newId = inputs.length > 0 ? inputs[inputs.length - 1].id + 1 : 1;
+    setInputs([...inputs, { id: newId, value: "" }]);
   };
 
-  // Function to remove an input field
-  const removeInputField = (index: number) => {
-    const newInputs = inputs.filter((_, i) => i !== index);
-    setInputs(newInputs);
+  // Remove an input field
+  const removeInputField = (id:number) => {
+    setInputs((prevInputs) => prevInputs.filter((input) => input.id !== id));
   };
 
-  // Function to execute Python code
-  const executePythonCode = async () => {
-    if (!pyodideReady) return;
-    
-    const pythonCode = `
-def process_inputs(inputs):
-    # Here you can process the inputs in any way
-    result = sum([float(i) for i in inputs])
-    return result
+  // Run the combined Python script
+  const runPyodideScript = async () => {
+    if (!pyodide) return;
 
-output = process_inputs(${JSON.stringify(inputs)});
-output
-    `;
-    
-    const result = await window.pyodide.runPython(pythonCode);
-    setOutput(result);
+    try {
+      // Combine all input values into a single Python script
+      const pythonScript = inputs
+        .map((input) => input.value)
+        .filter((value) => value.trim() !== "") // Filter out empty inputs
+        .join("\n"); // Join scripts with new lines
+
+      const result = await pyodide?.runPythonAsync(pythonScript);
+      setResult(result);
+    } catch (error) {
+      console.error("Error running Python script:", error);
+      setResult("Error in computation.");
+    }
   };
 
   return (
     <div>
-      <h2>Pyodide Example with Multiple Inputs</h2>
-
-      {/* Render input fields dynamically */}
-      {inputs.map((input, index) => (
-        <div key={index}>
-          <input
-            type="number"
-            value={input}
-            onChange={(e) => handleInputChange(index, e.target.value)}
+      <h1>Pyodide Dynamic Input Example</h1>
+      {inputs.map((input) => (
+        <div key={input.id} style={{ marginBottom: "10px" }}>
+          <textarea
+            rows={3}
+            placeholder={`Python code for Input ${input.id}`}
+            value={input.value}
+            onChange={(e) => handleInputChange(input.id, e.target.value)}
+            style={{ width: "300px" }}
           />
-          <button onClick={() => removeInputField(index)}>Remove</button>
+          <button onClick={() => removeInputField(input.id)}>Remove</button>
         </div>
       ))}
-      
       <button onClick={addInputField}>Add Input</button>
-      <button onClick={executePythonCode}>Execute Python Code</button>
-
-      <div>
-        <h3>Output: {output}</h3>
-      </div>
+      <button onClick={runPyodideScript} disabled={!pyodide}>
+        Run Pyodide Script
+      </button>
+      <h2>Result:</h2>
+      <pre>{result}</pre>
     </div>
   );
 };
 
-export default PyodideExample;
+export default PyodideDynamicInputApp;

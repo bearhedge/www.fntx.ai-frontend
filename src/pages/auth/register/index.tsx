@@ -43,7 +43,6 @@ export default function Register() {
         values: state,
         onSubmit,
     });
-    console.log(state, 'state===');
 
     return <AuthLayout>
         <div className="auth-form">
@@ -69,8 +68,6 @@ export default function Register() {
                                     event.preventDefault();
                                     const text = event.clipboardData.getData('text');
                                     const noSpaceText = text.replace(/\s+/g, '');
-                                    console.log(noSpaceText, text);
-
                                     setState({
                                         ...state,
                                         username: noSpaceText,
@@ -101,7 +98,7 @@ export default function Register() {
                             <Input
                                 onChange={onChange}
                                 placeholder='******'
-                                errorText={errors.verify_password}
+                                errorText={errors.verify_password || errors.error}
                                 name='verify_password'
                                 label='Verify Password'
                                 type='password'

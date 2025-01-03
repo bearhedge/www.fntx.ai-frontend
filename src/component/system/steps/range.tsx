@@ -11,14 +11,19 @@ const time = [
   '15-mins',
   '5-mins',
 ]
+interface BoundProps{
+  lower_bound: number | null,
+  upper_bound: number | null,
+}
 interface Iprops {
   handleTabChange: () => void;
   state: any;
   isLoading: boolean
   errorMessage: string
+  bound:BoundProps
   handleChangeRange: (value: string | number, name: string) => void;
 }
-export default function Range({ handleTabChange, state, isLoading, handleChangeRange, errorMessage }: Iprops) {
+export default function Range({ handleTabChange, state, isLoading, handleChangeRange, errorMessage,bound }: Iprops) {
   const handleGetTotal = (): string | number => {
     const val = state.time_frame?.split('-')
     let result = 'N/A'
@@ -133,7 +138,7 @@ export default function Range({ handleTabChange, state, isLoading, handleChangeR
           <div className="col-sm-6 col-12 mb-4">
             <InputCard
               text={
-                " According to the previous 2 time steps under the 1-day timeframe, the upper bound is at __________ and the lower bound is at __________."
+                `According to the previous 2 time steps under the 1-day timeframe, the upper bound is at ${bound.upper_bound || '_________'} and the lower bound is at ${bound.lower_bound || '_________'}.`
               }
             />
           </div>

@@ -9,76 +9,39 @@ import StockTable from "../StockTable";
 interface Iprops {
   handleTabChange: () => void;
   state: any;
-  errorMessage:string
+  errorMessage: string
+  handleSelectedOrder: (item: any, type: string) => void
+  selectedOrder: any
+  order:any
   isLoading: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export default function Contracts({ handleTabChange, onChange, state, isLoading, errorMessage }: Iprops) {
+export default function Contracts({ handleTabChange, onChange, order, selectedOrder, state, handleSelectedOrder, isLoading, errorMessage }: Iprops) {
   const [contractType, setContractType] = useState('')
-  const [order, setOrders] = useState<any>([]);
-  const socketRef = useRef<any>()
-  useEffect(() => {
-    // Create the WebSocket connection
-    const getSessionToken = async () => {
-      try {
-        const wsStrikes = new WebSocket(`${import.meta.env.VITE_API_SOCKET_URL}ws/strikes/`); // WebSocket URL must start with 'wss://'
-        // When the WebSocket opens
-        wsStrikes.onopen = () => {
-          console.log('WebSocket Strikes connected');
-          wsStrikes.send(JSON.stringify({ contract_id: state.ticker_data?.conid }));
-        }
-        wsStrikes.onmessage = (event:any) => {
-          setOrders(JSON.parse(event.data)?.option_chain_data)
-        }
-        // When the WebSocket encounters an error
-        wsStrikes.onerror = (error) => {
-          console.log('WebSocket error:', error);
-        };
-
-        // When the WebSocket closes
-        wsStrikes.onclose = () => {
-          console.log('WebSocket connection closed');
-        };
-
-        // Store the WebSocket connection in state
-        socketRef.current = wsStrikes
-        // })
-
-      } catch (error) {
-        console.error('Error fetching session token:', error);
-      }
-    };
-    if (state.ticker_data?.conid) {
-      getSessionToken();
+  useEffect(()=>{
+    if(state.contract_type === 'call' || state.contract_type === 'put'){
+      setContractType('Single Leg')
     }
-    // Cleanup function to close the WebSocket connection when the component unmounts
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close();
-      }
-    };
-  }, [state.ticker_data]);
-
+  },[state.contract_type])
   const columnsCall: readonly any[] = [
-    { id: "call", label: "Last Price", formatHtmls: (item: any) => item?.call?.live_data[0][31]?.replace('C','')|| '-'},
-    { id: "call", label: "Change",formatHtmls: (item: any) => item?.call?.live_data[0][82] || '-'},
-    { id: "call", label: "%Change",formatHtmls: (item: any) => item?.call?.live_data[0][83] || '-'},
-    { id: "call", label: "Volume",formatHtmls: (item: any) => item?.call?.live_data[0][7086] || '-'},
-    { id: "call", label: "Open Interest",formatHtmls: (item: any) => item?.call?.live_data[0][7085]  || '-'},
+    { id: "call", label: "Last Price", formatHtmls: (item: any) => item?.call?.live_data?.length && item?.call?.live_data[0][31]?.replace('C', '') || '-' },
+    { id: "call", label: "Change", formatHtmls: (item: any) => item?.call?.live_data?.length && item?.call?.live_data[0][82] || '-' },
+    { id: "call", label: "%Change", formatHtmls: (item: any) => item?.call?.live_data?.length && item?.call?.live_data[0][83] || '-' },
+    { id: "call", label: "Volume", formatHtmls: (item: any) => item?.call?.live_data?.length && item?.call?.live_data[0][87] || '-' },
+    { id: "call", label: "Open Interest", formatHtmls: (item: any) => item?.call?.live_data?.length && item?.call?.live_data[0][7638] || '-' },
   ];
   const columnsPut: readonly any[] = [
-    { id: "put", label: "Last Price", formatHtmls: (item: any) => item?.put?.live_data[0][31]?.replace('C','') || '-'},
-    { id: "put", label: "Change",formatHtmls: (item: any) => item?.put?.live_data[0][82] || '-'},
-    { id: "put", label: "%Change",formatHtmls: (item: any) => item?.put?.live_data[0][83] || '-'},
-    { id: "put", label: "Volume",formatHtmls: (item: any) => item?.put?.live_data[0][7086] || '-'},
-    { id: "put", label: "Open Interest",formatHtmls: (item: any) => item?.put?.live_data[0][7085]  || '-'},
+    { id: "put", label: "Last Price", formatHtmls: (item: any) => item?.put?.live_data?.length && item?.put?.live_data[0][31]?.replace('C', '') || '-' },
+    { id: "put", label: "Change", formatHtmls: (item: any) => item?.put?.live_data?.length && item?.put?.live_data[0][82] || '-' },
+    { id: "put", label: "%Change", formatHtmls: (item: any) => item?.put?.live_data?.length && item?.put?.live_data[0][83] || '-' },
+    { id: "put", label: "Volume", formatHtmls: (item: any) => item?.put?.live_data?.length && item?.put?.live_data[0][87] || '-' },
+    { id: "put", label: "Open Interest", formatHtmls: (item: any) => item?.put?.live_data?.length && item?.put?.live_data[0][7638] || '-' },
 
   ];
   const columnsStrikes: readonly any[] = [
-    { id: "strike", label: "Strikes"},
+    { id: "strike", label: "Strikes" },
     // { id: "billable_time_spend", label: "Open Interest" },
   ];
-    console.log(order, 'message===');
 
   return (
     <div className="system-form">
@@ -143,58 +106,60 @@ export default function Contracts({ handleTabChange, onChange, state, isLoading,
           </div>}
         </div>
       </Card>
-      <Card className="system-form-orders">
-        <div className="row mb-3">
+      <Card>
+        {state.contract_type && <> <div className="row mb-3 system-form-orders">
           {(state.contract_type === 'call' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 9} col-12`}>
-            <StockTable title={"Calls"} rows={order} columns={columnsCall} showStrike={true} />
+            <StockTable selected={selectedOrder.call.selected} handleSelected={(row: any) => handleSelectedOrder({...row.call,selected:row.selected}, 'call')} title={"Calls"} rows={order} columns={columnsCall} showStrike={true} />
           </div>}
-          {state.contract_type && <div className={`col-sm-${state.contract_type === 'both' ? 2 : 3} col-12 strike-table`}>
+          <div className={`col-sm-${state.contract_type === 'both' ? 2 : 3} ${state.contract_type === 'put' && 'order-1'} col-12 strike-table`}>
             <StockTable title={""} rows={order} columns={columnsStrikes} showStrike={true} />
-          </div>}
-          {(state.contract_type === 'put' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 12} col-12`}>
-            <StockTable title={"Puts"} className="grey-bg" columns={columnsPut} rows={order} />
+          </div>
+          {(state.contract_type === 'put' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 9} col-12`}>
+            <StockTable selected={selectedOrder.put.selected} handleSelected={(row: any) => handleSelectedOrder({...row.put, selected:row.selected}, 'put')} title={"Puts"} className="grey-bg" columns={columnsPut} rows={order} />
           </div>}
         </div>
 
-        <div className="row mt-4">
-          <div className="col-sm-6 col-12">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Call Contract"
-              value="Call Contract"
-              id="Call Contract"
-              className="bg-white"
-            />
+          <div className="row mt-4">
+            {(state.contract_type === 'call' || state.contract_type === 'both') && selectedOrder?.call && <div className="col-sm-6 col-12">
+              <RadioCheckboxOption
+                type="checkbox"
+                label={selectedOrder.call?.desc2}
+                value="Call Contract"
+                id="Call Contract"
+                disabled
+                className="bg-white"
+              />
+              <RadioCheckboxOption
+                type="checkbox"
+                label={`${selectedOrder?.call?.live_data?.length && selectedOrder?.call?.live_data[0][31]?.replace('C', '')}`}
+                value="Last Price"
+                disabled
+                id="Last Price"
+                className="bg-white"
+              />
+            </div>}
+            {(state.contract_type === 'put' || state.contract_type === 'both') && selectedOrder?.put && <div className="col-sm-6 col-12">
+              <RadioCheckboxOption
+                type="checkbox"
+                label={selectedOrder.put?.desc2}
+                value="Put Contract"
+                id="Put Contract"
+                disabled
+                className="bg-white"
+              />
+              <RadioCheckboxOption
+                type="checkbox"
+                label={`${selectedOrder?.put?.live_data?.length && selectedOrder?.put?.live_data[0][31]?.replace('C', '')}`}
+                value="Last Price"
+                disabled
+                id="Last Price"
+                className="bg-white"
+              />
+            </div>}
           </div>
-          <div className="col-sm-6 col-12">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Put Contract"
-              value="Put Contract"
-              id="Put Contract"
-              className="bg-white"
-            />
-          </div>
-          <div className="col-sm-6 col-12">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Last Price"
-              value="Last Price"
-              id="Last Price"
-              className="bg-white"
-            />
-          </div>
-          <div className="col-sm-6 col-12">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Last Price"
-              value="Last Price"
-              id="Last Price"
-              className="bg-white"
-            />
-          </div>
-        </div>
-        <Required errorText={errorMessage}/> 
+        </>
+        }
+        <Required errorText={errorMessage} />
         <Button
           className="btn btn-primary btn-next-step mx-auto mt-4"
           onClick={handleTabChange}

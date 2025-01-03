@@ -49,7 +49,7 @@ export default function ForgotPassword() {
             <form onSubmit={handleSubmit}>
                 <div className="auth-form-inputs">
                     <Input
-                        errorText={errors.email || errors.message}
+                        errorText={errors.email || errors.error}
                         onChange={onChange}
                         placeholder='email@example.com'
                         label='Email'
