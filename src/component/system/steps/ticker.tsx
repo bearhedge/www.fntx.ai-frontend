@@ -21,7 +21,7 @@ interface Iprops {
   isLoading: boolean
   isLoadingConid:boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onChangeTicker: (value: InstrumentsProps) => void;
+  onChangeTicker: (value: InstrumentsProps | null) => void;
 }
 export default function Ticker({
   handleTabChange,
@@ -39,6 +39,7 @@ export default function Ticker({
   const [instrumentsOpt, setInstrumentsOpt] = useState<string>("");
   const handleChange = (val: string) => {
     setInstrumentsOpt(val);
+    onChangeTicker(null)
   };
   const ins = Object.keys(list)
   if (!ins?.length) {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 const PyodideDynamicInputApp = () => {
+
   const [pyodide, setPyodide] = useState<any>(null);
   const [inputs, setInputs] = useState([{ id: 1, value: "" }]);
   const [result, setResult] = useState("");
@@ -9,6 +10,8 @@ const PyodideDynamicInputApp = () => {
   useEffect(() => {
     const loadPyodide = async () => {
         const loadPyodide = (window as any).loadPyodide;
+        console.log(loadPyodide, window);
+        
       const pyodideInstance = await loadPyodide({
         indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.23.2/full',
       });

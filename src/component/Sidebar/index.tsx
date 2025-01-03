@@ -27,6 +27,7 @@ export default function Sidebar({ width }: Iprops) {
         dispatch(setLoginUser(false))
         navigate('/')
     }
+    const fullUrl = location.pathname + location.search
     return <div className='sidebar' style={{ width: width }}>
         <Card>
             <img src={Logo} width='179px' />
@@ -39,7 +40,7 @@ export default function Sidebar({ width }: Iprops) {
                                 <label>{item.label}</label>
                             </NavLink> :
                                 <div className="dropdown">
-                                    <div className={`sidebar__content__item-noLink ${location.pathname?.includes('/system') ?'active':''} ${activeDropdown === key && 'dropdown-open'}`} onClick={() => handleDropdownToggle(key)}>
+                                    <div className={`sidebar__content__item-noLink ${location.pathname?.includes(`/system`) ?'active':''} ${activeDropdown === key && 'dropdown-open'}`} onClick={() => handleDropdownToggle(key)}>
                                         <span>{item.ico}</span>
                                         <label>{item.label}</label>
                                         <span className="ms-2 ico"><ArrowDropdownIco color={location.pathname?.includes('/system') || activeDropdown === key?'#fff':''}/></span>
@@ -51,13 +52,15 @@ export default function Sidebar({ width }: Iprops) {
                                         visibility:activeDropdown === key ? 'visible':'hidden'
                                     }}
                                     >
+                                        
                                         {
                                             item.chiildren?.map((child, index) => child.route ? <div key={key + index} className="sidebar__content__item">
-                                                <NavLink to={child.route} end className={({ isActive }) => (isActive ? 'active' : '')}>
+                                                <NavLink to={child.route} className={({ isActive }) => (fullUrl === child.route ? 'active' : '')}>
                                                     <label>{child.label}</label>
                                                 </NavLink>
-                                            </div>: <div className={`sidebar__content__item-noLink ${location.pathname?.includes(child.route) || activeDropdown === key?'active':''}`} onClick={() => handleDropdownToggle(key)}>
-                                        <label>{item.label}</label>
+                                            </div>: 
+                                            <div className={`sidebar__content__item-noLink ${fullUrl.includes(child.route) || activeDropdown === key?'active':''}`} onClick={() => handleDropdownToggle(key)}>
+                                        {/* <label>{item.label}</label> */}
                                     </div>)
                                         }
                                     </div>

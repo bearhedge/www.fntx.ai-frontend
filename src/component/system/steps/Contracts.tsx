@@ -9,20 +9,21 @@ import StockTable from "../StockTable";
 interface Iprops {
   handleTabChange: () => void;
   state: any;
+  handleTabPrevious: (value: number) => void;
   errorMessage: string
   handleSelectedOrder: (item: any, type: string) => void
   selectedOrder: any
-  order:any
+  order: any
   isLoading: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export default function Contracts({ handleTabChange, onChange, order, selectedOrder, state, handleSelectedOrder, isLoading, errorMessage }: Iprops) {
+export default function Contracts({ handleTabChange, onChange, order, selectedOrder, state, handleTabPrevious, handleSelectedOrder, isLoading, errorMessage }: Iprops) {
   const [contractType, setContractType] = useState('')
-  useEffect(()=>{
-    if(state.contract_type === 'call' || state.contract_type === 'put'){
+  useEffect(() => {
+    if (state.contract_type === 'call' || state.contract_type === 'put') {
       setContractType('Single Leg')
     }
-  },[state.contract_type])
+  }, [state.contract_type])
   const columnsCall: readonly any[] = [
     { id: "call", label: "Last Price", formatHtmls: (item: any) => item?.call?.live_data?.length && item?.call?.live_data[0][31]?.replace('C', '') || '-' },
     { id: "call", label: "Change", formatHtmls: (item: any) => item?.call?.live_data?.length && item?.call?.live_data[0][82] || '-' },
@@ -109,13 +110,13 @@ export default function Contracts({ handleTabChange, onChange, order, selectedOr
       <Card>
         {state.contract_type && <> <div className="row mb-3 system-form-orders">
           {(state.contract_type === 'call' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 9} col-12`}>
-            <StockTable selected={selectedOrder.call.selected} handleSelected={(row: any) => handleSelectedOrder({...row.call,selected:row.selected}, 'call')} title={"Calls"} rows={order} columns={columnsCall} showStrike={true} />
+            <StockTable selected={selectedOrder.call.selected} handleSelected={(row: any) => handleSelectedOrder({ ...row.call, selected: row.selected }, 'call')} title={"Calls"} rows={order} columns={columnsCall} showStrike={true} />
           </div>}
           <div className={`col-sm-${state.contract_type === 'both' ? 2 : 3} ${state.contract_type === 'put' && 'order-1'} col-12 strike-table`}>
             <StockTable title={""} rows={order} columns={columnsStrikes} showStrike={true} />
           </div>
           {(state.contract_type === 'put' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 9} col-12`}>
-            <StockTable selected={selectedOrder.put.selected} handleSelected={(row: any) => handleSelectedOrder({...row.put, selected:row.selected}, 'put')} title={"Puts"} className="grey-bg" columns={columnsPut} rows={order} />
+            <StockTable selected={selectedOrder.put.selected} handleSelected={(row: any) => handleSelectedOrder({ ...row.put, selected: row.selected }, 'put')} title={"Puts"} className="grey-bg" columns={columnsPut} rows={order} />
           </div>}
         </div>
 
@@ -160,14 +161,22 @@ export default function Contracts({ handleTabChange, onChange, order, selectedOr
         </>
         }
         <Required errorText={errorMessage} />
-        <Button
-          className="btn btn-primary btn-next-step mx-auto mt-4"
-          onClick={handleTabChange}
-          isLoading={isLoading}
-          disabled={!state.contract_type}
-        >
-          Next Step
-        </Button>
+        <div className="d-flex align-items-cener justify-content-center mt-4">
+          <Button
+            className="btn btn-primary btn-next-step me-2"
+            onClick={() => handleTabPrevious(3)}
+          >
+            Previous
+          </Button>
+          <Button
+            className="btn btn-primary btn-next-step"
+            onClick={handleTabChange}
+            isLoading={isLoading}
+            disabled={!(state.contract_type && (selectedOrder?.call || selectedOrder?.put))}
+          >
+            Next Step
+          </Button>
+        </div>
       </Card>
     </div>
   );

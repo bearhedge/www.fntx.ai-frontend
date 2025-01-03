@@ -83,7 +83,7 @@ export const TickGreenIcon = ({ className = '' }: { className?: string }) => {
 }
 export const ArrowDropdownIco = ({ color = "#737373" }: { color?: string }) => {
     return <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10.78 1.43607L5.80601 6.15381L0.832031 1.43607" stroke={color} stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M10.78 1.43607L5.80601 6.15381L0.832031 1.43607" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
 
 }

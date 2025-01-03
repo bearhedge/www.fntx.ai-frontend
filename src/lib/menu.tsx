@@ -20,27 +20,27 @@ export const menu = [
             },
             {
                 label: 'Timing',
-                route: '/system/1',
+                route: '/system?id=1',
             },
             {
                 label: 'Range',
-                route: '/system/2',
+                route: '/system?id=2',
             },
             {
                 label: 'Risk',
-                route: '/system/3',
+                route: '/system?id=3',
             },
             {
                 label: 'Contracts',
-                route: '/system/4',
+                route: '/system?id=4',
             },
             {
                 label: 'Execute',
-                route: '/system/5',
+                route: '/system?id=5',
             },
             {
                 label: 'Manage',
-                route: '/system/6',
+                route: '/system?id=6',
             },
         ]
     },

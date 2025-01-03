@@ -11,7 +11,7 @@ const time = [
   '15-mins',
   '5-mins',
 ]
-interface BoundProps{
+interface BoundProps {
   lower_bound: number | null,
   upper_bound: number | null,
 }
@@ -19,11 +19,12 @@ interface Iprops {
   handleTabChange: () => void;
   state: any;
   isLoading: boolean
+  handleTabPrevious: (value: number) => void;
   errorMessage: string
-  bound:BoundProps
+  bound: BoundProps
   handleChangeRange: (value: string | number, name: string) => void;
 }
-export default function Range({ handleTabChange, state, isLoading, handleChangeRange, errorMessage,bound }: Iprops) {
+export default function Range({ handleTabChange, state, isLoading, handleChangeRange, handleTabPrevious, errorMessage, bound }: Iprops) {
   const handleGetTotal = (): string | number => {
     const val = state.time_frame?.split('-')
     let result = 'N/A'
@@ -124,14 +125,22 @@ export default function Range({ handleTabChange, state, isLoading, handleChangeR
               </div>
               <div className="col-12">
                 <Required errorText={errorMessage} />
-                <Button
-                  className="btn btn-primary btn-next-step w-100"
-                  onClick={handleTabChange}
-                  isLoading={isLoading}
-                  disabled={!(state.time_frame && state.time_steps) || isLoading}
-                >
-                  Next Step
-                </Button>
+                <div className="d-flex align-items-cener justify-content-center mt-4">
+                  <Button
+                    className="btn btn-primary btn-next-step me-2"
+                    onClick={() => handleTabPrevious(1)}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    className="btn btn-primary btn-next-step w-100"
+                    onClick={handleTabChange}
+                    isLoading={isLoading}
+                    disabled={!(state.time_frame && state.time_steps) || isLoading}
+                  >
+                    Next Step
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

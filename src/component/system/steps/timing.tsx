@@ -34,13 +34,14 @@ const time = [
 ]
 interface Iprops {
   handleTabChange: () => void;
-  errorMessage:string
+  errorMessage: string
   state: any;
-  updatePlaceOrder:(val:boolean)=>void
+  updatePlaceOrder: (val: boolean) => void
+  handleTabPrevious: (value: number) => void;
   isLoading: boolean
   handleChangeTime: (value: number | null) => void;
 }
-export default function Timing({ handleTabChange, handleChangeTime,updatePlaceOrder, isLoading, state, errorMessage }: Iprops) {
+export default function Timing({ handleTabChange, handleChangeTime, handleTabPrevious, updatePlaceOrder, isLoading, state, errorMessage }: Iprops) {
   const [countdown, setCountdown] = useState<number | null>(null); // 120 minutes in seconds
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<number | null>(null)
@@ -76,10 +77,10 @@ export default function Timing({ handleTabChange, handleChangeTime,updatePlaceOr
     const hours = Math.floor(timeInMinutes / 60); // Convert total minutes to hours
     return `${hours.toString().padStart(2, "0")}`;
   };
-  const handleClose = (val:number | null) => {
+  const handleClose = (val: number | null) => {
     setIsOpen(val)
   }
-  
+
   return (
     <div className="system-form">
       <Card className="mb-4">
@@ -125,16 +126,25 @@ export default function Timing({ handleTabChange, handleChangeTime,updatePlaceOr
           </div>
         </div>
         <Required errorText={errorMessage} />
-        <Button
-          className="btn btn-primary btn-next-step mx-auto mt-4"
-          onClick={handleTabChange}
-          disabled={!state.timer?.original_timer_value || isLoading}
-          isLoading={isLoading}
-        >
-          Next Step
-        </Button>
+        <div className="d-flex align-items-cener justify-content-center mt-4">
+          <Button
+            className="btn btn-primary btn-next-step me-2"
+            onClick={() => handleTabPrevious(0)}
+          >
+            Previous
+          </Button>
+          <Button
+            className="btn btn-primary btn-next-step"
+            onClick={handleTabChange}
+            disabled={!state.timer?.original_timer_value || isLoading}
+            isLoading={isLoading}
+          >
+            Next Step
+          </Button>
+        </div>
+
       </Card>
-      <DialogConfirm isOpen={isOpen} title={'Are you sure?'} des={'Are you sure you want to set this time? This action cannot be undone.'} onClose={()=>handleClose(null)}>
+      <DialogConfirm isOpen={isOpen} title={'Are you sure?'} des={'Are you sure you want to set this time? This action cannot be undone.'} onClose={() => handleClose(null)}>
         <div className="d-flex align-items-center">
           <Button type='button' className="btn w-100 me-1" onClick={() => handleClose(0)}>Cancel</Button>
           <Button className="btn btn-primary w-100 me-2" onClick={() => { handleChangeTime(isOpen); handleClose(0) }}>Confirm</Button>

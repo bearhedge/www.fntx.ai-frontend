@@ -9,7 +9,7 @@ import Risk from "../../component/system/steps/Risk";
 import Contracts from "../../component/system/steps/Contracts";
 import Trade from "../../component/system/steps/trade";
 import Manage from "../../component/system/steps/manage";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Fetch from "../../common/api/fetch";
 import { InstrumentsProps } from "../../common/type";
 import { arrayString } from "../../lib/utilits";
@@ -24,7 +24,9 @@ interface IpropsState {
   contract_type: string
 }
 export default function System() {
-  const params = useParams();
+  const params = useLocation();
+  const searchParams = new URLSearchParams(params?.search);
+  const query = searchParams.get('id');
   const navigate = useNavigate();
   const [tickerList, setTickerList] = useState({});
   const [conIds, setConIds] = useState([]);
@@ -93,19 +95,20 @@ export default function System() {
         socketRef.current.close();
       }
     };
-  }, [state.ticker_data, tab]);
+  }, [state.ticker_data?.conid]);
+  
   useEffect(() => {
-    if (params.id) {
-      setTab(+params.id);
+    if (query) {
+      setTab(+query);
     }
-  }, [params.id]);
+  }, [query]);
   useEffect(() => {
     getTicker();
     getSystemList();
-  }, [params.id]);
+  }, [query]);
   const handleTab = (val: number) => {
     setTab(val);
-    navigate(`/system/${val}`, { replace: true });
+    navigate(`/system?id=${val}`, { replace: true });
   }
   // SYSTEM FUNCTIONS
   const getSystemList = () => {
@@ -130,6 +133,9 @@ export default function System() {
             time_steps: res.data?.time_steps,
           }))
         }
+      } else {
+        let resErr = arrayString(res);
+        setErrorMsg(resErr.error)
       }
     });
   };
@@ -165,7 +171,7 @@ export default function System() {
       }
     });
   };
-  const getConIds = (instrument: string) => {
+  const getConIds = (instrument: string | undefined) => {
     setIsLoadingConid(true)
     setConIds([])
     Fetch(`ibkr/symbol_conid?symbol=${instrument}`).then((res) => {
@@ -175,9 +181,15 @@ export default function System() {
       setIsLoadingConid(false)
     });
   }
-  const onChangeTicker = (val: InstrumentsProps) => {
-    getConIds(val.instrument)
-    setState(prev => ({ ...prev, instrument: val.id, ticker_data: {} }))
+  const onChangeTicker = (val: InstrumentsProps | null) => {
+    if (!val) {
+      setConIds([])
+      setState(prev => ({ ...prev, instrument: '', ticker_data: {} }))
+      return <></>
+    }
+    getConIds(val?.instrument)
+    setConIds([])
+    setState(prev => ({ ...prev, instrument: val?.id || '', ticker_data: {} }))
   };
 
 
@@ -242,6 +254,7 @@ export default function System() {
           />
         )}
         {tab === 1 && <Timing
+          handleTabPrevious={handleTab}
           state={state}
           errorMessage={errorMessage}
           handleChangeTime={handleChangeTime}
@@ -249,11 +262,11 @@ export default function System() {
           isLoading={isLoading}
           handleTabChange={() => handleStepSubmit(2)}
         />}
-        {tab === 2 && <Range bound={bound} errorMessage={errorMessage} state={state} isLoading={isLoading} handleChangeRange={handleChangeRange} handleTabChange={() => handleStepSubmit(3)} />}
-        {tab === 3 && <Risk errorMessage={errorMessage} onChange={onChange} isLoading={isLoading} state={state} handleTabChange={() => handleStepSubmit(4)} />}
-        {tab === 4 && <Contracts order={order} selectedOrder={selectedOrder} handleSelectedOrder={handleSelectedOrder} errorMessage={errorMessage} isLoading={isLoading} state={state} onChange={onChange} handleTabChange={() => handleStepSubmit(5)} />}
-        {tab === 5 && <Trade state={state} selectedOrder={selectedOrder} handleTabChange={() => handleTab(6)} />}
-        {tab === 6 && <Manage handleTabChange={() => handleStepSubmit(6)} />}
+        {tab === 2 && <Range handleTabPrevious={handleTab} bound={bound} errorMessage={errorMessage} state={state} isLoading={isLoading} handleChangeRange={handleChangeRange} handleTabChange={() => handleStepSubmit(3)} />}
+        {tab === 3 && <Risk handleTabPrevious={handleTab} errorMessage={errorMessage} onChange={onChange} isLoading={isLoading} state={state} handleTabChange={() => handleStepSubmit(4)} />}
+        {tab === 4 && <Contracts handleTabPrevious={handleTab} order={order} selectedOrder={selectedOrder} handleSelectedOrder={handleSelectedOrder} errorMessage={errorMessage} isLoading={isLoading} state={state} onChange={onChange} handleTabChange={() => handleStepSubmit(5)} />}
+        {tab === 5 && <Trade handleTabPrevious={handleTab} state={state} selectedOrder={selectedOrder} handleTabChange={() => handleTab(6)} />}
+        {tab === 6 && <Manage handleTabPrevious={handleTab} handleTabChange={() => handleStepSubmit(6)} />}
       </div>
     </AppLayout>
   );

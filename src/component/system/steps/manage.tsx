@@ -1,12 +1,14 @@
-import { SystemPagesProps } from "../../../common/type";
 import { TickGreenIcon } from "../../../lib/icons";
 import { onKeyPress } from "../../../lib/utilits";
 import RadioCheckboxOption from "../../buttonSeelct";
 import Card from "../../Card";
 import Button from "../../form/button";
 import Input from "../../form/input";
-
-export default function Manage({ handleTabChange }: SystemPagesProps) {
+interface Iprops {
+    handleTabChange: () => void;
+    handleTabPrevious: (value: number) => void;
+}
+export default function Manage({ handleTabChange, handleTabPrevious }: Iprops) {
     return <div className="system-trade">
         <Card>
             <div className="row mb-3">
@@ -232,12 +234,20 @@ export default function Manage({ handleTabChange }: SystemPagesProps) {
                     </div>
                 </div>
             </div>
-            <Button
-                className="btn btn-primary btn-next-step mx-auto mt-4"
-                onClick={handleTabChange}
-            >
-             Execute
-            </Button>
+            <div className="d-flex align-items-cener justify-content-center mt-4">
+                <Button
+                    className="btn btn-primary btn-next-step me-2"
+                    onClick={() => handleTabPrevious(5)}
+                >
+                    Previous
+                </Button>
+                <Button
+                    className="btn btn-primary btn-next-step "
+                    onClick={handleTabChange}
+                >
+                    Execute
+                </Button>
+            </div>
         </Card>
     </div>
 }
