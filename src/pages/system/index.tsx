@@ -138,7 +138,7 @@ function System({ context }: any) {
       } else {
         let resErr = arrayString(res);
         if (resErr.error === 'You have been logout from IBKR client portal. Please login to continue.') {
-          context.updateIbkrAuth(false)
+          context.updateIbkrAuth(true)
         }
         setErrorMsg(resErr.error)
       }
@@ -165,6 +165,12 @@ function System({ context }: any) {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrorMsg('')
     const { name, value } = e.target
+    if(name === 'contract_type'){
+      setSelectedOrder({
+        call: '',
+        put: ''
+      })
+    }
     if (name === 'ticker_data') {
       setState(prev => ({ ...prev, [name]: JSON.parse(value) }))
     } else {
@@ -184,7 +190,6 @@ function System({ context }: any) {
   };
   const getConIds = (instrument: string | undefined) => {
     setIsLoadingConid(true)
-    setConIds([])
     Fetch(`ibkr/symbol_conid?symbol=${instrument}`).then((res) => {
       if (res.status) {
         setConIds(res.data?.data);
@@ -194,14 +199,15 @@ function System({ context }: any) {
   }
   const onChangeTicker = (val: InstrumentsProps | null) => {
     setErrorMsg('')
-    if (!val) {
-      setConIds([])
+    console.log(val);
+    setConIds([])
+    if (!val?.id) {
       setState(prev => ({ ...prev, instrument: '', ticker_data: {} }))
       return <></>
     }
+    console.log(val);
     getConIds(val?.instrument)
-    setConIds([])
-    setState(prev => ({ ...prev, instrument: val?.id || '', ticker_data: {} }))
+    setState(prev => ({ ...prev, instrument: val?.id, ticker_data: { instruments_opt: state?.ticker_data?.instruments_opt } }))
   };
 
 
@@ -250,7 +256,7 @@ function System({ context }: any) {
     <AppLayout>
       <div className="system">
         <Card className="mb-4 system-tabs">
-          <Tabs tab={tab} handleTab={handleTab} />
+          <Tabs tab={tab} />
         </Card>
         {tab === 0 && (
           <Ticker

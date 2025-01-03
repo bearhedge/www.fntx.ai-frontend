@@ -1,13 +1,14 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import Fetch from "../../../common/api/fetch";
-import { onKeyPress } from "../../../lib/utilits";
+import { arrayString, onKeyPress } from "../../../lib/utilits";
 import { TickGreenIcon } from "../../../lib/icons";
 import Card from "../../Card";
 import Button from "../../form/button";
 import Input from "../../form/input";
 import DialogConfirm from "../../modal";
 import RangeSlider from "../RangeSlider";
+import Required from "../../form/required";
 interface Iprops {
     handleTabChange: () => void;
     selectedOrder: any
@@ -36,6 +37,8 @@ export default function Trade({ handleTabChange, handleTabPrevious, selectedOrde
     const [tradeState, setState] = useState<Array<orderList>>([])
     const [isOpen, setIsOpen] = useState(false)
     const [message, setMessage] = useState('')
+    const [errorMessage, setErrorMsg] = useState('')
+
     useEffect(() => {
         let data: Array<orderList> = []
         if (!selectedOrder?.call && !selectedOrder?.put) {
@@ -75,7 +78,9 @@ export default function Trade({ handleTabChange, handleTabPrevious, selectedOrde
                     setMessage('')
                     handleTabChange()
                 },3000)
-
+            }else{
+                let resErr = arrayString(res);
+        setErrorMsg(resErr.error)
             }
         })
     }
@@ -113,6 +118,7 @@ export default function Trade({ handleTabChange, handleTabPrevious, selectedOrde
                     </div>)
                 }
             </div>
+            <Required errorText={errorMessage} />
             <div className="d-flex align-items-cener justify-content-center mt-4">
                 <Button
                     className="btn btn-primary btn-next-step me-2"

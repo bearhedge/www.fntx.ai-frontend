@@ -15,8 +15,8 @@ export const menu = [
         ico: <SystemIco />,
         chiildren:[
             {
-                label: 'Asset',
-                route: '/system',
+                label: 'Ticker',
+                route: '/system?id=0',
             },
             {
                 label: 'Timing',

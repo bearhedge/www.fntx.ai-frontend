@@ -17,9 +17,9 @@ interface Iprops {
   list: TickerList | any;
   state: any;
   conIds: ConidsProps[];
-  errorMessage:string
+  errorMessage: string
   isLoading: boolean
-  isLoadingConid:boolean
+  isLoadingConid: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onChangeTicker: (value: InstrumentsProps | null) => void;
 }
@@ -45,6 +45,8 @@ export default function Ticker({
   if (!ins?.length) {
     return <>No Ticker Avaibale</>
   }
+  console.log(state,state.ticker_data ? JSON.stringify({instruments_opt: instrumentsOpt }):"{}", 'state===');
+
   return (
     <div className="system-form">
       {!isIde ? <Card className="mb-4">
@@ -70,9 +72,9 @@ export default function Ticker({
           }
         </div>
       </Card> :
-      <Card className="mb-4">
-        <MultiCodeEvaluator />
-      </Card>}
+        <Card className="mb-4">
+          <MultiCodeEvaluator />
+        </Card>}
       <Card>
         <div className="row justify-content-center">
           {list[instrumentsOpt || state.ticker_data?.instruments_opt]?.map((item: InstrumentsProps) => (
@@ -91,7 +93,7 @@ export default function Ticker({
           ))}
         </div>
         {
-          isLoadingConid ? <Loader dark={true}/>:null
+          isLoadingConid ? <Loader dark={true} /> : null
         }
         {conIds?.length ? (
           <div className="row justify-content-center">
@@ -103,11 +105,11 @@ export default function Ticker({
                 onChange={onChange}
                 value={JSON.stringify(state.ticker_data)}
               >
-                <option disabled selected value="{}">
+                <option disabled selected value={state.ticker_data ? JSON.stringify({instruments_opt: state.ticker_data.instruments_opt }):"{}"}>
                   Select
                 </option>
                 {conIds?.map((items: ConidsProps) => (
-                  <option key={items.conid} value={JSON.stringify({ ...items, instruments_opt: instrumentsOpt })}>
+                  <option key={items.conid} value={JSON.stringify({ ...items, instruments_opt: state.ticker_data.instruments_opt ? state.ticker_data.instruments_opt:instrumentsOpt })}>
                     {items.companyHeader}
                   </option>
                 ))}
@@ -126,9 +128,9 @@ export default function Ticker({
             </div>
           </div>
         ) : null}
-              <Required errorText={errorMessage} />
+        <Required errorText={errorMessage} />
         <Button
-          disabled={!(state.instrument && state.ticker_data) || isLoading}
+          disabled={!(state.instrument && state.ticker_data?.conid) || isLoading}
           isLoading={isLoading}
           className="btn btn-primary btn-next-step mx-auto mt-4"
           onClick={handleTabChange}
