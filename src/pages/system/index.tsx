@@ -71,13 +71,17 @@ function System({ context }: any) {
         }
         wsStrikes.onmessage = (event: any) => {
           const data = JSON.parse(event.data)
-          if(data?.option_chain_data){
-          setOrders(data?.option_chain_data)
-        }else if(data.place_order){
-          setState(prev => ({
-            ...prev, timer: {...prev.timer, place_order:data.place_order}
-          }))
-        }
+          if(!data?.option_chain_data?.call || !data?.option_chain_data?.call?.live_data[0][31]){
+            wsStrikes.close();
+            getSessionToken()
+          }
+          if (data?.option_chain_data) {
+            setOrders(data?.option_chain_data)
+          } else if (data.place_order) {
+            setState(prev => ({
+              ...prev, timer: { ...prev.timer, place_order: data.place_order }
+            }))
+          }
         }
         // When the WebSocket encounters an error
         wsStrikes.onerror = (error) => {
@@ -175,7 +179,7 @@ function System({ context }: any) {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrorMsg('')
     const { name, value } = e.target
-    if(name === 'contract_type'){
+    if (name === 'contract_type') {
       setSelectedOrder({
         call: '',
         put: ''
@@ -247,7 +251,7 @@ function System({ context }: any) {
     if (obj?.time_frame && obj?.time_steps) {
       setIsLoadingRange(true)
       Fetch(`ibkr/range`, { time_frame: obj?.time_frame, time_steps: obj?.time_steps }, { method: 'post' }).then(res => {
-      setIsLoadingRange(false)
+        setIsLoadingRange(false)
         if (res.status) {
           const { lower_bound, upper_bound } = res.data
           setBound({
