@@ -17,3 +17,12 @@ export function arrayString(valu: any, showAll = false) {
     return error;
   } else return valu;
 }
+export const decodeToken = (token: any) => {
+  const a = token.split('.')[1];
+  const b = a.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(b).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+};

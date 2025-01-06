@@ -1,31 +1,53 @@
-// import { Column } from "../../common/type";
-// import Badge from "../../component/badge";
 // import Card from "../../component/Card";
-// import DynamicTable from "../../component/Table";
+// import CircularButton from "../../component/system/CircularButton";
+// import RangeSlider from "../../component/system/RangeSlider";
 import AppLayout from "../../layout/appLayout";
-// import { notify, orders } from "../../lib/dummyArray";
 
 export default function Dashboard() {
-    // const columns: Column[] = [
-    //     { id: "symbol", label: "Symbol" },
-    //     { id: "type", label: "Type", formatHtmls: (item) => <Badge name={item.type} type={item.type === 'Sell' ? 'danger' : 'primary'} /> },
-    //     { id: "open_date", label: "Open Date", },
-    //     { id: "open_price", label: "Open Price", },
-    //     { id: "sl", label: "SL", },
-    //     { id: "tp", label: "TP", },
-    //     { id: "close_date", label: "Close Date", },
-    //     { id: "close_price", label: "Close Price", },
-    //     { id: "lots", label: "Lots", },
-    //     { id: "profit", label: "Profit", formatHtmls: (item) => <div className={`color-${item.profit?.startsWith('-') ? 'danger' : 'primary'}`}>{item.profit}</div> },
-    //     { id: "duration", label: "Duration", },
-    //     { id: "gain", label: "Gain", formatHtmls: (item) => <div className={`color-${item.gain?.startsWith('-') ? 'danger' : 'primary'}`}>{item.gain}</div> },
-    // ];
-    // const columnsNotify: Column[] = [
-    //     { id: "time", label: "Time" },
-    //     { id: "type", label: "Type", formatHtmls: (item) => <Badge name={item.type} type='gray' /> },
-    //     { id: "message", label: "Message", },
-    // ];
     return <AppLayout>
-        <h4 className="text-center">Coming Soon</h4>
+        <div className="dashboard">
+            <h4 className="text-center">Coming Soon</h4>
+            {/* <div className="row mb-4">
+                <div className="col-md-6">
+                    <Card className="d-flex align-items-center flex-row">
+                        <h5>Ticker</h5>
+                        <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">SPY</div>
+                    </Card>
+                </div>
+                <div className="col-md-6">
+                    <Card className="d-flex align-items-center flex-row">
+                        <h5>Expiry</h5>
+                        <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">10 Sep 2024</div>
+                    </Card>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-6">
+                    <Card>
+                        <div className="d-flex align-items-center flex-row mb-4">
+                            <div className="system-trade-card-btn mb-0 d-flex align-items-center justify-content-center">50.0%</div>
+                            <RangeSlider name='take_profit' className='mx-3' min={0} max={50} count={11} oddNumbers={true}/> 
+                        </div>
+                        <div className="d-flex align-items-center flex-row">
+                            <div className="system-trade-card-btn mb-0 d-flex align-items-center justify-content-center">01:00 - 03:30</div>
+                            <RangeSlider name='take_profit' className='mx-3' min={0} max={50} count={11} oddNumbers={true}/> 
+                        </div>
+                    </Card>
+                </div>
+                <div className="col-md-6">
+                    <div className="row">
+                        <div className="col-md-4">
+                            <CircularButton text={"P"} />
+                        </div>
+                        <div className="col-md-4">
+                            <CircularButton text={"N"} />
+                        </div>
+                        <div className="col-md-4">
+                            <CircularButton text={"D"} />
+                        </div>
+                    </div>
+                </div>
+            </div> */}
+        </div>
     </AppLayout>
 }

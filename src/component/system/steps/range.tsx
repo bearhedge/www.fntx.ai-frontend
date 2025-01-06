@@ -19,12 +19,13 @@ interface Iprops {
   handleTabChange: () => void;
   state: any;
   isLoading: boolean
+  isLoadingRange:boolean
   handleTabPrevious: (value: number) => void;
   errorMessage: string
   bound: BoundProps
   handleChangeRange: (value: string | number, name: string) => void;
 }
-export default function Range({ handleTabChange, state, isLoading, handleChangeRange, handleTabPrevious, errorMessage, bound }: Iprops) {
+export default function Range({ handleTabChange,isLoadingRange, state, isLoading, handleChangeRange, handleTabPrevious, errorMessage, bound }: Iprops) {
   const handleGetTotal = (): string | number => {
     const val = state.time_frame?.split('-')
     let result = 'N/A'
@@ -51,6 +52,7 @@ export default function Range({ handleTabChange, state, isLoading, handleChangeR
                     type="radio"
                     label={items}
                     value={items}
+                    disabled={isLoadingRange}
                     id={items}
                     className="font-bold"
                     checked={state.time_frame === items}
@@ -71,6 +73,7 @@ export default function Range({ handleTabChange, state, isLoading, handleChangeR
                     type="radio"
                     label={key + 1}
                     value={key + 1}
+                    disabled={isLoadingRange}
                     id={'timesteps' + key + items}
                     className="font-bold"
                     checked={state.time_steps === (key + 1)}

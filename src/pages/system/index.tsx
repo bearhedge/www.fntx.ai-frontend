@@ -14,6 +14,7 @@ import Fetch from "../../common/api/fetch";
 import { InstrumentsProps } from "../../common/type";
 import { arrayString } from "../../lib/utilits";
 import { withContext } from "../../context/appContext";
+import { decodeToken } from "../../common/utilits";
 interface IpropsState {
   instrument: string,
   ticker_data: any,
@@ -34,6 +35,7 @@ function System({ context }: any) {
   const [tab, setTab] = useState(0);
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingConid, setIsLoadingConid] = useState(false)
+  const [isLoadingRange, setIsLoadingRange] = useState(false)
   const [id, setId] = useState('')
   const [errorMessage, setErrorMsg] = useState('')
   const [bound, setBound] = useState({
@@ -59,15 +61,23 @@ function System({ context }: any) {
   useEffect(() => {
     // Create the WebSocket connection
     const getSessionToken = async () => {
+      const id = decodeToken(localStorage.token)?.user_id
       try {
-        const wsStrikes = new WebSocket(`${import.meta.env.VITE_API_SOCKET_URL}ws/strikes/`); // WebSocket URL must start with 'wss://'
+        const wsStrikes = new WebSocket(`${import.meta.env.VITE_API_SOCKET_URL}ws/strikes/?user_id=${id}`); // WebSocket URL must start with 'wss://'
         // When the WebSocket opens
         wsStrikes.onopen = () => {
           console.log('WebSocket Strikes connected');
           wsStrikes.send(JSON.stringify({ contract_id: state.ticker_data?.conid }));
         }
         wsStrikes.onmessage = (event: any) => {
-          setOrders(JSON.parse(event.data)?.option_chain_data)
+          const data = JSON.parse(event.data)
+          if(data?.option_chain_data){
+          setOrders(data?.option_chain_data)
+        }else if(data.place_order){
+          setState(prev => ({
+            ...prev, timer: {...prev.timer, place_order:data.place_order}
+          }))
+        }
         }
         // When the WebSocket encounters an error
         wsStrikes.onerror = (error) => {
@@ -87,7 +97,7 @@ function System({ context }: any) {
         console.error('Error fetching session token:', error);
       }
     };
-    if (state.ticker_data?.conid) {
+    if (state.ticker_data?.conid && localStorage.token) {
       getSessionToken();
     }
     // Cleanup function to close the WebSocket connection when the component unmounts
@@ -138,7 +148,7 @@ function System({ context }: any) {
       } else {
         let resErr = arrayString(res);
         if (resErr.error === 'You have been logout from IBKR client portal. Please login to continue.') {
-          context.updateIbkrAuth(true)
+          context.updateIbkrAuth(false)
         }
         setErrorMsg(resErr.error)
       }
@@ -205,7 +215,6 @@ function System({ context }: any) {
       setState(prev => ({ ...prev, instrument: '', ticker_data: {} }))
       return <></>
     }
-    console.log(val);
     getConIds(val?.instrument)
     setState(prev => ({ ...prev, instrument: val?.id, ticker_data: { instruments_opt: state?.ticker_data?.instruments_opt } }))
   };
@@ -236,7 +245,9 @@ function System({ context }: any) {
       [name]: val
     }
     if (obj?.time_frame && obj?.time_steps) {
+      setIsLoadingRange(true)
       Fetch(`ibkr/range`, { time_frame: obj?.time_frame, time_steps: obj?.time_steps }, { method: 'post' }).then(res => {
+      setIsLoadingRange(false)
         if (res.status) {
           const { lower_bound, upper_bound } = res.data
           setBound({
@@ -280,7 +291,7 @@ function System({ context }: any) {
           isLoading={isLoading}
           handleTabChange={() => handleStepSubmit(2)}
         />}
-        {tab === 2 && <Range handleTabPrevious={handleTab} bound={bound} errorMessage={errorMessage} state={state} isLoading={isLoading} handleChangeRange={handleChangeRange} handleTabChange={() => handleStepSubmit(3)} />}
+        {tab === 2 && <Range isLoadingRange={isLoadingRange} handleTabPrevious={handleTab} bound={bound} errorMessage={errorMessage} state={state} isLoading={isLoading} handleChangeRange={handleChangeRange} handleTabChange={() => handleStepSubmit(3)} />}
         {tab === 3 && <Risk handleTabPrevious={handleTab} errorMessage={errorMessage} onChange={onChange} isLoading={isLoading} state={state} handleTabChange={() => handleStepSubmit(4)} />}
         {tab === 4 && <Contracts handleTabPrevious={handleTab} order={order} selectedOrder={selectedOrder} handleSelectedOrder={handleSelectedOrder} errorMessage={errorMessage} isLoading={isLoading} state={state} onChange={onChange} handleTabChange={() => handleStepSubmit(5)} />}
         {tab === 5 && <Trade handleTabPrevious={handleTab} state={state} selectedOrder={selectedOrder} handleTabChange={() => handleTab(6)} />}

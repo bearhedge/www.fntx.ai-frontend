@@ -1,4 +1,4 @@
-const CircularButton = ({ text, bgColor }: { text: string, bgColor: string }) => {
+const CircularButton = ({ text, bgColor }: { text: string, bgColor?: string }) => {
   return <button className={`round-button ${bgColor}`}>{text}</button>;
 };
 

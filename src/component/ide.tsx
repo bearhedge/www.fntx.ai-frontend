@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-
+import { loadPyodide } from "pyodide";
+import * as React from "react";
+import Input from "./form/input";
+import Button from "./form/button";
+import AddIcon from "@assets/svg/add_ico.svg"
 const PyodideDynamicInputApp = () => {
 
   const [pyodide, setPyodide] = useState<any>(null);
@@ -8,20 +12,17 @@ const PyodideDynamicInputApp = () => {
 
   // Load Pyodide on component mount
   useEffect(() => {
-    const loadPyodide = async () => {
-        const loadPyodide = (window as any).loadPyodide;
-        console.log(loadPyodide, window);
-        
+    const initPyodide = async () => {
       const pyodideInstance = await loadPyodide({
-        indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.23.2/full',
-      });
+        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/",
+      })
       setPyodide(pyodideInstance);
     };
-    loadPyodide();
+    initPyodide();
   }, []);
 
   // Handle input field changes
-  const handleInputChange = (id:number, value:string) => {
+  const handleInputChange = (id: number, value: string) => {
     setInputs((prevInputs) =>
       prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
     );
@@ -34,7 +35,7 @@ const PyodideDynamicInputApp = () => {
   };
 
   // Remove an input field
-  const removeInputField = (id:number) => {
+  const removeInputField = (id: number) => {
     setInputs((prevInputs) => prevInputs.filter((input) => input.id !== id));
   };
 
@@ -48,7 +49,6 @@ const PyodideDynamicInputApp = () => {
         .map((input) => input.value)
         .filter((value) => value.trim() !== "") // Filter out empty inputs
         .join("\n"); // Join scripts with new lines
-
       const result = await pyodide?.runPythonAsync(pythonScript);
       setResult(result);
     } catch (error) {
@@ -56,28 +56,32 @@ const PyodideDynamicInputApp = () => {
       setResult("Error in computation.");
     }
   };
-
   return (
-    <div>
-      <h1>Pyodide Dynamic Input Example</h1>
-      {inputs.map((input) => (
-        <div key={input.id} style={{ marginBottom: "10px" }}>
-          <textarea
-            rows={3}
-            placeholder={`Python code for Input ${input.id}`}
+    <div className="multi-input">
+        <strong >Input</strong>
+      {inputs.map((input, key) => (
+        <div key={input.id} className="mt-3 d-flex align-items-start">
+          <Input
+            type='textarea'
+            className='w-100'
             value={input.value}
-            onChange={(e) => handleInputChange(input.id, e.target.value)}
-            style={{ width: "300px" }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(input.id, e.target.value)}
           />
-          <button onClick={() => removeInputField(input.id)}>Remove</button>
+          {key !== 0 && <Button className="btn"  onClick={() => removeInputField(input.id)}>Remove</Button>}
         </div>
       ))}
-      <button onClick={addInputField}>Add Input</button>
-      <button onClick={runPyodideScript} disabled={!pyodide}>
-        Run Pyodide Script
-      </button>
-      <h2>Result:</h2>
-      <pre>{result}</pre>
+      <div className="d-flex justify-content-end">
+        <Button onClick={addInputField} className='btn d-flex align-items-center'>Add More <img className="ms-2" src={AddIcon} /></Button>
+        <Button onClick={runPyodideScript} className='btn btn-primary' disabled={!pyodide}>
+          Run Pyodide Script
+        </Button>
+      </div>
+      {result && <div className="mt-3">
+        <strong>Output:</strong>
+        <div className="multi-input-output mt-3">
+          {result}
+        </div>
+      </div>}
     </div>
   );
 };

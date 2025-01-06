@@ -45,11 +45,9 @@ export default function Ticker({
   if (!ins?.length) {
     return <>No Ticker Avaibale</>
   }
-  console.log(state,state.ticker_data ? JSON.stringify({instruments_opt: instrumentsOpt }):"{}", 'state===');
-
   return (
     <div className="system-form">
-      {!isIde ? <Card className="mb-4">
+      <Card className="mb-4">
         <div className="row">
           <div className="col-12 mb-3 pb-1">
             <div className="switch d-flex align-items-center justify-content-end">
@@ -57,24 +55,24 @@ export default function Ticker({
             </div>
           </div>
           {
-            ins?.map((items: string, key: number) => <div className="col-sm-4 col-12" key={key}>
-              <RadioCheckboxOption
-                type="radio"
-                label={items}
-                value={items}
-                disabled={isLoadingConid}
-                id={items}
-                className="font-bold"
-                checked={(instrumentsOpt || state.ticker_data?.instruments_opt) === items}
-                handleChange={handleChange}
-              />
-            </div>)
+            !isIde ?
+              ins?.map((items: string, key: number) => <div className="col-sm-4 col-12" key={key}>
+                <RadioCheckboxOption
+                  type="radio"
+                  label={items}
+                  value={items}
+                  disabled={isLoadingConid}
+                  id={items}
+                  className="font-bold"
+                  checked={(instrumentsOpt || state.ticker_data?.instruments_opt) === items}
+                  handleChange={handleChange}
+                />
+              </div>)
+              :
+              <MultiCodeEvaluator />
           }
         </div>
-      </Card> :
-        <Card className="mb-4">
-          <MultiCodeEvaluator />
-        </Card>}
+      </Card>
       <Card>
         <div className="row justify-content-center">
           {list[instrumentsOpt || state.ticker_data?.instruments_opt]?.map((item: InstrumentsProps) => (
@@ -105,11 +103,11 @@ export default function Ticker({
                 onChange={onChange}
                 value={JSON.stringify(state.ticker_data)}
               >
-                <option disabled selected value={state.ticker_data ? JSON.stringify({instruments_opt: state.ticker_data.instruments_opt }):"{}"}>
+                <option disabled selected value={state.ticker_data ? JSON.stringify({ instruments_opt: state.ticker_data.instruments_opt }) : "{}"}>
                   Select
                 </option>
                 {conIds?.map((items: ConidsProps) => (
-                  <option key={items.conid} value={JSON.stringify({ ...items, instruments_opt: state.ticker_data.instruments_opt ? state.ticker_data.instruments_opt:instrumentsOpt })}>
+                  <option key={items.conid} value={JSON.stringify({ ...items, instruments_opt: state.ticker_data.instruments_opt ? state.ticker_data.instruments_opt : instrumentsOpt })}>
                     {items.companyHeader}
                   </option>
                 ))}

@@ -119,11 +119,37 @@ svg {
         box-shadow: unset;
     }
 }
-
+.multi{
+    &-input{
+        .form-control textarea{
+            height: unset;
+            max-height: 150px;
+            min-height: 30px;
+            padding: 5px !important;
+        }
+        &-output, .form-control textarea{
+            background-color: #F7F7F7;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 16px 12px;
+            border-radius: 4px;
+        }
+        strong{
+            font-size: 1rem;
+        }
+        .form-input{
+            width: 100%;
+        }
+    }
+}
 .form {
     &-input {
         margin-bottom: 16px;
-
+        .textarea{
+            .form-control{
+                height: auto;
+            }
+        }
         &-check {
             cursor: pointer;
             background-color: #eeeeee;
@@ -147,7 +173,7 @@ svg {
         line-height: 20px;
         color: var(--text-color);
     }
-
+   
     &-control {
         border: 0px;
         background-color: transparent;

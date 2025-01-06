@@ -30,8 +30,6 @@ const StockTable: React.FC<StockTableProps> = ({
   useEffect(()=>{
     setSelectedRow(selected)
   },[selected])
-  console.log(handleSelected,selectedRow);
-  
   return (
     <div className="stock-table">
       <label className="fw-600 mb-3">{title}</label>
