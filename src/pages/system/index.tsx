@@ -71,11 +71,11 @@ function System({ context }: any) {
         }
         wsStrikes.onmessage = (event: any) => {
           const data = JSON.parse(event.data)
-          if(!data?.option_chain_data?.call || !data?.option_chain_data?.call?.live_data[0][31]){
-            wsStrikes.close();
-            getSessionToken()
-          }
           if (data?.option_chain_data) {
+            if(!data?.option_chain_data?.call || !data?.option_chain_data?.call?.live_data[0][31]){
+              wsStrikes.close();
+              getSessionToken()
+            }
             setOrders(data?.option_chain_data)
           } else if (data.place_order) {
             setState(prev => ({
