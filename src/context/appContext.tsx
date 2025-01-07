@@ -31,7 +31,7 @@ const AppContext: React.FC<IProps> = ({ children }) => {
   const updateIbkrAuth=(val:boolean)=>{
     setSettings((prev) => ({
       ...prev,
-      ibkr: val ? true : false,
+      ibkr: val,
     }))
   }
   useEffect(() => {

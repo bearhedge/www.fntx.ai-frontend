@@ -63,10 +63,10 @@ function System({ context }: any) {
     const getSessionToken = async () => {
       const id = decodeToken(localStorage.token)?.user_id
       try {
-        const wsStrikes = new WebSocket(`${import.meta.env.VITE_API_SOCKET_URL}ws/strikes/?user_id=${id}`); // WebSocket URL must start with 'wss://'
+        const wsStrikes = new WebSocket(`${import.meta.env.VITE_API_SOCKET_URL}ws/strikes?user_id=${id}`); // WebSocket URL must start with 'wss://'
         // When the WebSocket opens
         wsStrikes.onopen = () => {
-          console.log('WebSocket Strikes connected');
+          console.log('WebSocket Strikes connected', state.ticker_data?.conid);
           wsStrikes.send(JSON.stringify({ contract_id: state.ticker_data?.conid }));
         }
         wsStrikes.onmessage = (event: any) => {
@@ -78,6 +78,7 @@ function System({ context }: any) {
             }
             setOrders(data?.option_chain_data)
           } else if (data.place_order) {
+          context.updateIbkrAuth(data.authentication)
             setState(prev => ({
               ...prev, timer: { ...prev.timer, place_order: data.place_order }
             }))
@@ -101,6 +102,8 @@ function System({ context }: any) {
         console.error('Error fetching session token:', error);
       }
     };
+    console.log(state.ticker_data?.conid,'conid====');
+    
     if (state.ticker_data?.conid && localStorage.token) {
       getSessionToken();
     }
@@ -213,7 +216,6 @@ function System({ context }: any) {
   }
   const onChangeTicker = (val: InstrumentsProps | null) => {
     setErrorMsg('')
-    console.log(val);
     setConIds([])
     if (!val?.id) {
       setState(prev => ({ ...prev, instrument: '', ticker_data: {} }))

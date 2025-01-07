@@ -139,7 +139,7 @@ export default function Range({ handleTabChange,isLoadingRange, state, isLoading
                     className="btn btn-primary btn-next-step w-100"
                     onClick={handleTabChange}
                     isLoading={isLoading}
-                    disabled={!(state.time_frame && state.time_steps) || isLoading}
+                    disabled={!(state.time_frame && state.time_steps) || isLoading || isLoadingRange}
                   >
                     Next Step
                   </Button>

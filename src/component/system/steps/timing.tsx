@@ -8,18 +8,6 @@ import Required from "../../form/required";
 
 const time = [
   {
-    label: '90 min',
-    value: 90
-  },
-  {
-    label: '120 min',
-    value: 120
-  },
-  {
-    label: '150 min',
-    value: 150
-  },
-  {
     label: '180 min',
     value: 180
   },
@@ -30,6 +18,18 @@ const time = [
   {
     label: '240 min',
     value: 240
+  },
+  {
+    label: '270 min',
+    value: 270
+  },
+  {
+    label: '300 min',
+    value: 300
+  },
+  {
+    label: '330 min',
+    value: 330
   },
 ]
 interface Iprops {
