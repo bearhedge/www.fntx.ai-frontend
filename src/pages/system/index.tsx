@@ -210,6 +210,12 @@ function System({ context }: any) {
     Fetch(`ibkr/symbol_conid?symbol=${instrument}`).then((res) => {
       if (res.status) {
         setConIds(res.data?.data);
+      }else{
+        let resErr = arrayString(res);
+        if (resErr.error === 'You have been logout from IBKR client portal. Please login to continue.') {
+          context.updateIbkrAuth(false)
+        }
+        setErrorMsg(resErr.error)
       }
       setIsLoadingConid(false)
     });

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 // import Fetch from "../../../common/api/fetch";
-import RadioCheckboxOption from "../../buttonSeelct";
+import RadioCheckboxOption from "../../RadioCheckbox";
 import Card from "../../Card";
 import Button from "../../form/button";
 import Required from "../../form/required";
