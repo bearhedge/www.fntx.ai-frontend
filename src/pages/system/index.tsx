@@ -72,7 +72,7 @@ function System({ context }: any) {
         wsStrikes.onmessage = (event: any) => {
           const data = JSON.parse(event.data)
           if (data?.option_chain_data?.length) {
-            if(!data?.option_chain_data[0]?.call || !data?.option_chain_data[0]?.call?.live_data[0][31]){
+            if(!data?.option_chain_data[0]?.put?.live_data[0][31] && !data?.option_chain_data[0]?.call?.live_data[0][31]){
               wsStrikes.close();
               getSessionToken()
             }
