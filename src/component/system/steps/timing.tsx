@@ -8,27 +8,27 @@ import Required from "../../form/required";
 
 const time = [
   {
-    label: '180 min',
+    label: '180-min',
     value: 180
   },
   {
-    label: '210 min',
+    label: '210-min',
     value: 210
   },
   {
-    label: '240 min',
+    label: '240-min',
     value: 240
   },
   {
-    label: '270 min',
+    label: '270-min',
     value: 270
   },
   {
-    label: '300 min',
+    label: '300-min',
     value: 300
   },
   {
-    label: '330 min',
+    label: '330-min',
     value: 330
   },
 ]
@@ -44,15 +44,18 @@ interface Iprops {
 export default function Timing({ handleTabChange, handleChangeTime, handleTabPrevious, updatePlaceOrder, isLoading, state, errorMessage }: Iprops) {
   const [countdown, setCountdown] = useState<number | null>(null); // 120 minutes in seconds
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
+  const [endTime, setEndTime] = useState<Date | null>(null); 
   const [isOpen, setIsOpen] = useState<number | null>(null)
   const [placeOrder] = useState<boolean | null>(false)
   useEffect(() => {
     if (state?.timer?.timer_value) {
       const timerCountDown = +state?.timer?.timer_value * 60
       const currentTimer = new Date().getTime()
+      const calculatedEndTime = new Date(currentTimer + timerCountDown * 1000); // Calculate end time
       const countdownInterval = setInterval(() => {
         setCountdown((prev) => (prev ? prev - 1 : timerCountDown - 1));
       }, 1000);
+      setEndTime(calculatedEndTime); // Set end time
       const timeInterval = setInterval(() => {
         setCurrentTime((prevTime) => new Date((prevTime?.getTime() || currentTimer) + 1000));
       }, 1000);
@@ -116,6 +119,11 @@ export default function Timing({ handleTabChange, handleChangeTime, handleTabPre
               </div>
               <div className="col-sm-6 col-12 mb-1">
                 <div className="system-trade-card-btn d-flex align-items-center justify-content-center">{formatTime(countdown)} mins</div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-6 col-12 mb-1 mx-auto">
+                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">{endTime?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) || 'N/A'}</div>
               </div>
             </div>
           </div>

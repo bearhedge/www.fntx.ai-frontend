@@ -68,7 +68,9 @@ export default function Range({ handleTabChange,isLoadingRange, state, isLoading
             <div className="row">
               <label className="fw-600 pb-1 mb-3">Timesteps</label>
               {
-                [...new Array(12)]?.map((items: number, key: number) => <div key={key} className="col-sm-3 col-12">
+                [...new Array(10)]?.map((items: number, index: number) => {
+                  const key = index + 2; // Start from 3
+                return <div key={key} className="col-sm-3 col-12">
                   <RadioCheckboxOption
                     type="radio"
                     label={key + 1}
@@ -79,7 +81,7 @@ export default function Range({ handleTabChange,isLoadingRange, state, isLoading
                     checked={state.time_steps === (key + 1)}
                     handleChange={() => handleChangeRange((key + 1), 'time_steps')}
                   />
-                </div>)
+                </div>})
               }
             </div>
           </Card>
