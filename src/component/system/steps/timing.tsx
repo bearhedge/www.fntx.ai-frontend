@@ -51,10 +51,11 @@ export default function Timing({ handleTabChange, handleChangeTime, handleTabPre
     if (state?.timer?.timer_value) {
       const timerCountDown = +state?.timer?.timer_value * 60
       const currentTimer = new Date().getTime()
-      const calculatedEndTime = new Date(currentTimer + timerCountDown * 1000); // Calculate end time
+      const calculatedEndTime = new Date(currentTimer + (state?.timer?.original_timer_value * 60) * 1000); // Calculate end time
       const countdownInterval = setInterval(() => {
         setCountdown((prev) => (prev ? prev - 1 : timerCountDown - 1));
       }, 1000);
+      console.log(calculatedEndTime,state?.timer?.timer_value);
       setEndTime(calculatedEndTime); // Set end time
       const timeInterval = setInterval(() => {
         setCurrentTime((prevTime) => new Date((prevTime?.getTime() || currentTimer) + 1000));
