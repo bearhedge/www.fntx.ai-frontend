@@ -44,19 +44,18 @@ interface Iprops {
 export default function Timing({ handleTabChange, handleChangeTime, handleTabPrevious, updatePlaceOrder, isLoading, state, errorMessage }: Iprops) {
   const [countdown, setCountdown] = useState<number | null>(null); // 120 minutes in seconds
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
-  const [endTime, setEndTime] = useState<Date | null>(null); 
+  const [endTime, setEndTime] = useState<string | null>(null); 
   const [isOpen, setIsOpen] = useState<number | null>(null)
   const [placeOrder] = useState<boolean | null>(false)
   useEffect(() => {
     if (state?.timer?.timer_value) {
       const timerCountDown = +state?.timer?.timer_value * 60
       const currentTimer = new Date().getTime()
-      const calculatedEndTime = new Date(currentTimer + (state?.timer?.original_timer_value * 60) * 1000); // Calculate end time
+      const calculatedEndTime = new Date(currentTimer + (state?.timer?.timer_value * 60) * 1000); // Calculate end time
       const countdownInterval = setInterval(() => {
         setCountdown((prev) => (prev ? prev - 1 : timerCountDown - 1));
       }, 1000);
-      console.log(calculatedEndTime,state?.timer?.timer_value);
-      setEndTime(calculatedEndTime); // Set end time
+      setEndTime(state?.timer?.end_time ? state?.timer?.end_time :calculatedEndTime?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })); // Set end time
       const timeInterval = setInterval(() => {
         setCurrentTime((prevTime) => new Date((prevTime?.getTime() || currentTimer) + 1000));
       }, 1000);
@@ -124,7 +123,7 @@ export default function Timing({ handleTabChange, handleChangeTime, handleTabPre
             </div>
             <div className="row">
               <div className="col-sm-6 col-12 mb-1 mx-auto">
-                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">{endTime?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) || 'N/A'}</div>
+                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">{endTime || 'N/A'}</div>
               </div>
             </div>
           </div>
