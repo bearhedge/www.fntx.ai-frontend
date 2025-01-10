@@ -111,7 +111,7 @@ export default function Timing({ handleTabChange, handleChangeTime, handleTabPre
       </Card>
       <Card>
         {/* <RangeSlider count={8} /> */}
-        <div className="row justify-content-center mt-5">
+        <div className="row justify-content-center align-items-center mt-5">
           <div className="col-sm-6 col-12">
             <div className="row">
               <div className="col-sm-6 col-12 mb-1">
