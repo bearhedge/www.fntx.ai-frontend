@@ -103,6 +103,11 @@
   }
 
   &-form {
+    &-timing{
+      .form-input-check{
+        text-transform: unset;
+      }
+    }
     &-orders{
         max-height: 400px !important;
         overflow: auto;

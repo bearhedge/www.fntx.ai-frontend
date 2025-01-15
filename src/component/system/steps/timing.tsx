@@ -85,7 +85,7 @@ export default function Timing({ handleTabChange, handleChangeTime, handleTabPre
   }
 
   return (
-    <div className="system-form">
+    <div className="system-form system-form-timing">
       <Card className="mb-4">
         <div className="row">
           <div className="col-12 mb-3 pb-1">
