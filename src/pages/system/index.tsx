@@ -135,7 +135,7 @@ function System({ context }: any) {
       if (res.status) {
         if (res.data?.id) {
           setId(res.data.id)
-          getConIds(res.data.instrument?.instrument)
+          // getConIds(res.data.instrument?.instrument)
           // setTab(res.data.form_step);
           setBound({
             lower_bound: res.data.lower_bound,
@@ -144,7 +144,7 @@ function System({ context }: any) {
           setState(prev => ({
             ...prev,
             instrument: res.data.instrument?.id,
-            ticker_data: { ...res.data?.ticker_data, instruments_opt: res.data.instrument?.instrument_type },
+            ticker_data: { symbol:res.data?.ticker_data?.symbol, instruments_opt: res.data.instrument?.instrument_type },
             timer: res.data?.timer,
             confidence_level: res.data?.confidence_level,
             original_timer_value: res.data?.original_timer_value,
@@ -166,7 +166,7 @@ function System({ context }: any) {
     setErrorMsg('')
     const params = { ...state }
     delete params.timer
-    Fetch(`ibkr/system-data/${id ? id + '/' : ''}`, { ...params, ...bound, form_step: tab }, { method: id ? 'patch' : 'post' }).then((res) => {
+    Fetch(`ibkr/system-data/${id ? id + '/' : ''}`, { ...params,ticker_data:params.ticker_data.symbol, ...bound, form_step: tab }, { method: id ? 'patch' : 'post' }).then((res) => {
       setIsLoading(false)
       if (res.status) {
         setId(res.data.id)
@@ -221,8 +221,8 @@ function System({ context }: any) {
       setState(prev => ({ ...prev, instrument: '', ticker_data: {} }))
       return <></>
     }
-    getConIds(val?.instrument)
-    setState(prev => ({ ...prev, instrument: val?.id, ticker_data: { instruments_opt: state?.ticker_data?.instruments_opt } }))
+    // getConIds(val?.instrument)
+    setState(prev => ({ ...prev, instrument: val?.id, ticker_data: {symbol:val?.instrument} }))
   };
 
 

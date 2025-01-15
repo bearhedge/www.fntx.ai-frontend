@@ -8,27 +8,27 @@ import Required from "../../form/required";
 
 const time = [
   {
-    label: '180-min',
+    label: '180-mins',
     value: 180
   },
   {
-    label: '210-min',
+    label: '210-mins',
     value: 210
   },
   {
-    label: '240-min',
+    label: '240-mins',
     value: 240
   },
   {
-    label: '270-min',
+    label: '270-mins',
     value: 270
   },
   {
-    label: '300-min',
+    label: '300-mins',
     value: 300
   },
   {
-    label: '330-min',
+    label: '330-mins',
     value: 330
   },
 ]

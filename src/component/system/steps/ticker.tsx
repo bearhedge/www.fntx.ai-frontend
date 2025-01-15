@@ -128,7 +128,7 @@ export default function Ticker({
         ) : null}
         <Required errorText={errorMessage} />
         <Button
-          disabled={!(state.instrument && state.ticker_data?.conid) || isLoading}
+          disabled={!(state.instrument && state.ticker_data?.symbol) || isLoading}
           isLoading={isLoading}
           className="btn btn-primary btn-next-step mx-auto mt-4"
           onClick={handleTabChange}

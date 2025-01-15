@@ -43,7 +43,7 @@ export default function Contracts({ handleTabChange, onChange, order, selectedOr
     { id: "strike", label: "Strikes" },
     // { id: "billable_time_spend", label: "Open Interest" },
   ];
-
+  
   return (
     <div className="system-form">
       <Card className="mb-4">
@@ -57,7 +57,7 @@ export default function Contracts({ handleTabChange, onChange, order, selectedOr
             <RadioCheckboxOption
               type="radio"
               checked={contractType === 'Single Leg'}
-              label="Single Leg"
+              label="Single-leg"
               value=""
               name="contract_type"
               id="SingleLeg"
@@ -68,7 +68,7 @@ export default function Contracts({ handleTabChange, onChange, order, selectedOr
           <div className="col-sm-6 col-12">
             <RadioCheckboxOption
               type="radio"
-              label="Double Leg"
+              label="Double-leg"
               checked={state.contract_type === 'both'}
               value="both"
               id="DoubleLeg"
@@ -110,13 +110,13 @@ export default function Contracts({ handleTabChange, onChange, order, selectedOr
       <Card>
         {state.contract_type && <> <div className="row mb-3 system-form-orders">
           {(state.contract_type === 'call' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 9} col-12`}>
-            <StockTable selected={selectedOrder.call.selected} handleSelected={(row: any) => handleSelectedOrder({ ...row.call, selected: row.selected }, 'call')} title={"Calls"} rows={order} columns={columnsCall} />
+            <StockTable selected={selectedOrder.call.selected} handleSelected={(row: any) => handleSelectedOrder({ ...row.call, selected: row.selected }, 'call')} title={state.contract_type === 'both' ? "Calls":''} rows={state.contract_type === 'both' ? order: order.filter((item:any)=> item.call)} columns={columnsCall} />
           </div>}
-          <div className={`col-sm-${state.contract_type === 'both' ? 2 : 3} ${state.contract_type === 'put' && 'order-1'} col-12 strike-table`}>
-            <StockTable title={""} rows={order} columns={columnsStrikes} showStrike={true} />
+          <div className={`col-sm-${state.contract_type === 'both' ? 2 : 3} ${state.contract_type === 'put' && 'order-1'} col-12 ${state.contract_type === 'both' ? 'strike-table':''}`}>
+            <StockTable title={""} rows={state.contract_type === 'both' ? order: state.contract_type === 'call' ? order.filter((item:any)=> item.call):state.contract_type === 'put' ? order.filter((item:any)=> item.put):[]} columns={columnsStrikes} showStrike={true} />
           </div>
           {(state.contract_type === 'put' || state.contract_type === 'both') && <div className={`col-sm-${state.contract_type === 'both' ? 5 : 9} col-12`}>
-            <StockTable selected={selectedOrder.put.selected} handleSelected={(row: any) => handleSelectedOrder({ ...row.put, selected: row.selected }, 'put')} title={"Puts"} className="grey-bg" columns={columnsPut} rows={order} />
+            <StockTable selected={selectedOrder.put.selected} handleSelected={(row: any) => handleSelectedOrder({ ...row.put, selected: row.selected }, 'put')} title={state.contract_type === 'both' ? "Puts":''} className="grey-bg" columns={columnsPut} rows={state.contract_type === 'both' ? order: order.filter((item:any)=> item.put)} />
           </div>}
         </div>
 
