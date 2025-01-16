@@ -1,5 +1,8 @@
 .onboarding {
     // margin-top: 20px;
+    .btn-baselay {
+        min-width: 215px;
+    }
     padding-top: 60px;
     &-confirm-tick{
         width: 30px;

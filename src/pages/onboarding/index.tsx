@@ -237,8 +237,8 @@ export default function OnBoarding() {
                                         isRefreshIbkr ? null : platform.ibkr && <TickGreenIcon className={'onboarding-confirm-tick'} />
                                 }
                             </div>
-                            <h6>IBKR Margin Account</h6>
-                            <p className="mt-2">An IBKR margin account is required before accessing the platform.</p>
+                            <h6>Interactive Brokers (IBKR) Margin Account</h6>
+                            <p className="mt-2">Set-up and connect an IBKR margin account to access the platform and start trading.</p>
                         </div>
                         {isLoading === false ? isRefreshIbkr ? null : platform.ibkr ? <CardLinkConfirm message='IBKR Account Connected' /> : <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2" onClick={linkIbkrAccount}>Link Account</Button>
@@ -259,7 +259,7 @@ export default function OnBoarding() {
                                 }
                             </div>
                             <h6>DeFi Wallet Integration</h6>
-                            <p className="mt-2">Connect a decentralised wallet to enable secure and efficient transactions on the platform.</p>
+                            <p className="mt-2">Connect a MetaMask wallet to enable secure, blockchain-based access to the platform.</p>
                         </div>
                         {isLoadingMeta === false ? isRefreshMeta ? null : platform.metamask_address && !isMetaMaskInstalled ? <CardLinkConfirm message='DeFi Wallet Connected' /> : <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2" onClick={handleConnectWallet}>Connect Now</Button>
@@ -271,8 +271,8 @@ export default function OnBoarding() {
                     <Card>
                         <div>
                             <TradingIco />
-                            <h6>Level 4 Options Trading</h6>
-                            <p className="mt-2">Our strategy requires level 4 options trading approval in your account before accessing the platform.</p>
+                            <h6>Level 4 Options Trading Approval</h6>
+                            <p className="mt-2">Obtain level 4 approval through trading permissions in your IBKR settings to access and implement the platform’s systematic options strategies.</p>
                         </div>
                         {/* <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2">Check Level</Button>
@@ -284,8 +284,8 @@ export default function OnBoarding() {
                     <Card>
                         <div>
                             <SubscriptionDataIco />
-                            <h6>Options Data Subscription</h6>
-                            <p className="mt-2">We require your account to have a subscription to options data, covering the SPY index, before accessing the platform.</p>
+                            <h6>Options Price Reporting Authority (OPRA) <br></br> Level I</h6>
+                            <p className="mt-2">Subscribe to OPRA Level I data through data subscriptions in your IBKR settings to activate real-time data streaming on the platform.</p>
                         </div>
                         {/* <div className="d-flex mt-2">
                             <Button className="btn btn-primary w-100 me-2">Contact IBKR</Button>
@@ -310,7 +310,7 @@ export default function OnBoarding() {
             </div>
             <h4 className="mt-4 mb-0 pb-5">Please ensure the following requirements are met.</h4>
             <div className="mt-5 d-flex justify-content-end mb-5 pt-3">
-                <Button className="btn btn-primary me-1" onClick={()=>navigate('/dashboard')} disabled={!(platform?.ibkr && (platform?.metamask_address && !isMetaMaskInstalled))}>Dashboard</Button>
+                <Button className="btn btn-primary btn-baselay me-1" onClick={()=>navigate('/dashboard')} disabled={!(platform?.ibkr && (platform?.metamask_address && !isMetaMaskInstalled))}>Dashboard</Button>
             </div>
         </section>
         <DialogConfirm isOpen={isOpen} title={modalContent[isOpen]?.title} des={modalContent[isOpen]?.des} des1={modalContent[isOpen]?.des1} onClose={handleClose}>
