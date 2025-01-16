@@ -72,13 +72,13 @@ function System({ context }: any) {
         wsStrikes.onmessage = (event: any) => {
           const data = JSON.parse(event.data)
           if (data?.option_chain_data?.length) {
-            if(!data?.option_chain_data[0]?.put?.live_data[0][31] && !data?.option_chain_data[0]?.call?.live_data[0][31]){
+            if (!data?.option_chain_data[0]?.put?.live_data[0][31] && !data?.option_chain_data[0]?.call?.live_data[0][31]) {
               wsStrikes.close();
               getSessionToken()
             }
             setOrders(data?.option_chain_data)
           } else if (data.place_order) {
-          context.updateIbkrAuth(data.authentication)
+            context.updateIbkrAuth(data.authentication)
             setState(prev => ({
               ...prev, timer: { ...prev.timer, place_order: data.place_order }
             }))
@@ -102,8 +102,8 @@ function System({ context }: any) {
         console.error('Error fetching session token:', error);
       }
     };
-    console.log(state.ticker_data?.conid,'conid====');
-    
+    console.log(state.ticker_data?.conid, 'conid====');
+
     if (state.ticker_data?.conid && localStorage.token) {
       getSessionToken();
     }
@@ -144,7 +144,7 @@ function System({ context }: any) {
           setState(prev => ({
             ...prev,
             instrument: res.data.instrument?.id,
-            ticker_data: { symbol:res.data?.ticker_data?.symbol, instruments_opt: res.data.instrument?.instrument_type },
+            ticker_data: { symbol: res.data?.ticker_data?.symbol, conid: res.data?.ticker_data?.conid, instruments_opt: res.data.instrument?.instrument_type },
             timer: res.data?.timer,
             confidence_level: res.data?.confidence_level,
             original_timer_value: res.data?.original_timer_value,
@@ -166,12 +166,17 @@ function System({ context }: any) {
     setErrorMsg('')
     const params = { ...state }
     delete params.timer
-    Fetch(`ibkr/system-data/${id ? id + '/' : ''}`, { ...params,ticker_data:params.ticker_data.symbol, ...bound, form_step: tab }, { method: id ? 'patch' : 'post' }).then((res) => {
+    Fetch(`ibkr/system-data/${id ? id + '/' : ''}`, { ...params, ticker_data: params.ticker_data.symbol, ...bound, form_step: tab }, { method: id ? 'patch' : 'post' }).then((res) => {
       setIsLoading(false)
       if (res.status) {
+        const { ticker_data, instrument } = res.data
         setId(res.data.id)
         context.getUserSettings()
         handleTab(val)
+        setState(prev => ({
+          ...prev,
+          ticker_data: { symbol: ticker_data?.symbol, conid: ticker_data?.conid, instruments_opt: instrument?.instrument_type },
+        }))
       } else {
         let resErr = arrayString(res);
         setErrorMsg(resErr.error)
@@ -222,7 +227,7 @@ function System({ context }: any) {
       return <></>
     }
     // getConIds(val?.instrument)
-    setState(prev => ({ ...prev, instrument: val?.id, ticker_data: {symbol:val?.instrument} }))
+    setState(prev => ({ ...prev, instrument: val?.id, ticker_data: { symbol: val?.instrument } }))
   };
 
 
