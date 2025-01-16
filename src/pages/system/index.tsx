@@ -34,7 +34,7 @@ function System({ context }: any) {
   const [conIds, setConIds] = useState([]);
   const [tab, setTab] = useState(0);
   const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingConid, setIsLoadingConid] = useState(false)
+  const [isLoadingConid] = useState(false)
   const [isLoadingRange, setIsLoadingRange] = useState(false)
   const [id, setId] = useState('')
   const [errorMessage, setErrorMsg] = useState('')
@@ -210,15 +210,15 @@ function System({ context }: any) {
       }
     });
   };
-  const getConIds = (instrument: string | undefined) => {
-    setIsLoadingConid(true)
-    Fetch(`ibkr/symbol_conid?symbol=${instrument}`).then((res) => {
-      if (res.status) {
-        setConIds(res.data?.data);
-      }
-      setIsLoadingConid(false)
-    });
-  }
+  // const getConIds = (instrument: string | undefined) => {
+  //   setIsLoadingConid(true)
+  //   Fetch(`ibkr/symbol_conid?symbol=${instrument}`).then((res) => {
+  //     if (res.status) {
+  //       setConIds(res.data?.data);
+  //     }
+  //     setIsLoadingConid(false)
+  //   });
+  // }
   const onChangeTicker = (val: InstrumentsProps | null) => {
     setErrorMsg('')
     setConIds([])
