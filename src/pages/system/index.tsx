@@ -223,11 +223,11 @@ function System({ context }: any) {
     setErrorMsg('')
     setConIds([])
     if (!val?.id) {
-      setState(prev => ({ ...prev, instrument: '', ticker_data: {} }))
+      setState(prev => ({ ...prev, instrument: '' }))
       return <></>
     }
     // getConIds(val?.instrument)
-    setState(prev => ({ ...prev, instrument: val?.id, ticker_data: { symbol: val?.instrument } }))
+    setState(prev => ({ ...prev, instrument: val?.id, ticker_data: {...prev.ticker_data, symbol: val?.instrument } }))
   };
 
 
@@ -284,11 +284,11 @@ function System({ context }: any) {
           <Ticker
             state={state}
             errorMessage={errorMessage}
-            conIds={conIds}
+            // conIds={conIds}
             isLoadingConid={isLoadingConid}
             list={tickerList}
             isLoading={isLoading}
-            onChange={onChange}
+            // onChange={onChange}
             handleTabChange={() => handleStepSubmit(1)}
             onChangeTicker={onChangeTicker}
           />

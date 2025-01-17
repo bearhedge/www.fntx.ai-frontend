@@ -16,22 +16,22 @@ interface Iprops {
   handleTabChange: () => void;
   list: TickerList | any;
   state: any;
-  conIds: ConidsProps[];
+  // conIds: ConidsProps[];
   errorMessage: string
   isLoading: boolean
   isLoadingConid: boolean
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onChangeTicker: (value: InstrumentsProps | null) => void;
 }
 export default function Ticker({
   handleTabChange,
   list,
-  conIds,
+  // conIds,
   state,
   isLoading,
   isLoadingConid,
   errorMessage,
-  onChange,
+  // onChange,
   onChangeTicker,
 }: Iprops) {
   const [isIde] = useState(false)
@@ -45,6 +45,8 @@ export default function Ticker({
   if (!ins?.length) {
     return <>No Ticker Avaibale</>
   }
+  console.log('instrumentsOpt===',instrumentsOpt, state.ticker_data?.instruments_opt);
+  
   return (
     <div className="system-form">
       <Card className="mb-4">
@@ -93,7 +95,7 @@ export default function Ticker({
         {
           isLoadingConid ? <Loader dark={true} /> : null
         }
-        {conIds?.length ? (
+        {/* {conIds?.length ? (
           <div className="row justify-content-center">
             <div className="col-md-6">
               <Input
@@ -125,7 +127,7 @@ export default function Ticker({
               </ul>
             </div>
           </div>
-        ) : null}
+        ) : null} */}
         <Required errorText={errorMessage} />
         <Button
           disabled={!(state.instrument && state.ticker_data?.symbol) || isLoading}
