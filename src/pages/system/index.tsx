@@ -284,7 +284,7 @@ function System({ context }: any) {
           <Ticker
             state={state}
             errorMessage={errorMessage}
-            // conIds={conIds}
+            conIds={conIds}
             isLoadingConid={isLoadingConid}
             list={tickerList}
             isLoading={isLoading}
