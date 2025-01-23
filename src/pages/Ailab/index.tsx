@@ -28,7 +28,7 @@ export default function AiLab() {
                 </div>
             </Card>
             <Card>
-                
+                Coming Soon
             </Card>
         </div>
     </AppLayout>

@@ -25,7 +25,10 @@ export default function OptionStream() {
     const socketCandleRef = useRef<any>()
     const [order, setOrders] = useState<any>([]);
     const [instrument, setInstrument] = useState('')
-    const handleSelectedOrder = (row: any, type: string) => { }
+    const handleSelectedOrder = (row: any, type: string) => { 
+        console.log(row,type);
+        
+    }
 
     const getTicker = () => {
         Fetch("ibkr/instruments/").then((res) => {

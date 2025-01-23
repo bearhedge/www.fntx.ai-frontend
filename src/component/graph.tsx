@@ -1,7 +1,7 @@
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 
-import { ChartCanvas, Chart, ZoomButtons } from "react-stockcharts";
+import { ChartCanvas, Chart } from "react-stockcharts";
 import { BarSeries, CandlestickSeries } from "react-stockcharts/lib/series";
 import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 import {
