@@ -1,4 +1,4 @@
-import RadioCheckboxOption from "../../buttonSeelct";
+import RadioCheckboxOption from "../../RadioCheckbox";
 import Card from "../../Card";
 import Button from "../../form/button";
 import CircularButton from "./../CircularButton";

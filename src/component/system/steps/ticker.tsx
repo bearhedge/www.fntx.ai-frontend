@@ -5,7 +5,7 @@ import {
   // sectionsProps,
   TickerList,
 } from "../../../common/type";
-import RadioCheckboxOption from "../../buttonSeelct";
+import RadioCheckboxOption from "../../RadioCheckbox";
 import Card from "../../Card";
 import Button from "../../form/button";
 // import Input from "../../form/input";
