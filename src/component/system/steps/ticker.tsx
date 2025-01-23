@@ -2,13 +2,13 @@ import { useState } from "react";
 import {
   ConidsProps,
   InstrumentsProps,
-  sectionsProps,
+  // sectionsProps,
   TickerList,
 } from "../../../common/type";
-import RadioCheckboxOption from "../../buttonSeelct";
+import RadioCheckboxOption from "../../RadioCheckbox";
 import Card from "../../Card";
 import Button from "../../form/button";
-import Input from "../../form/input";
+// import Input from "../../form/input";
 import Loader from "../../form/loader";
 import Required from "../../form/required";
 import MultiCodeEvaluator from "../../ide";
@@ -16,7 +16,7 @@ interface Iprops {
   handleTabChange: () => void;
   list: TickerList | any;
   state: any;
-  // conIds: ConidsProps[];
+  conIds: ConidsProps[];
   errorMessage: string
   isLoading: boolean
   isLoadingConid: boolean

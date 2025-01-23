@@ -9,6 +9,7 @@ import ResetPassword from './pages/auth/reset';
 import Dashboard from './pages/Dashboard';
 import HomeDashboard from './pages/Home';
 import OnBoarding from './pages/onboarding';
+import OptionStream from './pages/OptionStream';
 import System from './pages/system';
 import { setLoginUser } from './services/slices/authSlice';
 
@@ -35,7 +36,8 @@ const routes: RouteType[] = [
   { path: '/dashboard', component: Dashboard, type: 'public' },
   { path: '/home', component: HomeDashboard, type: 'public' },
   { path: '/system', component: System, type: 'public' },
-  { path: '/system/:id', component: System, type: 'public' },
+  { path: '/optionstream', component: OptionStream, type: 'public' },
+  // { path: '/system/:id', component: System, type: 'public' },
   { path: '/signin', component: Login, type: 'auth' },
   { path: '/register', component: Register, type: 'auth' },
   { path: '/forgot-password', component: ForgotPassword, type: 'auth' },

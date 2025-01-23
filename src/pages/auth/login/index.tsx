@@ -78,7 +78,6 @@ export default function Login() {
                 <Button isLoading={isLoading} disabled={isLoading} type="submit" className="btn btn-primary w-100 mt-4">Sign-in</Button>
             </form>
             <hr />
-            {/* <Button type="button" className="auth-google w-100 text-center d-flex align-items-center justify-content-center"><img src={SocialGoogle} alt='google' className="me-2" width={24} height={24} />Sign-in with Google</Button> */}
             <p className="have-account text-center mt-4 mb-0">Don't have an account? <Link to='/register'>Sign-up</Link></p>
         </div>
     </AuthLayout>

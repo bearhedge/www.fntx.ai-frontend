@@ -1,6 +1,6 @@
 import { TickGreenIcon } from "../../../lib/icons";
 import { onKeyPress } from "../../../lib/utilits";
-import RadioCheckboxOption from "../../buttonSeelct";
+import RadioCheckboxOption from "../../RadioCheckbox";
 import Card from "../../Card";
 import Button from "../../form/button";
 import Input from "../../form/input";

@@ -1,58 +1,80 @@
+import { useEffect, useState } from "react";
+import Fetch from "../../common/api/fetch";
 import Card from "../../component/Card";
 import InputCard from "../../component/system/InputCard";
 import AppLayout from "../../layout/appLayout";
+import NetliquidationIIcon from '@assets/svg/ic_netliquidation.svg'
+import InitmarginreqIcon from '@assets/svg/ic_initmarginreq.svg'
+import TotalcashvalueIcon from '@assets/svg/ic_totalcashvalue.svg'
+import MaintmarginreqIcon from '@assets/svg/ic_maintmarginreq.svg'
+import AvailablefundsIcon from '@assets/svg/ic_availablefunds.svg'
+import ExcessliquidityIcon from '@assets/svg/ic_excessliquidity.svg'
+import BuyingpowerIcon from '@assets/svg/ic_buyingpower.svg'
+import TotalcontractsIcon from '@assets/svg/ic_totalcontracts.svg'
 const list = [
     {
         label: 'Net Liquidation Value',
-        name: 'HKD 100,000.00',
-        icon: '',
+        name: 'netliquidation',
+        icon: NetliquidationIIcon,
     },
     {
         label: 'Current Initial Margin',
-        name: 'HKD 0.00',
-        icon: '',
+        name: 'initmarginreq',
+        icon: InitmarginreqIcon,
     },
     {
         label: 'Cash',
-        name: 'HKD 100,000.00',
-        icon: '',
+        name: 'totalcashvalue',
+        icon: TotalcashvalueIcon,
     },
     {
         label: 'Current Maintenance Margin',
-        name: 'HKD 0.00',
-        icon: '',
+        name: 'maintmarginreq',
+        icon: MaintmarginreqIcon,
     },
     {
         label: 'Current Available Funds',
-        name: 'HKD 100,000.00',
-        icon: '',
+        name: 'availablefunds',
+        icon: AvailablefundsIcon,
     },
     {
         label: 'Current Excess Liquidity',
-        name: 'HKD 600,000.00',
-        icon: '',
+        name: 'excessliquidity',
+        icon: ExcessliquidityIcon,
     },
     {
         label: 'Buying Power',
-        name: 'HKD 100,000.00',
-        icon: '',
+        name: 'buyingpower',
+        icon: BuyingpowerIcon,
     },
     {
         label: 'Estimated Total Contracts',
-        name: 'HKD 30',
-        icon: '',
+        name: '',
+        icon: TotalcontractsIcon,
     }
 ]
 export default function HomeDashboard() {
+    const [data,setData]=useState<any>({})
+    useEffect(()=>{
+        fetchData()
+    },[])
+    const fetchData =()=>{
+        Fetch('ibkr/account_summary/').then(res=>{
+            if(res.status){
+                setData(res.data)
+            }
+        })
+    }
     return <AppLayout>
         <div className="row home-dashboard">
             <div className="col-md-6">
                 {
                     list?.map((items, key) => <Card key={key} className={`d-flex ${key === (list.length - 1)? '':'mb-4'} home-dashboard-list align-items-center justify-content-between flex-row p-4`}>
-                        <div className="d-flex">
+                        <div className="d-flex align-items-center">
+                            <img src={items.icon} alt={items.label} className='me-2'/>
                             <p className="mb-0">{items.label}</p>
                         </div>
-                        <p className="mb-0">{items.name}</p>
+                        {items.name && <p className="mb-0">{data[items.name]?.currency} {data[items.name]?.amount}</p>}
                     </Card>)
                 }
 

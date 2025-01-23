@@ -240,3 +240,25 @@
     }
   }
 }
+.optionstream{
+  .graph{
+    ul{
+      margin: 0;
+      padding: 0;
+      display: flex;
+      li{
+        margin-right: 8px;
+        list-style: none;
+        button{
+          font-size: 10px;
+          line-height: 12px;
+          padding: 4px;
+          text-transform: uppercase;
+          &.active{
+            background-color: var(--btnBgColor);
+          }
+        }
+      }
+    }
+  }
+}

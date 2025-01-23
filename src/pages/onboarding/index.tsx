@@ -127,7 +127,7 @@ export default function OnBoarding() {
     const linkIbkrAccount = () => {
         setIsOneTimeModal(true)
         setIsRefreshIbkr(true)
-        openFullWidthWindow('https://client.fntx.ai/sso/Login?forwardTo=22&RL=1&ip2loc=US')
+        openFullWidthWindow('https://localhost:5000/sso/Login?forwardTo=22&RL=1&ip2loc=US')
     }
     const addMetaMask = (id: string) => {
         setIsLoadingMeta(true);
