@@ -22,6 +22,7 @@ interface orderList {
     limit_sell: number | null,
     stop_loss: number,
     take_profit: number,
+    desc?:string
     optionType: string
 }
 const intialState = {
@@ -38,7 +39,6 @@ export default function Trade({ handleTabChange, handleTabPrevious, selectedOrde
     const [isOpen, setIsOpen] = useState(false)
     const [message, setMessage] = useState('')
     const [errorMessage, setErrorMsg] = useState('')
-
     useEffect(() => {
         let data: Array<orderList> = []
         if (!selectedOrder?.call && !selectedOrder?.put) {
@@ -46,14 +46,16 @@ export default function Trade({ handleTabChange, handleTabPrevious, selectedOrde
         }
         if (selectedOrder.call) {
             const val = selectedOrder?.call?.live_data?.length && selectedOrder?.call?.live_data[0][31]?.replace('C', '')
-            data = [...data, { ...intialState, conid: selectedOrder?.call?.conid, price: +val, optionType: 'call' }]
+            data = [...data, { ...intialState, conid: selectedOrder?.call?.conid,desc: selectedOrder?.call?.desc2,price: +val, optionType: 'call' }]
         }
         if (selectedOrder.put) {
             const val = selectedOrder?.put?.live_data?.length && selectedOrder?.put?.live_data[0][31]?.replace('C', '')
-            data = [...data, { ...intialState, conid: selectedOrder?.call?.conid, price: +val, optionType: 'put' }]
+            data = [...data, { ...intialState, conid: selectedOrder?.put?.conid,desc: selectedOrder?.put?.desc2, price: +val, optionType: 'put' }]
         }
         setState(data)
     }, [selectedOrder])
+    console.log(tradeState);
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>, key: number) => {
         const { name, value } = e.target
         const param: any = [...tradeState]
