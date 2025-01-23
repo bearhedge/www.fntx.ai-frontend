@@ -39,8 +39,6 @@ export default function Trade({ handleTabChange, handleTabPrevious, selectedOrde
     const [isOpen, setIsOpen] = useState(false)
     const [message, setMessage] = useState('')
     const [errorMessage, setErrorMsg] = useState('')
-    console.log(selectedOrder);
-    
     useEffect(() => {
         let data: Array<orderList> = []
         if (!selectedOrder?.call && !selectedOrder?.put) {
