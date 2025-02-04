@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface RangeSliderProps {
   className?: string
@@ -8,11 +8,17 @@ interface RangeSliderProps {
   name?:string
   min?: number | null
   max?: number | null
+  val?:any
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({ className = '', handleChange,name, min, max, count, oddNumbers }) => {
-  const [value, setValue] = useState<number>(0);
-
+const RangeSlider: React.FC<RangeSliderProps> = ({ className = '', handleChange,name, min, max, count, oddNumbers , val}) => {
+  console.log(val, "value========")
+  const [value, setValue] = useState<number>(val || 0);
+    useEffect(()=>{
+      if(val){
+        setValue(val)
+      }
+    },[val])
   const handleChangeRange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     handleChange && handleChange(event, Number(event.target.value))
     setValue(Number(event.target.value));

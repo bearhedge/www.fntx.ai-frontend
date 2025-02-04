@@ -19,12 +19,38 @@ const chartFilter = [
     '2y',
     '5y',
 ]
+const chartMinutes = [
+    "1min",
+    "2min",
+    "3min",
+    "5min",
+    "15min",
+    "30min",
+    "1h",
+    "4h",
+    "1d",
+    "1w",
+    "1m",
+    "3m"
+  ];
+  const timeMapping: Record<string, string> = {
+    "1d": "1min",
+    "5d": "5min",
+    "1m": "1d",
+    "1y": "1d",
+    "5y": "1y",
+  };
 export default function OptionStream() {
     const [tickerList, setTickerList] = useState<any>([]);
     const socketRef = useRef<any>()
     const socketCandleRef = useRef<any>()
     const [order, setOrders] = useState<any>([]);
     const [instrument, setInstrument] = useState('')
+    // const[chartRes, setChartRes] = useState<any>(null);
+    const [selectedTime, setSelectedTime] = useState("1min");
+    const [conId, setConId] = useState<any>(null);
+
+
     const handleSelectedOrder = (row: any, type: string) => { 
         console.log(row,type);
         
@@ -61,8 +87,12 @@ export default function OptionStream() {
                     }
                 }
                 wsCandleStrikes.onmessage = (event: any) => {
+                    console.log("message triggered=====")
                     const data = JSON.parse(event.data)
                     console.log(data);
+                    // setChartRes(data.data)
+                    console.log(data, "data===========")
+                    setConId(data.conId)
                     
                     // if (data?.option_chain_data?.length) {
                     //     if (!data?.option_chain_data[0]?.put?.live_data[0][31] && !data?.option_chain_data[0]?.call?.live_data[0][31]) {
@@ -124,7 +154,33 @@ export default function OptionStream() {
         socketCandleRef.current.send(JSON.stringify({ ticker: item.instrument }));
 
     }
-    return <AppLayout>
+     const handleChartData = (e:any,item:string) => {
+       console.log(e.target.value, "item=====")
+       let type  = e.target.name, value =e.target.value
+       let params={
+        period: "",
+        bar: "",
+        conid: ''
+        };
+        console.log(conId, "==============")
+       if(type === "button"){
+        params.bar = item
+        if (timeMapping[item]) {
+            let timeValue = timeMapping[item];
+            params.period = timeValue
+            setSelectedTime(timeValue); // Update the select value when a button is clicked
+          }
+       }else{
+         params.period = value
+       }
+       console.log(conId, "conid")
+       params.conid = conId
+    
+      Fetch('ibkr/history_data', params, { method: 'post' }).then((res: any) => {
+           
+           })
+     }
+return <AppLayout>
         <div className="optionstream">
             <div className="row mb-4">
                 <div className="col-md-6">
@@ -160,15 +216,39 @@ export default function OptionStream() {
                     </Card>
                 </div>
             </div>
-            <Card className="mb-4 graph">
-                <CandleStickChartWithCHMousePointer data={chartRes} />
-                <ul>
-                    {
-                        chartFilter?.map((items: string, key: number) => <li key={key}><Button type="button" className="btn">{items}</Button></li>)
-                    }
-
-                </ul>
-            </Card>
+            {chartRes &&
+           <Card className="mb-4 graph">
+           <CandleStickChartWithCHMousePointer data={chartRes} />
+         
+           <div className=" items-center flex-row justify-between gap-4 mt-2 d-flex flex-row">
+             <ul className="flex gap-2">
+               {chartFilter?.map((item: string, key: number) => (
+                 <li key={key}>
+                   <Button type="button" name="button" className="btn" onClick={(e)=>handleChartData(e,item)}>
+                     {item}
+                   </Button>
+                 </li>
+               ))}
+             </ul>
+         
+             <select
+               name="time"
+               className="border rounded px-2 py-1"
+               style={{ width: "100px" }}
+               onChange={(e) => handleChartData(e, "item")}
+               value={selectedTime} 
+             >
+               {chartMinutes?.map((item: string, index: number) => (
+                 <option key={index} value={item}
+                 >
+                   {item}
+                 </option>
+               ))}
+             </select>
+           </div>
+         </Card>
+         
+                   }
             <Card>
                 <div className="row mb-3 system-form-orders">
                     <div className={`col-sm-5 col-12`}>
