@@ -309,7 +309,7 @@ function System({ context }: any) {
         {tab === 3 && <Risk handleTabPrevious={handleTab} errorMessage={errorMessage} onChange={onChange} isLoading={isLoading} state={state} handleTabChange={() => handleStepSubmit(4)} />}
         {tab === 4 && <Contracts handleTabPrevious={handleTab} order={order} selectedOrder={selectedOrder} handleSelectedOrder={handleSelectedOrder} errorMessage={errorMessage} isLoading={isLoading} state={state} onChange={onChange} handleTabChange={() => handleStepSubmit(5)} />}
         {tab === 5 && <Trade handleTabPrevious={handleTab} state={state} selectedOrder={selectedOrder} handleTabChange={() => handleTab(6)}  id ={id}/>}
-        {tab === 6 && <Manage handleTabPrevious={handleTab} handleTabChange={() => handleStepSubmit(6)} />}
+        {tab === 6 && <Manage  />}
       </div>
     </AppLayout>
   );

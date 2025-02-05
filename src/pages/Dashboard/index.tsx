@@ -158,20 +158,20 @@ export default function Dashboard() {
             </Card>
           </div>
           <div className="col-md-6 ">
-            <div className="row justify-content-center pl-5">
-              <div className="col-md-4 mr-5">
+            <div className="row">
+              <div className="col-md-4 mr-5 d-flex justify-content-center">
                 <CircularButton
                   text={"P"}
                   bgColor={data?.timer?.place_order === "P" ? "green" : ""}
                 />
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 d-flex justify-content-center">
                 <CircularButton
                   text={"N"}
                   bgColor={data?.timer?.place_order === "N" ? "green" : ""}
                 />
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 d-flex justify-content-center">
                 <CircularButton
                   text={"D"}
                   bgColor={data?.timer?.place_order === "D" ? "green" : ""}
@@ -181,7 +181,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="row mb-4">
-          <div className="col-md-6">
+         
             {data?.orders?.map((order: any) => {
               if (
                 order?.orderType === "STP" &&
@@ -189,6 +189,7 @@ export default function Dashboard() {
                 order?.side === "BUY"
               ) {
                 return (
+                  <div className="col-md-6">
                   <Card key={order.id} className="">
                     <div className="d-flex align-items-center mb-3">
                       <h5>Call Strike</h5>
@@ -209,11 +210,12 @@ export default function Dashboard() {
                       </div>
                     </div>
                   </Card>
+                  </div>
                 );
               }
               return null; // return null if the condition is not met
             })}
-          </div>
+      
           <div className="col-md-6">
             {data?.orders?.map((order: any) => {
               if (
@@ -248,14 +250,58 @@ export default function Dashboard() {
             })}
           </div>
         </div>
-        {data && data?.orders?.length != 0 && (
-          <div className="row mb-4 m-1">
+   
+
+    
+     <div className="row mb-4">
+                 <div className="col-md-6">
+                 {data?.orders?.map((order: any) => {
+           if (
+             order?.orderType === "STP" &&
+             order?.optionType === "call" &&
+             order?.side === "BUY"
+           ) {
+             return (
+               <div className="col-md-6">
+               <Card key={order.id} className="">
+                 <div className="d-flex align-items-center mb-3">
+                   <h5>Call Strike</h5>
+                   <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
+                     {order.con_desc2.match(/(\d+)\s+Call/)?.[1] || ""}
+                   </div>
+                 </div>
+                 <div className="d-flex align-items-center mb-3">
+                   <h5>Unit Price</h5>
+                   <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
+                     {order.price}
+                   </div>
+                 </div>
+                 <div className="d-flex align-items-center mb-3">
+                   <h5>Volume</h5>
+                   <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
+                     {order.quantity}
+                   </div>
+                 </div>
+               </Card>
+               </div>
+             );
+           }
+           return null; // return null if the condition is not met
+         })}
+          </div>
+        </div>
+        <div className="row mb-4">
+
+        {data && data?.orders?.find(
+                            (order: { con_desc2: string | string[] }) =>
+                              order.con_desc2.includes("Call")
+                          )?.con_desc2 && (
+                  <div className="col-md-6">
+
             <Card>
               <h4 className="ml-5">Trade Managment</h4>
-              <div className="d-flex justify-content-around">
-                <div className="col-md-5">
                   <div className="d-flex flex-row">
-                    <h5 className="mt-3">Contract</h5>
+                    <h5 className="mt-3">Call Contract</h5>
 
                     <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
                       {data?.orders?.length
@@ -265,6 +311,103 @@ export default function Dashboard() {
                           )?.con_desc2 || "No orders available"
                         : "No orders available"}
                     </div>
+
+                  </div>
+                  <div className="d-flex align-items-center mt-4">
+                    <h5>Stop Loss</h5>
+                    <RangeSlider
+                      name="stop_loss"
+                      className="mx-3"
+                      min={100}
+                      max={600}
+                      count={11}
+                      val={getTakeProfitValue(
+                        data?.orders,
+                        "stop_loss",
+                        "LMT",
+                        "call"
+                      )}
+                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChange(e, "LMT", "call")
+                      }
+                      oddNumbers={true}
+                    />
+                    <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
+                      {getTakeProfitValue(
+                        data?.orders,
+                        "stop_loss",
+                        "LMT",
+                        "call"
+                      )}
+                    </div>
+                    <Button
+                      className="btn btn-primary btn-adjust m-2"
+                      onClick={() => submitOrder()}
+                    >
+                      Adjust
+                    </Button>
+                  </div>
+                  <div className="d-flex align-items-center mt-4">
+                    <h5>Take Profit</h5>
+                    <RangeSlider
+                      name="take_profit"
+                      className="mx-3"
+                      min={0}
+                      max={50}
+                      count={11}
+                      val={getTakeProfitValue(
+                        data?.orders,
+                        "take_profit",
+                        "STP",
+                        "call"
+                      )}
+                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChange(e, "STP", "call")
+                      }
+                      oddNumbers={true}
+                    />
+                    <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
+                      {getTakeProfitValue(
+                        data?.orders,
+                        "take_profit",
+                        "STP",
+                        "call"
+                      )}
+                    </div>
+                    <Button
+                      className="btn btn-primary btn-adjust m-2"
+                      onClick={() => submitOrder()}
+                    >
+                      Adjust
+                    </Button>
+                  </div>
+
+              
+            </Card>
+            </div>
+
+        )}
+
+
+     <div className="col-md-6">
+        {data && data?.orders?.find(
+                            (order: { con_desc2: string | string[] }) =>
+                              order.con_desc2.includes("Put")
+                          )?.con_desc2 && (
+            <Card>
+              <h4 className="ml-5">Trade Managment</h4>
+                  <div className="d-flex flex-row">
+                    <h5 className="mt-3">Put Contract</h5>
+
+                    <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
+                      {data?.orders?.length
+                        ? data.orders.find(
+                            (order: { con_desc2: string | string[] }) =>
+                              order.con_desc2.includes("Put")
+                          )?.con_desc2 || "No orders available"
+                        : "No orders available"}
+                    </div>
+
                   </div>
                   <div className="d-flex align-items-center mt-4">
                     <h5>Stop Loss</h5>
@@ -334,94 +477,12 @@ export default function Dashboard() {
                       Adjust
                     </Button>
                   </div>
-                </div>
 
-                <div className="col-md-5">
-                  <div className="d-flex flex-row">
-                    <h5 className="mt-3">Contract</h5>
-
-                    <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
-                      {data?.orders?.length
-                        ? data.orders.find(
-                            (order: { con_desc2: string | string[] }) =>
-                              order.con_desc2.includes("Put")
-                          )?.con_desc2 || "No orders available"
-                        : "No orders available"}
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center mt-4">
-                    <h5>Stop Loss</h5>
-                    <RangeSlider
-                      name="take_profit"
-                      className="mx-3"
-                      min={100}
-                      max={600}
-                      count={11}
-                      oddNumbers={true}
-                      val={getTakeProfitValue(
-                        data?.orders,
-                        "stop_loss",
-                        "LMT",
-                        "call"
-                      )}
-                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleChange(e, "LMT", "call")
-                      }
-                    />
-                    <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
-                      {getTakeProfitValue(
-                        data?.orders,
-                        "stop_loss",
-                        "LMT",
-                        "call"
-                      )}
-                    </div>
-                    <Button
-                      className="btn btn-primary btn-adjust m-2"
-                      onClick={() => submitOrder()}
-                    >
-                      Adjust
-                    </Button>
-                  </div>
-                  <div className="d-flex align-items-center mt-2">
-                    <h5>Take Profit</h5>
-                    <RangeSlider
-                      name="take_profit"
-                      className="mx-3"
-                      min={0}
-                      max={50}
-                      count={11}
-                      val={getTakeProfitValue(
-                        data?.orders,
-                        "take_profit",
-                        "STP",
-                        "call"
-                      )}
-                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleChange(e, "STP", "call")
-                      }
-                      oddNumbers={true}
-                    />
-                    <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
-                      {getTakeProfitValue(
-                        data?.orders,
-                        "take_profit",
-                        "STP",
-                        "call"
-                      )}
-                    </div>
-                    <Button
-                      className="btn btn-primary btn-adjust m-2"
-                      onClick={() => submitOrder()}
-                    >
-                      Adjust
-                    </Button>{" "}
-                  </div>
-                </div>
-              </div>
+              
             </Card>
-          </div>
         )}
+     </div>
+     </div>
       </div>
     </AppLayout>
   );
