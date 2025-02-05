@@ -115,7 +115,12 @@ export default function Manage({ handleTabChange, handleTabPrevious }: Iprops) {
   const submitOrder = (id: string, value: string, type: string) => {
     setLoadingId(id);
     setdisabledId(id);
-    const params = {
+    const params: {
+      id: string;
+      limit_sell: string | null;
+      take_profit: string | null;
+      stop_loss: string | null;
+    } = {
       id: id,
       limit_sell: null,
       take_profit: null,
@@ -129,7 +134,7 @@ export default function Manage({ handleTabChange, handleTabPrevious }: Iprops) {
     } else {
       params.stop_loss = value;
     }
-
+     
     Fetch(`ibkr/place-order/${id}/`, params, { method: "patch" }).then(
       (res: any) => {
         setLoadingId(null);

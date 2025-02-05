@@ -41,8 +41,9 @@ export default function OptionStream() {
   const [conId, setConId] = useState<any>(null);
   const [atClose, setAtClose] = useState<string>("");
   const [preMarket, setpreMarket] = useState<string>("");
-  const handleSelectedOrder = (row: any, type: string) => {
-  };
+  // const handleSelectedOrder = (row: any, type: string) => {
+    
+  // };
 
   const getTicker = () => {
     Fetch("ibkr/instruments/").then((res) => {
@@ -236,8 +237,7 @@ export default function OptionStream() {
     params.conid = conId;
 
     Fetch("ibkr/history_data", params, { method: "post" }).then(
-      (res: any) => {}
-    );
+    )
   };
   return (
     <AppLayout>
@@ -334,12 +334,12 @@ export default function OptionStream() {
             <div className="row mb-3 system-form-orders">
               <div className={`col-sm-5 col-12`}>
                 <StockTable
-                  handleSelected={(row: any) =>
-                    handleSelectedOrder(
-                      { ...row.call, selected: row.selected },
-                      "call"
-                    )
-                  }
+                  // handleSelected={(row: any) =>
+                  //   handleSelectedOrder(
+                  //     { ...row.call, selected: row.selected },
+                  //     "call"
+                  //   )
+                  // }
                   title={"Calls"}
                   rows={order}
                   columns={columnsCall}
@@ -350,12 +350,12 @@ export default function OptionStream() {
               </div>
               <div className={`col-sm-5 col-12`}>
                 <StockTable
-                  handleSelected={(row: any) =>
-                    handleSelectedOrder(
-                      { ...row.put, selected: row.selected },
-                      "put"
-                    )
-                  }
+                  // handleSelected={(row: any) =>
+                  //   handleSelectedOrder(
+                  //     { ...row.put, selected: row.selected },
+                  //     "put"
+                  //   )
+                  // }
                   title={"Puts"}
                   className="grey-bg"
                   columns={columnsPut}
