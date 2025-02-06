@@ -24,7 +24,7 @@ export default function Manage() {
   const [disabledId, setdisabledId] = useState<string | null>(null);
   const [callOrder, setCallOrder] = useState<boolean>(false);
   const [putOrder, setPutOrder] = useState<boolean>(false);
-
+  const [inventoryData, setInventoryData] = useState<any>([]);
   useEffect(() => {
     const id = decodeToken(localStorage.token)?.user_id;
     const wsTrades = new WebSocket(
@@ -35,8 +35,26 @@ export default function Manage() {
     };
     wsTrades.onmessage = (event: any) => {
       const data = JSON.parse(event.data);
-      setTradeData(data);
+      if(data.contract){
+        setInventoryData((prevData:any) => {
+          const existingIndex = prevData.findIndex((item:any) => item.order_id === data.order_id);
+          
+          if (existingIndex !== -1) {
+            // Agar order_id match kar raha hai, toh usko update karo
+            const updatedData = [...prevData];
+            updatedData[existingIndex] = data;
+            return updatedData;
+          } else {
+            // Nahi hai toh naye data ko add kar do
+            return [...prevData, data];
+          }
+        });
+      }else{
+        setTradeData(data);
+
+      }
     };
+  
 
     // When the WebSocket encounters an error
     wsTrades.onerror = (error) => {
@@ -97,7 +115,6 @@ export default function Manage() {
     setdisabledId(id);
     Fetch(`ibkr/place-order/${id}/`, {}, { method: "delete" }).then(
       (res: any) => {
-        console.log(res, "result=======");
         setdisabledId(null);
         if (res.status === false) {
           setErr(res.error);
@@ -159,101 +176,72 @@ const params: {
       ? status === "Cancelled" || status === "Submitted"
       : status;
   };
-  console.log(placeOrders, "place orders====")
   return (
     <div className="system-trade">
-      <Card>
-        <div className="row mb-3">
-          <div className="col-12 mb-3">
-            <div className="switch d-flex align-items-center justify-content-end">
-              <input type="checkbox" /> <span className="ms-3">IDE</span>
+{inventoryData.length > 0 && (
+  <Card>
+    <div className="row mb-3">
+      <div className="col-12 mb-3">
+        <div className="switch d-flex align-items-center justify-content-end">
+          <input type="checkbox" /> <span className="ms-3">IDE</span>
+        </div>
+      </div>
+      <div className="col-12 mt-1">
+        <h4 className="mb-3 pb-3">Inventory Profit & Loss</h4>
+      </div>
+      
+      {inventoryData.map((item) => (
+        <div key={item.order_id} className="col-12">
+          <div className="row mb-1">
+            <div className="col-12 col-25 mb-1">
+              <RadioCheckboxOption
+                type="checkbox"
+                disabled
+                label={item.contract}
+                value={item.contract}
+                id={`Contract-${item.order_id}`}
+              />
+            </div>
+            <div className="col-12 col-25 mb-1">
+              <RadioCheckboxOption
+                type="checkbox"
+                label={item.volume}
+                value={item.volume}
+                id={`Volume-${item.order_id}`}
+              />
+            </div>
+            <div className="col-12 col-25 mb-1">
+              <RadioCheckboxOption
+                type="checkbox"
+                label={item.sold_price}
+                value={item.sold_price}
+                id={`PriceSold-${item.order_id}`}
+              />
+            </div>
+            <div className="col-12 col-25 mb-1">
+              <RadioCheckboxOption
+                type="checkbox"
+                label={item.current_price}
+                value={item.current_price}
+                id={`CurrentPrice-${item.order_id}`}
+              />
+            </div>
+            <div className="col-12 col-25 mb-1">
+              <RadioCheckboxOption
+                type="checkbox"
+                label={item.pnl}
+                value={item.pnl}
+                id={`PnL-${item.order_id}`}
+              />
             </div>
           </div>
-          <div className="col-12 mt-1">
-            <h4 className="mb-3 pb-3">Inventory Profit & Loss</h4>
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Contract"
-              value="Contract"
-              id="Contract"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Volume"
-              value="Volume"
-              id="Volume"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Price Sold"
-              value="Price Sold"
-              id="PriceSold"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Current Price"
-              value="Current Price"
-              id="CurrentPrice"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="PnL"
-              value="PnL"
-              id="PnL"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Contract"
-              value="Contract"
-              id="Contract"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Volume"
-              value="Volume"
-              id="Volume"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Price Sold"
-              value="Price Sold"
-              id="PriceSold"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="Current Price"
-              value="Current Price"
-              id="CurrentPrice"
-            />
-          </div>
-          <div className="col-12 col-25 mb-1">
-            <RadioCheckboxOption
-              type="checkbox"
-              label="kkk"
-              value="PnL"
-              id="PnL"
-            />
-          </div>
         </div>
-      </Card>
+      ))}
+    </div>
+  </Card>
+)}
+
+
       <Card className="mt-4">
         <div className="row mb-3">
           <div className="col-12">

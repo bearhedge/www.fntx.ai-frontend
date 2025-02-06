@@ -6,12 +6,19 @@ import AppLayout from "../../layout/appLayout";
 import Fetch from "../../common/api/fetch";
 import Button from "../../component/form/button";
 import { convertToIST } from "../../common/utilits";
+import Required from "../../component/form/required";
 export default function Dashboard() {
   const [data, setData] = useState<any>({});
   const [ordersData, setOrdersData] = useState<any>({});
+  const[errorMessage, setErrorMsg] = useState<string>('')
   useEffect(() => {
     Fetch(`ibkr/dashboard`, {}, { method: "get" }).then((res: any) => {
-      setData(res.data);
+      if(res.error){
+        setErrorMsg(res.error)
+      }else{
+        setData(res.data);
+
+      }
     });
   }, []);
   const getTakeProfitValue = (
@@ -43,7 +50,6 @@ export default function Dashboard() {
 
   const handleChange = (e: any, orderType: any, optionType: any) => {
     const { name, value } = e.target;
-    console.log(name, value, "==============");
 
     const order = data?.orders?.find(
       (item: any) =>
@@ -51,7 +57,6 @@ export default function Dashboard() {
         item.side === "BUY" &&
         item.optionType === optionType
     );
-    console.log(order, "order======");
     const params = {
       id: order.id,
       limit_sell: null,
@@ -110,7 +115,11 @@ export default function Dashboard() {
   return (
     <AppLayout>
       <div className="dashboard">
+      <div className="text-center" >
+     <Required errorText={errorMessage} />
+     </div>
         <div className="row mb-4 d-flex justify align ml-3">
+          { data && data?.ticker_data?.symbol &&
           <div className="col-md-6 ml-3">
             <Card className="d-flex align-items-center flex-row ml-3">
               <h5>Ticker</h5>
@@ -119,6 +128,8 @@ export default function Dashboard() {
               </div>
             </Card>
           </div>
+            }
+            { data &&  data?.ticker_data?.sections  && 
           <div className="col-md-6">
             <Card className="d-flex align-items-center flex-row">
               <h5>Expiry</h5>
@@ -127,7 +138,10 @@ export default function Dashboard() {
               </div>
             </Card>
           </div>
+            }
         </div>
+        {data?.timer && Object.keys(data.timer).length > 0 && (
+
         <div className="row mb-4">
           <div className="col-md-6">
             <Card>
@@ -180,6 +194,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        )}
         <div className="row mb-4">
          
             {data?.orders?.map((order: any) => {
@@ -253,43 +268,7 @@ export default function Dashboard() {
    
 
     
-     <div className="row mb-4">
-                 <div className="col-md-6">
-                 {data?.orders?.map((order: any) => {
-           if (
-             order?.orderType === "STP" &&
-             order?.optionType === "call" &&
-             order?.side === "BUY"
-           ) {
-             return (
-               <div className="col-md-6">
-               <Card key={order.id} className="">
-                 <div className="d-flex align-items-center mb-3">
-                   <h5>Call Strike</h5>
-                   <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
-                     {order.con_desc2.match(/(\d+)\s+Call/)?.[1] || ""}
-                   </div>
-                 </div>
-                 <div className="d-flex align-items-center mb-3">
-                   <h5>Unit Price</h5>
-                   <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
-                     {order.price}
-                   </div>
-                 </div>
-                 <div className="d-flex align-items-center mb-3">
-                   <h5>Volume</h5>
-                   <div className="system-trade-card-btn ms-3 mb-0 d-flex align-items-center justify-content-center">
-                     {order.quantity}
-                   </div>
-                 </div>
-               </Card>
-               </div>
-             );
-           }
-           return null; // return null if the condition is not met
-         })}
-          </div>
-        </div>
+ 
         <div className="row mb-4">
 
         {data && data?.orders?.find(
@@ -483,7 +462,11 @@ export default function Dashboard() {
         )}
      </div>
      </div>
+   
+
+
       </div>
+    
     </AppLayout>
   );
 }

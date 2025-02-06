@@ -45,7 +45,6 @@ export default function Ticker({
   if (!ins?.length) {
     return <>No Ticker Avaibale</>
   }
-  console.log('instrumentsOpt===',instrumentsOpt, state.ticker_data?.instruments_opt);
   
   return (
     <div className="system-form">
@@ -128,7 +127,7 @@ export default function Ticker({
             </div>
           </div>
         ) : null} */}
-        <Required errorText={errorMessage} />
+        <Required errorText={errorMessage}  />
         <Button
           disabled={!(state.instrument && state.ticker_data?.symbol) || isLoading}
           isLoading={isLoading}
