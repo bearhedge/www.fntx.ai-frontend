@@ -189,8 +189,7 @@ const params: {
       <div className="col-12 mt-1">
         <h4 className="mb-3 pb-3">Inventory Profit & Loss</h4>
       </div>
-      
-      {inventoryData.map((item) => (
+      {inventoryData.map((item:any) => (
         <div key={item.order_id} className="col-12">
           <div className="row mb-1">
             <div className="col-12 col-25 mb-1">

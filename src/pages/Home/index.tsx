@@ -55,57 +55,6 @@ const list = [
 ]
 export default function HomeDashboard() {
     const [data,setData]=useState<any>({})
-    const socketRef = useRef<any>()
-    useEffect(() => {
-        // Create the WebSocket connection
-
-        const getSessionToken = async () => {
-            try {
-                // const token = await AsyncStorage.getItem("userInfo").then((data) => {
-                //     const parsed = data ? JSON.parse(data) : null;
-                //     return parsed?.access_token || "";
-                // });
-                // console.log(token, `${SOCKET_BASE_URL}chat-doctor/${localSearchParams?.id}`);
-                console.log('hello');
-                const token = `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTFhMTA0MS0xYTA5LTQ0YzEtODM5OS1kZDQ5MTU4N2FmNWYiLCJyb2xlIjoicGF0aWVudCIsImRldmljZV9pZCI6InNhbXN1bmciLCJleHAiOjE3MzgyMTQ3NjF9.nnt6Y1YW6mV8uHfKjKEHRjdhSX7o1h5OtAoczcSFSgI'}`
-                const wsStrikes = new WebSocket(`ws://192.168.1.32:9000/ws/chat-doctor/2b0c6fe3-b7f9-44a6-a5f2-c86987f87028`,null, {
-                    headers: {
-                      ['Set-Cookie']: cookie,
-                    },
-                  }
-                );
-
-                wsStrikes.onopen = () => {
-                    console.log('WebSocket connected');
-                };
-
-                wsStrikes.onmessage = (event) => {
-                    console.log('Received message:', event.data);
-                };
-
-                wsStrikes.onerror = (error) => {
-                    console.log('WebSocket error:', error);
-                };
-
-                wsStrikes.onclose = () => {
-                    console.log('WebSocket connection closed');
-                };
-
-                // Store the WebSocket connection in state
-                socketRef.current = wsStrikes;
-
-            } catch (error) {
-                console.error('Error fetching session token:', error);
-            }
-        };
-        getSessionToken();
-        // Cleanup function to close the WebSocket connection when the component unmounts
-        return () => {
-            if (socketRef.current) {
-                // socketRef.current.close();
-            }
-        };
-    }, []);
     useEffect(()=>{
         fetchData()
     },[])
