@@ -76,13 +76,13 @@ export default function OptionStream() {
         wsStrikes.onmessage = (event: any) => {
           const data = JSON.parse(event.data);
           if (data?.option_chain_data?.length) {
-            if (
-              !data?.option_chain_data[0]?.put?.live_data[0][31] &&
-              !data?.option_chain_data[0]?.call?.live_data[0][31]
-            ) {
-              wsStrikes.close();
-              getSessionToken();
-            }
+            // if (
+            //   !data?.option_chain_data[0]?.put?.live_data[0][31] &&
+            //   !data?.option_chain_data[0]?.call?.live_data[0][31]
+            // ) {
+            //   wsStrikes.close();
+            //   getSessionToken();
+            // }
             setOrders(data?.option_chain_data);
           }
         };
@@ -132,6 +132,9 @@ export default function OptionStream() {
     return () => {
       if (socketRef.current) {
         socketRef.current.close();
+      }
+      if (socketCandleRef.current) {
+        socketCandleRef.current.close();
       }
     };
   }, []);
@@ -340,7 +343,7 @@ export default function OptionStream() {
             </div>
           </Card>
         )}
-        {!!chartRes?.length && (
+        {!!order?.length && (
           <Card>
             <div className="row mb-3 system-form-orders">
               <div className={`col-sm-5 col-12`}>
