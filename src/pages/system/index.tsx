@@ -237,7 +237,10 @@ function System({ context }: any) {
       timer_value: val,
       original_timer_value: val,
       place_order: 'P',
-      start_time: new Date()?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      start_time: new Date()?.toISOString()
+      .split("T")[1] // Get the time part
+      .replace("Z", "") // Remove the 'Z'
+    
     }
     Fetch(`ibkr/timer/`, obj, { method: 'post' }).then((res) => {
       if (res.status) {
@@ -305,8 +308,8 @@ function System({ context }: any) {
         {tab === 2 && <Range isLoadingRange={isLoadingRange} handleTabPrevious={handleTab} bound={bound} errorMessage={errorMessage} state={state} isLoading={isLoading} handleChangeRange={handleChangeRange} handleTabChange={() => handleStepSubmit(3)} />}
         {tab === 3 && <Risk handleTabPrevious={handleTab} errorMessage={errorMessage} onChange={onChange} isLoading={isLoading} state={state} handleTabChange={() => handleStepSubmit(4)} />}
         {tab === 4 && <Contracts handleTabPrevious={handleTab} order={order} selectedOrder={selectedOrder} handleSelectedOrder={handleSelectedOrder} errorMessage={errorMessage} isLoading={isLoading} state={state} onChange={onChange} handleTabChange={() => handleStepSubmit(5)} />}
-        {tab === 5 && <Trade handleTabPrevious={handleTab} state={state} selectedOrder={selectedOrder} handleTabChange={() => handleTab(6)} />}
-        {tab === 6 && <Manage handleTabPrevious={handleTab} handleTabChange={() => handleStepSubmit(6)} />}
+        {tab === 5 && <Trade handleTabPrevious={handleTab} state={state} selectedOrder={selectedOrder} handleTabChange={() => handleTab(6)}  id ={id}/>}
+        {tab === 6 && <Manage  />}
       </div>
     </AppLayout>
   );

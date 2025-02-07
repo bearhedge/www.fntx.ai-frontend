@@ -5,7 +5,7 @@ import CircularButton from "./../CircularButton";
 import { useState, useEffect } from "react";
 import DialogConfirm from "../../modal";
 import Required from "../../form/required";
-
+import { convertToIST } from "../../../common/utilits";
 const time = [
   {
     label: '180-mins',
@@ -123,7 +123,7 @@ export default function Timing({ handleTabChange, handleChangeTime, handleTabPre
             </div>
             <div className="row">
               <div className="col-sm-6 col-12 mb-1 mx-auto">
-                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">{endTime || 'N/A'}</div>
+                <div className="system-trade-card-btn d-flex align-items-center justify-content-center">{convertToIST(endTime) || 'N/A'}</div>
               </div>
             </div>
           </div>

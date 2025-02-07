@@ -13,7 +13,8 @@ interface Iprops {
     handleTabChange: () => void;
     selectedOrder: any
     handleTabPrevious: (value: number) => void;
-    state: any
+    state: any,
+    id:string
 }
 interface orderList {
     conid: number | null,
@@ -34,7 +35,7 @@ const intialState = {
     take_profit: 0,
     optionType: ''
 }
-export default function Trade({ handleTabChange, handleTabPrevious, selectedOrder, state }: Iprops) {
+export default function Trade({ handleTabChange, handleTabPrevious, selectedOrder, state, id }: Iprops) {
     const [tradeState, setState] = useState<Array<orderList>>([])
     const [isOpen, setIsOpen] = useState(false)
     const [message, setMessage] = useState('')
@@ -72,7 +73,11 @@ export default function Trade({ handleTabChange, handleTabPrevious, selectedOrde
         setIsOpen(!isOpen)
     }
     const handleConfirmOrder = () => {
-        Fetch('ibkr/place-order/', { order: tradeState.map((items: any) => { return { ...items, limit_sell: +items.limit_sell } }) }, { method: 'post' }).then(res => {
+        Fetch('ibkr/place-order/', { 
+            order: tradeState.map((items: any) => { return { ...items, limit_sell: +items.limit_sell,system_data:id  } }),
+          },
+            
+            { method: 'post' }).then(res => {
             if (res.status) {
                 handlePlaceOrder()
                 setMessage(res.data.message)
@@ -108,13 +113,13 @@ export default function Trade({ handleTabChange, handleTabPrevious, selectedOrde
                             </div>
                             <div className="d-flex">
                                 <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Stop-Loss</div>
-                                <RangeSlider name='stop_loss' handleChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, key)} className='mx-3' min={100} max={600} count={11} oddNumbers={true} />
+                                <RangeSlider name='stop_loss' handleChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, key)} className='mx-3' min={100} max={600} count={11} oddNumbers={true} val={0} />
                                 <Input type='text' value={items.stop_loss + '%'} onKeyPress={onKeyPress} disabled />
                             </div>
                             <div className="d-flex">
                                 <div className="system-trade-card-btn d-flex align-items-center justify-content-center">Take-Profit</div>
-                                <RangeSlider name='take_profit' handleChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, key)} className='mx-3' min={0} max={50} count={11} oddNumbers={true} />
-                                <Input type='text' value={items.take_profit + '%'} onKeyPress={onKeyPress} disabled />
+                                <RangeSlider name='take_profit' handleChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, key)} className='mx-3' min={0} max={50} count={11} oddNumbers={true} val={0} />
+                                <Input type='text' value={items?.take_profit + '%'} onKeyPress={onKeyPress} disabled />
                             </div>
                         </div>
                     </div>)

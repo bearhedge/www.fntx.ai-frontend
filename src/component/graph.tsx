@@ -58,7 +58,7 @@ class CandleStickChartWithCHMousePointer extends React.Component<CandleStickChar
         const { suffix } = this.state;
         const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
             (d: any) => {
-                return d.date
+                return typeof d.date === "string" ? new Date(d.date) : d.date;
             }
         );
 

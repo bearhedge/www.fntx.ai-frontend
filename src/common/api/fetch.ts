@@ -9,6 +9,8 @@ export default function Fetch(
   params: any = {},
   option: any = {}
 ) {
+
+  console.log(params, "params=====")
   const method: HttpMethod = option?.method ?? "get";
   const inFormData = option?.inFormData ?? false; // formType === true
   const isToken = option?.isToken ?? true;
