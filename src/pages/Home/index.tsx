@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Fetch from "../../common/api/fetch";
 import Card from "../../component/Card";
 import InputCard from "../../component/system/InputCard";
